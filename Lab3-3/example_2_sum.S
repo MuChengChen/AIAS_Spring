@@ -1,9 +1,9 @@
 ## Lab3-3 - example_2_sum.S
 
-    .text                    # code section 
-    .global sum_asm          # declar the sum_asm function as a  global function
-    .type sum_asm, @function # define sum_asm as a function 
-sum_asm:
+    .text                        # code section 
+    .global sum_ex2_asm          # declar the sum_asm function as a  global function
+    .type sum_ex2_asm, @function # define sum_asm as a function 
+sum_ex2_asm:
 prologue :
     addi sp,sp,-4
     sw   ra,0(sp)
@@ -26,4 +26,4 @@ formula :
     mv   a0,s2
     jr   ra
     
-    .size sum_asm, .-sum_asm
+    .size sum_ex2_asm, .-sum_ex2_asm

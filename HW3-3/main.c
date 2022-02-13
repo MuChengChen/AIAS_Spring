@@ -1,6 +1,7 @@
 //main.c
 #include <stdio.h>
 #include <stdlib.h>
+#include "sudoku_2x2_c.h"
 #define SIZE 16
 
 char test_c_data[16] = { 0, 0, 2, 0, 
@@ -15,7 +16,7 @@ char test_asm_data[16] = { 0, 0, 2, 0,
 
 void print_sudoku_result() {
     int i;
-    printf("\nutput c & assembly function result\n");
+    printf("\noutput c & assembly function result\n");
     printf("c result :\n");
     for( i=0 ; i<SIZE ; i++) {   
         printf("%d ", *(test_c_data+i));
@@ -39,13 +40,6 @@ void print_sudoku_result() {
     }
 }
 
-
-void sudoku_2x2_c(char *test_c_data){
-
-// TODO
-// Finish your sudoku algorithm in c language
-
-}
 
 void sudoku_2x2_asm(char *test_asm_data); // TODO, sudoku_2x2_asm.S
 

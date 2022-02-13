@@ -11,14 +11,23 @@ int sum_c(int n){
   return temp;
 }
 
-int sum_asm(int n);
+int puts(const char *msg);
+
+int sum_ex1_asm(int n);
 
 int main(){
   int n = 5;
   int out = 0;
   out = sum_c(n);
-  printf("C code sum_c(%d)=%d\n", n, out);  
-  out = sum_asm(n);
-  printf("ASM code sum_asm(%d)=%d\n", n, out);
+  char str[25];
+  itoa(out,str,10);
+  puts("C code sum_c=");
+  puts(str);
+  puts("\n");  
+  out = sum_ex1_asm(n);
+  puts("ASM code sum_ex1_asm=");
+  itoa(out,str,10);
+  puts(str);
+  puts("\n");
   return 0;
 }
