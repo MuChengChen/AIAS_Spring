@@ -2,7 +2,7 @@ package aias_prev
 
 import chisel3.iotesters.{Driver,PeekPokeTester}
 
-class MemoryTests (dut:Memory) extends PeekPokeTester(dut){
+class MemoryTest (dut:Memory) extends PeekPokeTester(dut){
   poke(dut.io.wen,true)
   poke(dut.io.waddr,6)
   poke(dut.io.wdata,8787)
@@ -16,8 +16,8 @@ class MemoryTests (dut:Memory) extends PeekPokeTester(dut){
   step(2)
 }
 
-object MemoryTests extends App{
+object MemoryTest extends App{
     Driver.execute(args,()=>new Memory){
-        c => new MemoryTests(c)
+        c => new MemoryTest(c)
     }
 }

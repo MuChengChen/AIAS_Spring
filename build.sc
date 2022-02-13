@@ -1,4 +1,4 @@
-// Works with mill 0.6.0
+// Works with mill 0.10.0-M5
 import mill.scalalib._
 import coursier.MavenRepository
 

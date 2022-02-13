@@ -4,7 +4,7 @@ import chisel3.iotesters._
 // import ALU_ctrl._
 import ALU_op._
 
-class ALUTests (alu : ALU) extends PeekPokeTester(alu) {
+class ALUTest (alu : ALU) extends PeekPokeTester(alu) {
   //45 + 36 = 81
   poke(alu.io.src1,45)
   poke(alu.io.src2,36)
@@ -82,6 +82,6 @@ object ALUTests extends App {
 
 //REFERENCE : https://zhuanlan.zhihu.com/p/161966317
 
-object ALUTests extends App {
-  chisel3.iotesters.Driver.execute(args, () => new ALU())(c => new ALUTests(c))
+object ALUTest extends App {
+  chisel3.iotesters.Driver.execute(args, () => new ALU())(c => new ALUTest(c))
 }

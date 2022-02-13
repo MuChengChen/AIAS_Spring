@@ -14,14 +14,14 @@ class Mux2_32b extends Module{
     val out = Output(UInt(32.W))
   })
   
-  //One
+  //Method One
   // when(~io.sel){
   //   io.out := io.in1
   // }.otherwise{
   //   io.out := io.in2
   // }
   
-  //Two
+  //Method Two
   // def myMux[T <: Data](sel:Bool,in1:T,in2:T):T={
   //   val x = WireDefault(in1)
   //   when(sel){x := in2} 
@@ -29,7 +29,7 @@ class Mux2_32b extends Module{
   // }
   // io.out := myMux(io.sel,io.in1,io.in2) 
 
-  //Three
+  //Method Three
   io.out := Mux(io.sel,io.in1,io.in2) 
 }
 //===========================================================================

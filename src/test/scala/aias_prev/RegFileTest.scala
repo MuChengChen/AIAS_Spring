@@ -2,7 +2,7 @@ package aias_prev
 
 import chisel3.iotesters._
 
-class RegFileTests (regfile : RegFile) extends PeekPokeTester(regfile){
+class RegFileTest (regfile : RegFile) extends PeekPokeTester(regfile){
 
 //   poke(regfile.io.raddr1,0)
 //   poke(regfile.io.raddr2,5)
@@ -35,8 +35,8 @@ class RegFileTests (regfile : RegFile) extends PeekPokeTester(regfile){
 //1.WAR when at the same time
 //2.Initial value : 0.U in Men
 
-object RegFileTests extends App {
+object RegFileTest extends App {
   Driver(() => new RegFile()) {regfile =>
-    new RegFileTests(regfile)
+    new RegFileTest(regfile)
   }
 }
