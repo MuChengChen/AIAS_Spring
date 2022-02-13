@@ -20,7 +20,7 @@ int main() {
   }
 
   memset(numbers, 0, sizeof(int8_t) * 15);
-  uint8_t reg = 0x0;
+  uint8_t reg = 0x1;
   uint32_t count = 0;
   int i;
 
