@@ -13,17 +13,17 @@ funct_start :
 
 epilogue :
     lw   ra,0(sp)
-    addi ra,ra,4
+    addi sp,sp,4
     jr   ra
 
 formula :
-    mv   s1,a0
-    li   s2,1
-    li   s3,2
-    add  s2,s1,s2
-    mul  s2,s1,s2
-    div  s2,s2,s3
-    mv   a0,s2
+    mv   t0,a0
+    li   t1,1
+    li   t2,2
+    add  t1,t0,t1
+    mul  t1,t0,t1
+    div  t1,t1,t2
+    mv   a0,t1
     jr   ra
     
     .size sum_ex2_asm, .-sum_ex2_asm

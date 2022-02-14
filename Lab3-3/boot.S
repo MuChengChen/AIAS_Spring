@@ -49,4 +49,4 @@ uart_end:
 
 .section .rodata
 msg:
-     .string "Hello! The first baremetal code runs to the end. (pressing `ctrl+a x` to quit)\n"
+     .string "Baremetal code runs to the end. (pressing `ctrl+a x` to quit)\n"
