@@ -22,9 +22,17 @@ int fibonacci_asm(int n);
 int main() {
     int n = 6;    // setup input value n
     int out = 0; // setup output value fibonacci(n)
+
     out = fibonacci_c(n);
-    printf("C code fibonacci_c(%d)=%d\n", n, out);  
+    char str[25];
+    itoa(out,str,10);
+    puts("C code fibonacci_c=");
+    puts(str);
+    puts("\n");  
     out = fibonacci_asm(n);
-    printf("ASM code fibonacci_asm(%d)=%d\n", n, out);
+    puts("ASM code fibonacci_asm=");
+    itoa(out,str,10);
+    puts(str);
+    puts("\n");
     return 0;
 }

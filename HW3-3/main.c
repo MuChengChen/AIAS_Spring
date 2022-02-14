@@ -16,15 +16,20 @@ char test_asm_data[16] = { 0, 0, 2, 0,
 
 void print_sudoku_result() {
     int i;
-    printf("\noutput c & assembly function result\n");
-    printf("c result :\n");
+    char str[25];
+    puts("Output c & assembly function result\n");
+    puts("c result :\n");
     for( i=0 ; i<SIZE ; i++) {   
-        printf("%d ", *(test_c_data+i));
+        int j= *(test_c_data+i);
+        itoa(j, str, 10);
+        puts(str);
     }
 
-    printf("\nassembly result :\n");
+    puts("\n\nassembly result :\n");
     for( i=0 ; i<SIZE ; i++) {
-        printf("%d ", *(test_asm_data+i));
+        int j= *(test_c_data+i);
+        itoa(j, str, 10);
+        puts(str);
     }
 
     int flag = 0;
@@ -36,13 +41,17 @@ void print_sudoku_result() {
     }
 
     if (flag == 1){
-        printf("\nyour c & assembly got different result!\n");
+        puts("\n\nyour c & assembly got different result ... QQ ...\n");
+    }
+    else {
+        puts("\n\nyour c & assembly got same result!\n");
     }
 }
 
 
 void sudoku_2x2_asm(char *test_asm_data); // TODO, sudoku_2x2_asm.S
 
+void sudoku_2x2_c(char *test_c_data); // TODO, sudoku_2x2_c.S
                         
 int main() {
     sudoku_2x2_c(test_c_data);
