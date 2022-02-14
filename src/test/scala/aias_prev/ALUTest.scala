@@ -1,87 +1,49 @@
-package aias_prev
+package aias_lab5.Hw4
 
-import chisel3.iotesters._
-// import ALU_ctrl._
-import ALU_op._
+import chisel3._
+import chisel3.iotesters.{Driver,PeekPokeTester}
+import ALU_funct3._,ALU_funct7._
 
-class ALUTest (alu : ALU) extends PeekPokeTester(alu) {
-  //45 + 36 = 81
-  poke(alu.io.src1,45)
-  poke(alu.io.src2,36)
-  poke(alu.io.shamt,3)
-  poke(alu.io.ALUCtrl,ADD)
-  expect(alu.io.ALUout,81)
-  step(1)
-  
-  //57 - 36 = 21
-  poke(alu.io.src1,57)
-  poke(alu.io.src2,36)
-  poke(alu.io.shamt,3)
-  poke(alu.io.ALUCtrl,SUB)
-  expect(alu.io.ALUout,21)
-  step(1)
-
-  //12 & 5 = 4
-  poke(alu.io.src1,12)
-  poke(alu.io.src2,5)
-  poke(alu.io.shamt,3)
-  poke(alu.io.ALUCtrl,AND)
-  expect(alu.io.ALUout,4)
-  step(1)
-  
-  //12 | 7 = 15
-  poke(alu.io.src1,12)
-  poke(alu.io.src2,7)
-  poke(alu.io.shamt,3)
-  poke(alu.io.ALUCtrl,OR)
-  expect(alu.io.ALUout,15)
-  step(1)
-  
-  //12 ^ 7 = 11
-  poke(alu.io.src1,12)
-  poke(alu.io.src2,7)
-  poke(alu.io.shamt,3)
-  poke(alu.io.ALUCtrl,XOR)
-  expect(alu.io.ALUout,11)
-  step(1)
-  
-  //12 << 3 = 96
-  poke(alu.io.src1,12)
-  poke(alu.io.src2,0)
-  poke(alu.io.shamt,3)
-  poke(alu.io.ALUCtrl,SLL)
-  expect(alu.io.ALUout,96)
-  step(1)
-  
-  //12 >> 2 = 3
-  poke(alu.io.src1,12)
-  poke(alu.io.src2,0)
-  poke(alu.io.shamt,2)
-  poke(alu.io.ALUCtrl,SRL)
-  expect(alu.io.ALUout,3)
-  step(1)
-  
-  
-  //32768 >>> 1 = 16384
-  poke(alu.io.src1,32768)
-  poke(alu.io.src2,0)
-  poke(alu.io.shamt,1)
-  poke(alu.io.ALUCtrl,SRA)
-  expect(alu.io.ALUout,16384)
-  println(peek(alu.io.ALUout).toString)
-  step(3)
+object ALU_funct3{
+  val ADD_SUB = "b000".U
+  val SLL     = "b001".U
+  val SLT     = "b010".U
+  val SLTU    = "b011".U
+  val XOR     = "b100".U
+  val SRL_SRA = "b101".U
+  val OR      = "b110".U
+  val AND     = "b111".U
 }
 
-/*
-object ALUTests extends App {
-  Driver(() => new ALU()) {alu =>
-    new ALUTests(alu)
-  }
+object ALU_funct7{
+  val SUB_SRA = "b0100000".U
 }
-*/
 
-//REFERENCE : https://zhuanlan.zhihu.com/p/161966317
+class ALUTest(dut:ALU) extends PeekPokeTester(dut){
+  poke(dut.io.src1,37)
+  poke(dut.io.src2,-9)
+  poke(dut.io.funct3,ADD_SUB)
+  poke(dut.io.funct7,SUB_SRA)
+  println(peek(dut.io.ALUout).toString)
+  step(1)
 
-object ALUTest extends App {
-  chisel3.iotesters.Driver.execute(args, () => new ALU())(c => new ALUTest(c))
+  poke(dut.io.src1,1)
+  poke(dut.io.src2,32)
+  poke(dut.io.funct3,SLL)
+  poke(dut.io.funct7,0)
+  println(peek(dut.io.ALUout).toString)
+  step(1)
+
+  poke(dut.io.src1,-8)
+  poke(dut.io.src2,-9)
+  poke(dut.io.funct3,SLTU)
+  poke(dut.io.funct7,0)
+  println(peek(dut.io.ALUout).toString)
+  step(1)
+}
+
+object ALUTest extends App{
+    Driver.execute(args,()=>new ALU){
+        dut:ALU => new ALUTest(dut)
+    }
 }

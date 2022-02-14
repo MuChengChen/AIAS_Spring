@@ -1,47 +1,43 @@
-package aias_prev
+package aias_lab5.Hw4
 
 import chisel3._
 import chisel3.util._ 
 
 
-object ALU_op{
-  val ADD = 0.U
-  val SUB = 1.U
-  val AND = 2.U
-  val OR = 3.U
-  val XOR = 4.U
-  val SLL = 5.U
-  val SRL = 6.U
-  val SRA = 7.U
+object ALU_funct3{
+  val ADD_SUB = "b000".U
+  val SLL     = "b001".U
+  val SLT     = "b010".U
+  val SLTU    = "b011".U
+  val XOR     = "b100".U
+  val SRL_SRA = "b101".U
+  val OR      = "b110".U
+  val AND     = "b111".U
 }
 
-import ALU_op._
+object ALU_funct7{
+  val SUB_SRA = "b0100000".U
+}
+
+import ALU_funct3._,ALU_funct7._
 
 class ALUIO extends Bundle{
   val src1    = Input(UInt(32.W))
   val src2    = Input(UInt(32.W))
-  val shamt   = Input(UInt(5.W))
-  val ALUCtrl = Input(UInt(4.W))
+  val funct3   = Input(UInt(3.W))
+  val funct7   = Input(UInt(7.W))
   val ALUout  = Output(UInt(32.W))
-//   val ALUzero = Output(Bool())
 }
 
 class ALU extends Module{
   val io = IO(new ALUIO)
   
-  io.ALUout := MuxLookup(io.ALUCtrl,0.U,Seq(
-    ADD -> (io.src1 + io.src2)   ,
-    SUB -> (io.src1 - io.src2)   ,
-    AND -> (io.src1 & io.src2)   ,
-    OR  -> (io.src1 | io.src2)   ,
-    XOR -> (io.src1 ^ io.src2)   ,
-    SLL -> (io.src1 << io.shamt) ,
-    SRL -> (io.src1 >> io.shamt) ,
-    SRA -> (io.src1.asSInt >> io.shamt).asUInt
+  io.ALUout := MuxLookup(io.funct3,0.U,Seq(
+    ADD_SUB -> (Mux(io.funct7===SUB_SRA, io.src1-io.src2, io.src1+io.src2)),
+    SLL     -> (io.src1 << io.src2(4,0)) ,
+    SLT     ->(Mux(io.src1.asSInt<io.src2.asSInt,1.U,0.U)),
+    SLTU    ->(Mux(io.src1<io.src2,1.U,0.U)),
+    XOR     -> (io.src1 ^ io.src2)   ,
+    SRL_SRA -> (Mux(io.funct7===SUB_SRA,(io.src1.asSInt >> io.src2(4,0)).asUInt,io.src1 >> io.src2(4,0)))
   ))
-
-//   io.ALUzero := false.B
-//   when(io.ALUCtrl === SUB){
-// 	io.ALUzero := Mux(io.src1 === io.src2 , true.B, false.B)
-//   }
 }
