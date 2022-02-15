@@ -37,10 +37,12 @@ scalaVersion := "2.12.15"
 
 addCompilerPlugin("edu.berkeley.cs" % "chisel3-plugin" % "3.5.0" cross CrossVersion.full)
 
-// libraryDependencies += "edu.berkeley.cs" %% "chisel3" % "3.5.1"
+libraryDependencies += "edu.berkeley.cs" %% "chisel3" % "3.5.1"
 
 libraryDependencies += "edu.berkeley.cs" %% "chisel-iotesters" % "2.5.1"
 
-scalacOptions ++= scalacOptionsVersion(scalaVersion.value)
+// scalacOptions ++= scalacOptionsVersion(scalaVersion.value)
+
+scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked", "-language:reflectiveCalls") ++ scalacOptionsVersion(scalaVersion.value)
 
 javacOptions ++= javacOptionsVersion(scalaVersion.value)
