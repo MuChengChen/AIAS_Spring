@@ -141,7 +141,7 @@ _Bool test_decode_riscv_inst(){
     inst = 0x1f093;
     if(decode_riscv_inst(inst)!=ANDI) return 0;
     inst = 0xd113;
-    if(decode_riscv_inst(inst)!=SRAI) return 0;
+    if(decode_riscv_inst(inst)!=SRLI) return 0;
     inst = 0x005303b3;
     if(decode_riscv_inst(inst)!=ADD) return 0;
     inst = 0x40638333;
