@@ -11,10 +11,10 @@ trait HasXsource211 extends ScalaModule {
   override def scalacOptions = T {
     super.scalacOptions() ++ Seq(
       "-deprecation",
-      "-unchecked",
-      "-Xsource:2.11",
       "-feature",
-      "-language:reflectiveCalls"
+      "-unchecked",
+      "-language:reflectiveCalls",
+      "-Xsource:2.11"
     )
   }
 
@@ -23,18 +23,16 @@ trait HasXsource211 extends ScalaModule {
 
 trait HasChisel3 extends ScalaModule {
   override def ivyDeps = Agg(
-    ivy"edu.berkeley.cs::chisel3:3.5.1"
+    ivy"edu.berkeley.cs::chisel3:3.4.4"
   )
 }
 
 trait HasChiselTests extends CrossSbtModule  {
   object test extends Tests {
     override def ivyDeps = Agg(
-      ivy"org.scalatest::scalatest:3.1.4",
-      ivy"edu.berkeley.cs::chisel-iotesters:2.5.1",
-      ivy"edu.berkeley.cs::chiseltest:0.5.1"
+      ivy"edu.berkeley.cs::chisel-iotesters:1.5.4",
     )
-    def testFrameworks = Seq("org.scalatest.tools.Framework")
+    def testFramework = "org.scalatest.tools.Framework"
   }
 }
 
@@ -42,7 +40,6 @@ trait HasMacroParadise extends ScalaModule {
   // Enable macro paradise for @chiselName et al
   val macroPlugins = Agg(
     ivy"org.scalamacros:::paradise:2.1.1",
-    ivy"edu.berkeley.cs:::chisel3-plugin:3.5.1"
   )
   def scalacPluginIvyDeps = macroPlugins
   def compileIvyDeps = macroPlugins
