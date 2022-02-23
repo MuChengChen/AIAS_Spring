@@ -6,7 +6,12 @@
 void lfsr_calculate(uint16_t *reg) {
 
   /* YOUR CODE HERE */
-
+  //*reg=*reg<<16;
+  //printf("%u",*reg>>16);
+  unsigned bit=(*reg)^(*reg>>2)^(*reg>>3)^(*reg>>5)&1;
+  //printf("%u\n",bit);
+  *reg=(*reg>>1)|(bit<<15);
+  //*reg=*reg>>16;
 }
 
 /* Ignore below. */
