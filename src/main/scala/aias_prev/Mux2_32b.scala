@@ -6,6 +6,7 @@ import chisel3.stage.{ChiselGeneratorAnnotation, ChiselStage}
 import firrtl.options.TargetDirAnnotation
 
 class Mux2_32b extends Module{
+  //Port Declaration
   val io = IO(new Bundle{
     val sel = Input(Bool())
     val in1 = Input(UInt(32.W))
