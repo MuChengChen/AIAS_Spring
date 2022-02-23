@@ -45,6 +45,11 @@ trait HasMacroParadise extends ScalaModule {
   def compileIvyDeps = macroPlugins
 }
 
-object chiselModule extends CrossSbtModule with HasChisel3 with HasChiselTests with HasXsource211 with HasMacroParadise {
+
+object chiselModule extends CrossSbtModule 
+                    with HasChisel3 
+                    with HasChiselTests 
+                    with HasXsource211 
+                    with HasMacroParadise {
   def crossScalaVersion = "2.12.15"
 }

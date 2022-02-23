@@ -6,7 +6,9 @@ set -e
 package="$1"
 module="$2"
 
-cat <<EOF > _temphelper.scala
+[ ! -d "./src/main/scala/top" ] && mkdir "src/main/scala/top"
+
+cat <<EOF > ./src/main/scala/top/_temphelper.scala
 package _temphelper
 
 import ${package}._
@@ -23,7 +25,5 @@ EOF
 echo "Elaborating module ${module}..."
 sbt "runMain _temphelper.Elaborate -td ./generated/${module}"
 echo "Elaborated Verilog available at generated/${module}"
-
-rm _temphelper.scala
 
 exit 0
