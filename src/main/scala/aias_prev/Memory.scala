@@ -17,7 +17,5 @@ class Memory extends Module {
 
   io.rdata := memory(io.raddr)
 
-  when(io.wen){
-    memory(io.waddr) := io.wdata
-  }
+  when(io.wen){memory(io.waddr) := io.wdata}
 }

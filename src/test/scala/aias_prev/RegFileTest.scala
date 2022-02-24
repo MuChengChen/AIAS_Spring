@@ -2,41 +2,58 @@ package aias_prev
 
 import chisel3.iotesters._
 
-class RegFileTest (regfile : RegFile) extends PeekPokeTester(regfile){
+class RegFileTest (rf : RegFile) extends PeekPokeTester(rf){
 
-//   poke(regfile.io.raddr1,0)
-//   poke(regfile.io.raddr2,5)
-//   println("REG 0 = " + peek(regfile.io.rdata1).toString)
-//   println("REG 5 = " + peek(regfile.io.rdata2).toString)
-//   step(1)
-
-
-//   poke(regfile.io.raddr1,10)
-//   println("REG 10 = " + peek(regfile.io.rdata1).toString)
-  val value = Array(54,32,11,76,123,543)
-
-  for((v,i) <- value.zipWithIndex){
-    poke(regfile.io.wen,1)
-    poke(regfile.io.waddr,i*2)
-    poke(regfile.io.wdata,v)
+  //  test the initial values in the regs
+  //  read ports test
+  for(i <- 0 until 16){
+    poke(rf.io.raddr(0),2*i)
+    poke(rf.io.raddr(1),(2*i+1))
+    expect(rf.io.rdata(0),2*i)
+    expect(rf.io.rdata(1),(2*i+1))
+    step(1)
+  }
+  
+  //wen test
+  poke(rf.io.wen,false)
+  poke(rf.io.waddr,20)
+  poke(rf.io.wdata,9487)
   step(1)
+
+  poke(rf.io.raddr(0),20)
+  expect(rf.io.rdata(0),20)
+  poke(rf.io.wen,true)
+  poke(rf.io.waddr,20)
+  poke(rf.io.wdata,9487)
+  step(1)
+
+  poke(rf.io.raddr(0),20)
+  expect(rf.io.rdata(0),9487)
+
+  //Reg zero test
+  poke(rf.io.wen,true)
+  poke(rf.io.waddr,0)
+  poke(rf.io.wdata,1234)
+  step(1)
+  poke(rf.io.raddr(0),0)
+  assert(peek(rf.io.rdata(0))==0)
+
+  //Read-Write test
+  for(i <- 1 until 32){
+    poke(rf.io.wen,true)
+    poke(rf.io.waddr,i)
+    poke(rf.io.wdata,(32-i))
+    step(1)
+
+    poke(rf.io.raddr(1),i)
+    println("Reg "+i+" = "+peek(rf.io.rdata(1)).toString)
   }
 
-  poke(regfile.io.raddr1,0)
-  poke(regfile.io.raddr2,2)
-  println("REG 0 = " + peek(regfile.io.rdata1).toString)
-  println("REG 2 = " + peek(regfile.io.rdata2).toString)
-  step(1)
-
-
+  println("Congratulation, RegFile test pass!!")
 }
 
-//note:
-//1.WAR when at the same time
-//2.Initial value : 0.U in Men
-
 object RegFileTest extends App {
-  Driver(() => new RegFile()) {regfile =>
-    new RegFileTest(regfile)
+  Driver.execute(args,() => new RegFile(2)) {c =>
+    new RegFileTest(c)
   }
 }
