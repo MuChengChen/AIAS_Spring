@@ -1,11 +1,11 @@
 package top
 
-import aias_prev._
+import Happy._
 
 object Elaborate extends App {
   (
     new chisel3.stage.ChiselStage).emitVerilog(
-      new Memory(),
-      Array("-td","generated/Memory")
+      new Mux2(),
+      Array("-td","generated/Mux2")
   )
 }

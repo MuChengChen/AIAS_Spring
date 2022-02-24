@@ -44,3 +44,5 @@ libraryDependencies += "edu.berkeley.cs" %% "chisel-iotesters" % "1.5.4" % "test
 scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked", "-language:reflectiveCalls") ++ scalacOptionsVersion(scalaVersion.value)
 
 javacOptions ++= javacOptionsVersion(scalaVersion.value)
+
+Compile / unmanagedSourceDirectories  += baseDirectory.value / "top_entry"

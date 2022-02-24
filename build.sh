@@ -7,9 +7,9 @@ package="$1"
 module="$2"
 parameters="$3"
 
-[ ! -d "./src/main/scala/top" ] && mkdir "src/main/scala/top"
+[ ! -d "./top_entry" ] && mkdir "top_entry"
 
-cat <<EOF > ./src/main/scala/top/top_from_script.scala
+cat <<EOF > ./top_entry/top_from_script.scala
 package top
 
 import ${package}._

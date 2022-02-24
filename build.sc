@@ -52,4 +52,8 @@ object chiselModule extends CrossSbtModule
                     with HasXsource211 
                     with HasMacroParadise {
   def crossScalaVersion = "2.12.15"
+
+  def sources = T.sources {
+    super.sources() ++ Seq(PathRef(T.workspace/"top_entry"))
+  }
 }
