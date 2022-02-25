@@ -13,8 +13,8 @@ class Memory extends Module {
     val waddr = Input(UInt(8.W))
     val wdata = Input(UInt(32.W))
   })
-  val memory = SyncReadMem(256, UInt(8.W))
-  loadMemoryFromFile(memory, "./src/main/resource/value.txt",MemoryLoadFileType.Binary) //Binary or Hex
+  val memory = SyncReadMem(32, UInt(32.W))
+  loadMemoryFromFile(memory, "./src/main/resource/value.txt",MemoryLoadFileType.Hex) //Binary or Hex
 
   io.rdata := memory(io.raddr)
 
