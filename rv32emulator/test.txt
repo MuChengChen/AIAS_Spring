@@ -1,0 +1,7 @@
+## RV32 Emulator Testing Assembly Code
+
+main:
+addi s1,x0,1
+addi s2,x0,1
+addi s3,x0,1
+hcf
