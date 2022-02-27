@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd $(dirname "$0")
+
 # setup environment variables
 ROOT="$PWD"
 source "$ROOT/env_setup.sh"
@@ -44,24 +46,8 @@ do
     then
         branch_name=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
         git push --set-upstream https://playlab.computing.ncku.edu.tw:4001/$GITLAB_LOGIN/$LAB.git $branch_name
-    else
-        git fetch playlab
-        git push playlab $branch_name
     fi
 done
-
-#download chisel-tutorial
-cd "$ROOT"/projects
-if [[ ! -d riscv32-tools ]]; then
-    mkdir riscv32-tools
-    cd riscv32-tools
-    wget https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v10.2.0-1.1/xpack-riscv-none-embed-gcc-10.2.0-1.1-linux-x64.tar.gz
-    wget --no-check-certificate https://buildbot.embecosm.com/job/riscv32-gcc-ubuntu1804-release/10/artifact/riscv32-embecosm-ubuntu1804-gcc11.2.0.tar.gz
-    tar zxvf riscv32-embecosm-ubuntu1804-gcc11.2.0.tar.gz
-    tar zxvf xpack-riscv-none-embed-gcc-10.2.0-1.1-linux-x64.tar.gz
-    rm riscv32-embecosm-ubuntu1804-gcc11.2.0.tar.gz
-    rm xpack-riscv-none-embed-gcc-10.2.0-1.1-linux-x64.tar.gz
-fi
 
 # run the docker container
 echo "docker folder: $ROOT"
