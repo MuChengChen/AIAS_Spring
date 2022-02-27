@@ -4,6 +4,8 @@
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>
+#include <ctime>
+#include <time.h>
 
 #include "linenoise.hpp"
 
@@ -47,6 +49,11 @@ void print_regfile(uint32_t rf[32]) {
 
 typedef enum {
 	UNIMPL = 0,
+
+	//instruction added
+    MUL,
+    //*****************
+
 	ADD,
 	ADDI,
 	AND,
@@ -88,7 +95,10 @@ typedef enum {
 } instr_type;
 
 instr_type parse_instr(char* tok) {
-	// 2r->1r
+	//instruction added
+    if ( streq(tok , "mul")) return MUL;
+    //*****************
+
 	if ( streq(tok, "add") ) return ADD;
 	if ( streq(tok, "sub") ) return SUB;
 	if ( streq(tok, "slt") ) return SLT;
@@ -513,6 +523,16 @@ int parse_instr(int line, char* ftok, instr* imem, int memoff, label_loc* labels
 
 		switch( op ) {
 			case UNIMPL: return 1;
+
+			//instruction added
+			case MUL:
+			    if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line,  "Invalid format" );
+				    i->a1.reg = parse_reg(o1 , line);
+				    i->a2.reg = parse_reg(o2 , line);
+				    i->a3.reg = parse_reg(o3 , line);
+			    return 1;
+			//****************
+
 			case JAL:
 				if ( o2 ) { // two operands, reg, label
 					if ( !o1 || !o2 || o3 || o4 ) print_syntax_error( line, "Invalid format" );
@@ -651,15 +671,16 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 			if ( stepcnt == 0 || i.breakpoint ) {
 				stepping = true;
 				printf( "\n" );
-				if ( i.psrc ) printf( "Next: %s\n", i.psrc );
+				//if ( i.psrc ) printf( "Next: %s\n", i.psrc );
 				while (true) {
-					printf( "[inst: %6d pc: %6d, src line %4d]\n", inst_cnt, pc, i.orig_line );
+					//printf( "[inst: %6d pc: %6d, src line %4d]\n", inst_cnt, pc, i.orig_line );
 
-					std::string linebuf;
-					fflush(stdout);
-					linenoise::Readline(">>", linebuf);
-					memcpy(keybuf, linebuf.c_str(), 128);
-					linenoise::AddHistory(linebuf.c_str());
+					// std::string linebuf;
+					// fflush(stdout);
+					// linenoise::Readline(">>", linebuf);
+					// memcpy(keybuf, linebuf.c_str(), 128);
+					// linenoise::AddHistory(linebuf.c_str());
+					keybuf[0] = 'c';
 					//while ((kbp = linenoise?::Readline(">>")) == NULL);
 					//fgets(keybuf, 128, stdin);
 
@@ -745,6 +766,11 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 		
 		int pc_next = pc + 4;
 		switch (i.op) {
+
+			//instruction added
+      		case MUL: rf[i.a1.reg] = rf[i.a2.reg] * rf[i.a3.reg]; break;
+      		//*****************
+
 			case ADD: rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
 			case SUB: rf[i.a1.reg] = rf[i.a2.reg] - rf[i.a3.reg]; break;
 			case SLT: rf[i.a1.reg] = (*(int32_t*)&rf[i.a2.reg]) < (*(int32_t*)&rf[i.a3.reg]) ? 1 : 0; break;
@@ -776,15 +802,6 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 			case SB: 
 			case SH: 
 			case SW: mem_write(mem, rf[i.a2.reg]+i.a3.imm, rf[i.a1.reg], i.op); break;
-			/*
-
-			case SB: mem[rf[i.a2.reg]+i.a3.imm] = *(uint8_t*)&(rf[i.a1.reg]); break;
-			case SH: *(uint16_t*)&(mem[rf[i.a2.reg]+i.a3.imm]) = *(uint16_t*)&(rf[i.a1.reg]); break;
-			case SW: 
-				*(uint32_t*)&(mem[rf[i.a2.reg]+i.a3.imm]) = rf[i.a1.reg]; 
-				//printf( "Writing %x to addr %x\n", rf[i.a1.reg], rf[i.a2.reg]+i.a3.imm );
-			break;
-			*/
 
 			case BEQ: if ( rf[i.a1.reg] == rf[i.a2.reg] ) pc_next = i.a3.imm; break;
 			case BGE: if ( *(int32_t*)&rf[i.a1.reg] >= *(int32_t*)&rf[i.a2.reg] ) pc_next = i.a3.imm; break;
@@ -797,27 +814,23 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 			case JAL:
 				rf[i.a1.reg] = pc + 4;
 				pc_next = i.a2.imm;
-				//printf( "jal %d %x\n", pc+4, pc_next );
 				break;
 			case JALR:
 				rf[i.a1.reg] = pc + 4;
 				pc_next = rf[i.a2.reg] + i.a3.imm;
-				//printf( "jalr %d %d(%d)\n", i.a1.reg, i.a3.imm, i.a2.reg );
 				break;
 			case AUIPC:
 				rf[i.a1.reg] = pc + (i.a2.imm<<12);
-				//printf( "auipc %x \n", rf[i.a1.reg] );
 				break;
 			case LUI:
 				rf[i.a1.reg] = (i.a2.imm<<12);
-				//printf( "lui %x \n", rf[i.a1.reg] );
 				break;
 			
 			case HCF:
-				printf( "\n\n----------\n\n" );
-				printf( "Reached Halt and Catch Fire instruction!\n" );
-				printf( "inst: %6d pc: %6d src line: %d\n", inst_cnt, pc, i.orig_line );
-				print_regfile(rf);
+				//printf( "\n\n----------\n\n" );
+				//printf( "Reached Halt and Catch Fire instruction!\n" );
+				//printf( "inst: %6d pc: %6d src line: %d\n", inst_cnt, pc, i.orig_line );
+				//print_regfile(rf);
 				dexit = true;
 				break;
 			case UNIMPL:
@@ -837,8 +850,6 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 				rf_mirror[i] = rf[i];
 			}
 		}
-
-		//printf( "reg dst %d -> %x %d\n", i.a1.reg, rf[i.a1.reg], rf[i.a1.reg] );
 
 		fflush(stdout);
 		
@@ -927,7 +938,6 @@ main(int argc, char** argv) {
 		start_immediate = true;
 	}
 
-
 	//ProcessorState* ps = new ProcessorState();
 	
 	int memoff = 0;
@@ -951,12 +961,42 @@ main(int argc, char** argv) {
 		imem[i].a3.type = OPTYPE_NONE;
 	}
 
+	clock_t Begin;
+	clock_t End;
+	clock_t Begin_a; 
+	clock_t End_a;
+	double duration, duration_a;
+
+	Begin = clock();
+
 	parse(fin, mem, imem, memoff, labels, label_count, &src);
 	normalize_labels(imem, labels, label_count, &src);
-	
 	execute(mem, imem, labels, label_count, start_immediate);
 
-	printf( "Execution done!\n" );
-	exit(0);
+	End = clock();
 
+	duration = (double)(End - Begin) / CLOCKS_PER_SEC;
+	
+	printf( "\nFirst Execution Done!\n" );
+	printf( "Your Emulator Duration Before Acceleration = : %f s.\n", duration);
+
+	// TODO
+	// You can add your code here
+	//
+
+	Begin_a = clock();
+
+	parse(fin, mem, imem, memoff, labels, label_count, &src);
+	normalize_labels(imem, labels, label_count, &src);
+	execute(mem, imem, labels, label_count, start_immediate);
+
+	End_a = clock();
+
+	duration_a = (double)(End_a - Begin_a) / CLOCKS_PER_SEC;
+
+	printf( "\nSecond Execution Done!\n" );
+	printf( "Your Emulator Duration After Acceleration = : %f s.\n", duration_a);
+	printf( "\n\nSpeed Up : %f percent.\n", (duration - duration_a)/duration*100 );
+
+	exit(0);
 }
