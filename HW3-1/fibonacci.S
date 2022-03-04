@@ -33,4 +33,5 @@ return:
     add		a1,a0,x0
     jr		ra
 exit:
+    li		a0,1
     ecall
