@@ -963,6 +963,7 @@ main(int argc, char** argv) {
 
 	clock_t Begin;
 	clock_t End;
+
 	double duration;
 
 	Begin = clock();
@@ -975,8 +976,7 @@ main(int argc, char** argv) {
 
 	duration = (double)(End - Begin) / CLOCKS_PER_SEC;
 	
-	printf( "Your Emulator Duration Before Acceleration = : %f s.", duration);
-
+	printf( "\nYour Emulator Duration After Acceleration = : %f s.\n\n", duration);
 
 	exit(0);
 }
