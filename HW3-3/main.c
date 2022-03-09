@@ -27,7 +27,7 @@ void print_sudoku_result() {
 
     puts("\n\nassembly result :\n");
     for( i=0 ; i<SIZE ; i++) {
-        int j= *(test_c_data+i);
+        int j= *(test_asm_data+i);
         itoa(j, str, 10);
         puts(str);
     }
