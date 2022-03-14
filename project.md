@@ -8,15 +8,15 @@
 
 RV32 	RV64 	Mnemonic 	Instruction 		Zba 	Zbb 	Zbc 	Zbs 	Owner
 	✓ 	add.uw rd, rs1, rs2 	insns-add_uw 	✓ 			
-✓ 	✓ 	andn rd, rs1, rs2 	insns-andn 		✓ 			謝獻霆
-✓ 	✓ 	clmul rd, rs1, rs2 	insns-clmul 			✓ 		謝獻霆
-✓ 	✓ 	clmulh rd, rs1, rs2 	insns-clmulh 			✓ 		謝獻霆
- 	✓ 	clmulr rd, rs1, rs2 	insns-clmulr 			✓ 		謝獻霆
-✓ 	✓ 	clz rd, rs 	insns-clz 		✓ 				謝獻霆
+✓ 	✓ 	andn rd, rs1, rs2 	insns-andn 		✓ 									謝獻霆
+✓ 	✓ 	clmul rd, rs1, rs2 	insns-clmul 			✓ 							謝獻霆
+✓ 	✓ 	clmulh rd, rs1, rs2 	insns-clmulh 			✓ 						謝獻霆
+ 	✓ 	clmulr rd, rs1, rs2 	insns-clmulr 			✓ 						謝獻霆
+✓ 	✓ 	clz rd, rs 	insns-clz 		✓ 											謝獻霆
 	✓ 	clzw rd, rs 	insns-clzw 		✓ 			
-✓ 	✓ 	cpop rd, rs 	insns-cpop 		✓ 				謝獻霆
+✓ 	✓ 	cpop rd, rs 	insns-cpop 		✓ 										謝獻霆
 	✓ 	cpopw rd, rs 	insns-cpopw 		✓ 			
-✓ 	✓ 	ctz rd, rs 	insns-ctz 		✓ 				謝獻霆
+✓ 	✓ 	ctz rd, rs 	insns-ctz 		✓ 											謝獻霆
 	✓ 	ctzw rd, rs 	insns-ctzw 		✓ 			
 ✓ 	✓ 	max rd, rs1, rs2 	insns-max 		✓ 		                   
 ✓ 	✓ 	maxu rd, rs1, rs2 	insns-maxu 		✓ 		
