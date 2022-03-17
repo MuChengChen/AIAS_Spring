@@ -91,7 +91,7 @@ typedef enum {
 	BINV,
 	BINVI,
 	BSET,
-	BSETI,
+	
 	//-----------culture0418-----------//
 	
 	//-----------song-fung-yu----------//
@@ -102,7 +102,6 @@ typedef enum {
 	SH2ADD,
 	SH3ADD,
 	//-----------song-fung-yu----------//
-	
 	
 
 
@@ -178,7 +177,6 @@ instr_type parse_instr(char* tok) {
 	if ( streq(tok , "rev8")) return REV8; //! added-->rev8-->8 bits
 	if ( streq(tok , "sext.h")) return SEXT_H; //! added-->sext.h
 	if ( streq(tok , "sext.b")) return SEXT_B; //! added-->sext.b
-
 	//---------KAI-HONG-WANG-----------------------------------------------------------
 
 
@@ -190,10 +188,9 @@ instr_type parse_instr(char* tok) {
 	if ( streq(tok, "binv") ) return BINV;
 	if ( streq(tok, "binvi") ) return BINVI;
 	if ( streq(tok, "bset") ) return BSET;
-	if ( streq(tok, "bseti") ) return BSETI;
 
 	//-----------culture0418-----------//
-	
+
 	//-----------song-fung-yu----------//
 	if ( streq(tok, "bseti") )  return BSETI;
 	if ( streq(tok, "sext.b") ) return SEXTB;
@@ -202,7 +199,6 @@ instr_type parse_instr(char* tok) {
 	if ( streq(tok, "sh2add") ) return SH2ADD;
 	if ( streq(tok, "sh3add") ) return SH3ADD;
 	//-----------song-fung-yu----------//
-
 	
 
 
@@ -973,14 +969,6 @@ int parse_instr(int line, char* ftok, instr* imem, int memoff, label_loc* labels
 			    return 1;
 			}
 
-			case BSETI:{
-				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line,  "Invalid format" );
-				    i->a1.reg = parse_reg(o1 , line);
-				    i->a2.reg = parse_reg(o2 , line);
-				    i->a3.imm = parse_imm(o3, 5, line);
-			    return 1;
-			}
-
 			//-----------culture0418-----------//
 			
 	//-----------song-fung-yu----------//
@@ -1665,8 +1653,7 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 			}
 
 			//-----------culture0418-----------//
-			
-			
+
 			//-----------song-fung-yu----------//
 			case BSETI:{
 				int index= (i.a3.imm & 31);
@@ -1698,8 +1685,6 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 				break;
 			}
 			//-----------song-fung-yu----------//
-			
-			
 			
 
 			case ADD: rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
