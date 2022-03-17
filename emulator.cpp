@@ -49,6 +49,17 @@ void print_regfile(uint32_t rf[32]) {
 
 typedef enum {
 	UNIMPL = 0,
+	//-----------wilson-----------//
+	andn,
+	clmul,
+	clmulh,
+	clmulr,
+	clz,
+	cpop,
+	ctz,
+	//-----------wilson-----------//
+	
+	
 	ADD,
 	ADDI,
 	AND,
@@ -90,6 +101,17 @@ typedef enum {
 } instr_type;
 
 instr_type parse_instr(char* tok) {
+	
+	//-----------wilson-----------//
+	if ( streq(tok, "andn") ) return andn;
+	if ( streq(tok, "clmul") ) return clmul;
+	if ( streq(tok, "clmulh") ) return clmulh;
+	if ( streq(tok, "clmulr") ) return clmulr;
+	if ( streq(tok, "clz") ) return clz;
+	if ( streq(tok, "cpop") ) return cpop;
+	if ( streq(tok, "ctz") ) return ctz;
+	//-----------wilson-----------//
+
 	// 2r->1r
 	if ( streq(tok, "add") ) return ADD;
 	if ( streq(tok, "sub") ) return SUB;
@@ -592,6 +614,48 @@ int parse_instr(int line, char* ftok, instr* imem, int memoff, label_loc* labels
 		append_source(ftok, o1, o2, o3, src, i);
 
 		switch( op ) {
+			//-----------wilson-----------//
+			case andn:
+				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line,  "Invalid format" );
+        			i->a1.reg = parse_reg(o1 , line);
+			        i->a2.reg = parse_reg(o2 , line);
+			        i->a3.reg = parse_reg(o3 , line);
+        			return 1;
+			case clmul:
+                                if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line,  "Invalid format" );
+                                i->a1.reg = parse_reg(o1 , line);
+                                i->a2.reg = parse_reg(o2 , line);
+                                i->a3.reg = parse_reg(o3 , line);
+                                return 1;
+			case clmulh:
+                                if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line,  "Invalid format" );
+                                i->a1.reg = parse_reg(o1 , line);
+                                i->a2.reg = parse_reg(o2 , line);
+                                i->a3.reg = parse_reg(o3 , line);
+                                return 1;
+			case clmulr:
+                                if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line,  "Invalid format" );
+                                i->a1.reg = parse_reg(o1 , line);
+                                i->a2.reg = parse_reg(o2 , line);
+                                i->a3.reg = parse_reg(o3 , line);
+                                return 1;
+			case clz:
+                                if ( !o1 || !o2 || o3 || o4 ) print_syntax_error( line,  "Invalid format" );
+                                i->a1.reg = parse_reg(o1 , line);
+                                i->a2.reg = parse_reg(o2 , line);
+                                return 1;
+			case cpop:
+                                if ( !o1 || !o2 || o3 || o4 ) print_syntax_error( line,  "Invalid format" );
+                                i->a1.reg = parse_reg(o1 , line);
+                                i->a2.reg = parse_reg(o2 , line);
+                                return 1;
+			case ctz:
+                                if ( !o1 || !o2 || o3 || o4 ) print_syntax_error( line,  "Invalid format" );
+                                i->a1.reg = parse_reg(o1 , line);
+                                i->a2.reg = parse_reg(o2 , line);
+				return 1;
+			//-----------wilson-----------//
+
 			case UNIMPL: return 1;
 			case JAL:
 				if ( o2 ) { // two operands, reg, label
@@ -825,6 +889,57 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 		
 		int pc_next = pc + 4;
 		switch (i.op) {
+			//-----------wilson-----------//
+			//andn clmul clmulh clmulr clz cpop ctz
+			case andn:
+				rf[i.a1.reg] = rf[i.a2.reg] & ~rf[i.a3.reg];
+				break;
+			case clmul:
+                                for (int j = 0; j < 32; j++){
+					if(rf[i.a3.reg] >> j & 1){
+						rf[i.a1.reg] = rf[i.a1.reg] ^ rf[i.a2.reg] << j;
+					}
+				}
+                                break;
+			case clmulh:
+                                for (int j = 1; j < 32; j++){
+                                        if(rf[i.a3.reg] >> j & 1){
+                                                rf[i.a1.reg] = rf[i.a1.reg] ^ rf[i.a2.reg] >> (32 - j);
+                                        }
+                                }
+				break;
+			case clmulr:
+                                for (int j = 0; j < 31; j++){
+                                        if(rf[i.a3.reg] >> j & 1){
+                                                rf[i.a1.reg] = rf[i.a1.reg] ^ rf[i.a2.reg] >> (31 - j);
+                                        }
+                                }
+				break;
+			case clz:
+				rf[i.a1.reg] = 0;
+                                for (int j = 0; j < 32; j++){
+					if ((rf[i.a2.reg] << j & 0x80000000) >> 31)
+						break;
+					rf[i.a1.reg] = j + 1;
+				}
+                                break;
+			case cpop:
+				rf[i.a1.reg] = 0;
+				for (int j = 0; j < 32; j++){
+					if (rf[i.a2.reg] >> j & 1)
+						rf[i.a1.reg] += 1;
+				}
+                                break;
+			case ctz:
+				rf[i.a1.reg] = 0;
+                                for (int j = 0; j < 32; j++){
+                                        if (rf[i.a2.reg] >> j & 1)
+                                                break;
+                                        rf[i.a1.reg] = j + 1;
+                                }
+                                break;
+			//-----------wilson-----------//
+
 			case ADD: rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
 			case SUB: rf[i.a1.reg] = rf[i.a2.reg] - rf[i.a3.reg]; break;
 			case SLT: rf[i.a1.reg] = (*(int32_t*)&rf[i.a2.reg]) < (*(int32_t*)&rf[i.a3.reg]) ? 1 : 0; break;
