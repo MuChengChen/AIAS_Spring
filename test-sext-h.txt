@@ -1,0 +1,9 @@
+## RV32 Emulator Testing Assembly Code for REM function
+
+main:
+addi x28,x0 , -1966  
+addi x29,x0 , -302  
+
+sext.h  x30, x28 
+
+hcf

@@ -58,6 +58,29 @@ typedef enum {
 	cpop,
 	ctz,
 	//-----------wilson-----------//
+
+
+
+	//---------KAI HONG WANG-----------------------------------------------------------
+    MUL, //! added
+	MULH, //! added
+	MULHSU, //! added
+	MULHU, //! added
+	DIV,  //! added
+	DIVU, //! added
+	REM,  //! added
+	REMU, //! added
+
+	MAX,   //! added
+	MAXU, //! added
+	MIN, //! added
+	MINU, //! added
+	ORCD, //! added-->orc.d
+	ORN, //! added
+	REV8, //! added-->rev8
+	SEXT_H,  //! added-->sext.h
+	SEXT_B,
+	//---------KAI HONG WANG-----------------------------------------------------------
 	
 	
 	ADD,
@@ -111,6 +134,30 @@ instr_type parse_instr(char* tok) {
 	if ( streq(tok, "cpop") ) return cpop;
 	if ( streq(tok, "ctz") ) return ctz;
 	//-----------wilson-----------//
+
+
+	//---------KAI-HONG-WANG-----------------------------------------------------------
+    if ( streq(tok , "mul")) return MUL;   //! added
+	if ( streq(tok , "mulh")) return MULH; //! added
+	if ( streq(tok , "mulhsu")) return MULHSU; //! added
+	if ( streq(tok , "mulhu")) return MULHU; //! added
+	if ( streq(tok , "div")) return DIV; //! added
+	if ( streq(tok , "divu")) return DIVU; //! added
+	if ( streq(tok , "rem")) return REM; //! added
+	if ( streq(tok , "remu")) return REMU; //! added
+
+    if ( streq(tok , "max")) return MAX;   //! added
+	if ( streq(tok , "maxu")) return MAXU; //! added
+	if ( streq(tok , "min")) return MIN; //! added
+	if ( streq(tok , "minu")) return MINU; //! added
+	if ( streq(tok , "orc.d")) return ORCD; //! added
+	if ( streq(tok , "orn")) return ORN; //! added
+	if ( streq(tok , "rev8")) return REV8; //! added-->rev8-->8 bits
+	if ( streq(tok , "sext.h")) return SEXT_H; //! added-->sext.h
+	if ( streq(tok , "sext.b")) return SEXT_B; //! added-->sext.b
+	//---------KAI-HONG-WANG-----------------------------------------------------------
+
+
 
 	// 2r->1r
 	if ( streq(tok, "add") ) return ADD;
@@ -597,6 +644,7 @@ int parse_instr(int line, char* ftok, instr* imem, int memoff, label_loc* labels
 		printf( "Instructions in data segment! Line %d\n", line );
 		exit(1);
 	}
+
 	char* o1 = strtok(NULL, " \t\r\n,");
 	char* o2 = strtok(NULL, " \t\r\n,");
 	char* o3 = strtok(NULL, " \t\r\n,");
@@ -655,6 +703,175 @@ int parse_instr(int line, char* ftok, instr* imem, int memoff, label_loc* labels
                                 i->a2.reg = parse_reg(o2 , line);
 				return 1;
 			//-----------wilson-----------//
+
+
+
+
+			//---------KAI-HONG-WANG-----------------------------------------------------------
+			//TODO: instruction added
+			 case MUL: //! added
+			    if ( !o1 || !o2 || !o3 || o4 ) 
+					print_syntax_error( line,  "Invalid format" ); //!因為MUL為R系列指令，有rd、rs1、rs2，所以要找有o1、o2、o3的
+				//printf("hi 160\n");
+				//printf("o1: %s\to2: %s\to3: %s\to4: %s\n", o1, o2, o3, o4); //hi 10
+			 	i->a1.reg = parse_reg(o1 , line);
+			 	i->a2.reg = parse_reg(o2 , line);
+			 	i->a3.reg = parse_reg(o3 , line);
+			     return 1; //vital
+
+			 case MULH: //! added
+			    if ( !o1 || !o2 || !o3 || o4 ) 
+					print_syntax_error( line,  "Invalid format" ); //!因為MULH為R系列指令，有rd、rs1、rs2，所以要找有o1、o2、o3的
+			 	i->a1.reg = parse_reg(o1 , line);
+			 	i->a2.reg = parse_reg(o2 , line);
+			 	i->a3.reg = parse_reg(o3 , line);
+			     return 1;
+
+			 case MULHSU: //! added
+			    if ( !o1 || !o2 || !o3 || o4 ) 
+					print_syntax_error( line,  "Invalid format" ); //!因為MULHSU為R系列指令，有rd、rs1、rs2，所以要找有o1、o2、o3的
+			 	i->a1.reg = parse_reg(o1 , line);
+			 	i->a2.reg = parse_reg(o2 , line);
+			 	i->a3.reg = parse_reg(o3 , line);
+			     return 1;
+
+			 case MULHU: //! added
+			    if ( !o1 || !o2 || !o3 || o4 ) 
+					print_syntax_error( line,  "Invalid format" ); //!因為MULHU為R系列指令，有rd、rs1、rs2，所以要找有o1、o2、o3的
+			 	i->a1.reg = parse_reg(o1 , line);
+			 	i->a2.reg = parse_reg(o2 , line);
+			 	i->a3.reg = parse_reg(o3 , line);
+			     return 1;
+
+			 case DIV: //! added
+			    if ( !o1 || !o2 || !o3 || o4 ) 
+					print_syntax_error( line,  "Invalid format" ); //!因為DIV為R系列指令，有rd、rs1、rs2，所以要找有o1、o2、o3的
+			 	i->a1.reg = parse_reg(o1 , line);
+			 	i->a2.reg = parse_reg(o2 , line);
+			 	i->a3.reg = parse_reg(o3 , line);
+			     return 1;
+
+			 case DIVU: //! added
+			    if ( !o1 || !o2 || !o3 || o4 ) 
+					print_syntax_error( line,  "Invalid format" ); //!因為DIVU有rd、rs1、rs2，所以要找有o1、o2、o3的
+			 	i->a1.reg = parse_reg(o1 , line);
+			 	i->a2.reg = parse_reg(o2 , line);
+			 	i->a3.reg = parse_reg(o3 , line);
+			     return 1;
+
+			 case REM: //! added
+			    if ( !o1 || !o2 || !o3 || o4 ) 
+					print_syntax_error( line,  "Invalid format" ); //!因為REM為R系列指令，有rd、rs1、rs2，所以要找有o1、o2、o3的
+			 	i->a1.reg = parse_reg(o1 , line);
+			 	i->a2.reg = parse_reg(o2 , line);
+			 	i->a3.reg = parse_reg(o3 , line);
+			     return 1;
+
+			 case REMU: //! added
+			    if ( !o1 || !o2 || !o3 || o4 ) 
+					print_syntax_error( line,  "Invalid format" ); //!因為REMU為R系列指令，有rd、rs1、rs2，所以要找有o1、o2、o3的
+			 	i->a1.reg = parse_reg(o1 , line);
+			 	i->a2.reg = parse_reg(o2 , line);
+			 	i->a3.reg = parse_reg(o3 , line);
+			     return 1;
+
+			 case MAX: //! added
+			    if ( !o1 || !o2 || !o3 || o4 ) 
+					print_syntax_error( line,  "Invalid format" ); //!因為REMU為R系列指令，有rd、rs1、rs2，所以要找有o1、o2、o3的
+			 	i->a1.reg = parse_reg(o1 , line);
+			 	i->a2.reg = parse_reg(o2 , line);
+			 	i->a3.reg = parse_reg(o3 , line);
+			     return 1;			
+
+			 case MAXU: //! added
+			    if ( !o1 || !o2 || !o3 || o4 ) 
+					print_syntax_error( line,  "Invalid format" ); //!因為REMU為R系列指令，有rd、rs1、rs2，所以要找有o1、o2、o3的
+			 	i->a1.reg = parse_reg(o1 , line);
+			 	i->a2.reg = parse_reg(o2 , line);
+			 	i->a3.reg = parse_reg(o3 , line);
+			     return 1;
+
+			 case MIN: //! added
+			    if ( !o1 || !o2 || !o3 || o4 ) 
+					print_syntax_error( line,  "Invalid format" ); //!因為REMU為R系列指令，有rd、rs1、rs2，所以要找有o1、o2、o3的
+			 	i->a1.reg = parse_reg(o1 , line);
+			 	i->a2.reg = parse_reg(o2 , line);
+			 	i->a3.reg = parse_reg(o3 , line);
+			     return 1;			
+
+			 case MINU: //! added
+			    if ( !o1 || !o2 || !o3 || o4 ) 
+					print_syntax_error( line,  "Invalid format" ); //!因為REMU為R系列指令，有rd、rs1、rs2，所以要找有o1、o2、o3的
+			 	i->a1.reg = parse_reg(o1 , line);
+			 	i->a2.reg = parse_reg(o2 , line);
+			 	i->a3.reg = parse_reg(o3 , line);
+			     return 1;
+
+			 case ORN: //! added
+			    if ( !o1 || !o2 || !o3 || o4 ) 
+					print_syntax_error( line,  "Invalid format" ); //!因為REMU為R系列指令，有rd、rs1、rs2，所以要找有o1、o2、o3的
+				//printf("hi 170\n");
+				//printf("o1: %s\to2: %s\to3: %s\to4: %s\n", o1, o2, o3, o4); //hi 10
+			 	i->a1.reg = parse_reg(o1 , line);
+			 	i->a2.reg = parse_reg(o2 , line);
+			 	i->a3.reg = parse_reg(o3 , line);
+			     return 1;
+
+			//ORC_D、REV8--->較特別
+			case ORCD: //! added--->格式參考mv指令(同樣都是7.5.3.5.12，且同樣都是只有2個暫存器參與)
+			    if ( !o1 || !o2 || o3 ) 
+					print_syntax_error( line,  "Invalid format" ); //!因為ORC_D為orc_d rd, rs，有rd、rs，所以要找有o1、o2、但無o3的
+			 	i->a1.type = OPTYPE_REG; i->a1.reg = parse_reg(o1 , line); //operand 1 為 register，長line-bits
+			 	i->a2.type = OPTYPE_REG; i->a2.reg = parse_reg(o2 , line); //operand 2 為 register，長line-bits
+				i->a3.type = OPTYPE_IMM; i->a3.imm = 0; //operand 3 不存在(故設為imm=0，並且下方函式的a3欄位以NULL作為參數傳入)，長line-bits
+				//append_source("orcd",o1, o2, NULL, src, i); //FIXME:這樣寫對嗎?還是要註解掉? hi bad
+			    return 1;
+
+			case REV8: //! added--->格式參考mv指令(同樣都是7.5.3.5.12，且同樣都是只有2個暫存器參與)
+				//printf("\n\no1: %s\to2: %s\to3: %s\to4: %s\n\n", o1, o2, o3, o4); //hi 10
+			    if ( !o1 || !o2 || o3 ) 
+					print_syntax_error( line,  "Invalid format" ); //!因為REMU為rev8 rd, rs，有rd、rs，所以要找有o1、o2、但無o3的
+			 	i->a1.type = OPTYPE_REG; i->a1.reg = parse_reg(o1 , line);
+			 	i->a2.type = OPTYPE_REG; i->a2.reg = parse_reg(o2 , line);
+				i->a3.type = OPTYPE_IMM; i->a3.imm = 0;
+				//append_source("rev",o1, o2, NULL, src, i); //FIXME:這樣寫對嗎?還是要註解掉? hi bad
+			    return 1;
+
+
+
+//			case SEXT_H: //! added-----Sign-extend halfword-----X(rd) = EXTS(X(rs)[15..0]);------sext.h rd, rs
+//				//FIXME: 注意，雖然指令格式為(7, 5, 5, 3, 5, 7)，
+//				//但因為此為sext.h rd, rs，
+//				//所以這裡要排除掉有o3的情況!!
+//				//所以不能用 if ( !o1 || !o2 || !o3 )
+//				//要用 if ( !o1 || !o2 || o3 )  才可以
+//			    if ( !o1 || !o2 || o3 ) 
+//					print_syntax_error( line,  "Invalid format" ); //!因為REMU為rev8 rd, rs，有rd、rs，所以要找有o1、o2、但無o3的
+//			 	i->a1.type = OPTYPE_REG; i->a1.reg = parse_reg(o1 , line);
+//			 	i->a2.type = OPTYPE_REG; i->a2.reg = parse_reg(o2 , line);
+//				i->a3.type = OPTYPE_IMM; i->a3.imm = 0;
+//				//append_source("sext.h",o1, o2, NULL, src, i);
+//			     return 1;
+//
+//			case SEXT_B: //! added-----Sign-extend halfword-----X(rd) = EXTS(X(rs)[7..0]);------sext.b rd, rs
+//				//FIXME: 注意，雖然指令格式為(7, 5, 5, 3, 5, 7)，
+//				//但因為此為sext.b rd, rs，
+//				//所以這裡要排除掉有o3的情況!!
+//				//所以不能用 if ( !o1 || !o2 || !o3 )
+//				//要用 if ( !o1 || !o2 || o3 )  才可以
+//			    if ( !o1 || !o2 || o3 ) 
+//					print_syntax_error( line,  "Invalid format" ); //!因為REMU為rev8 rd, rs，有rd、rs，所以要找有o1、o2、但無o3的
+//			 	i->a1.type = OPTYPE_REG; i->a1.reg = parse_reg(o1 , line);
+//			 	i->a2.type = OPTYPE_REG; i->a2.reg = parse_reg(o2 , line);
+//				i->a3.type = OPTYPE_IMM; i->a3.imm = 0;
+//				//append_source("sext.b",o1, o2, NULL, src, i); 
+//			     return 1;
+			//---------KAI-HONG-WANG-----------------------------------------------------------
+
+
+
+
+
 
 			case UNIMPL: return 1;
 			case JAL:
@@ -889,6 +1106,7 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 		
 		int pc_next = pc + 4;
 		switch (i.op) {
+
 			//-----------wilson-----------//
 			//andn clmul clmulh clmulr clz cpop ctz
 			case andn:
@@ -939,6 +1157,300 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
                                 }
                                 break;
 			//-----------wilson-----------//
+
+
+
+
+
+
+
+			//---------KAI-HONG-WANG-----------------------------------------------------------
+			//TODO: instruction added
+			//32*32 mul get 64 bit 
+			
+			//unsigned * unsigned   取 lowest 32-bit 
+			//把unsigned_32相乘，乘積為unsigned_64 (因unsigned，所以"左邊都補零")，
+			//接著轉為unsigned_32(會留右邊的32-bits)的方式傳給a1
+			//! added  mul: 最低 XLEN-bit
+      		case MUL:{
+				uint64_t t1 = rf[i.a2.reg]; 
+                uint64_t t2 = rf[i.a3.reg]; 
+				uint64_t result_temp = t1 * t2; //u * u---->mul
+				rf[i.a1.reg] = (uint32_t)result_temp;							
+				break;
+			} 
+		
+		
+			//signed * signed   取 highest 32-bit 
+			//FIXME:把signed_32便signed_64，然後相乘，乘積為signed_64，
+			//FIXME:再以"左邊按照正負補0、1"的方式往右shift 32 bit，接著轉為signed_32的方式傳給a1
+			//! added 
+			case MULH: {
+				int64_t t1 = (int32_t)rf[i.a2.reg]; 
+                int64_t t2 = (int32_t)rf[i.a3.reg]; 
+				uint64_t result_temp =  t1 * t2;//s * s---->mulh
+				rf[i.a1.reg] = (result_temp>>32); 	
+				break; 
+			}
+
+			//FIXME:signed * unsigned   取 highest 32-bit ，然後相乘，乘積為unsigned_64(也可以是signed???)
+			//FIXME:
+      		case MULHSU: {
+				int64_t t1 = (int32_t)rf[i.a2.reg]; 
+                uint64_t t2 = rf[i.a3.reg]; 
+				uint64_t result_temp = t1 * t2;//s * u---->mulhsu
+				rf[i.a1.reg] = (result_temp>>32); 	
+				break; 
+			}
+      		
+			//unsigned x unsigned  取 highest 32-bit 
+			//FIXME:把unsigned_32便unsigned_64，然後相乘，乘積為unsigned_64，
+			//FIXME:再以"左邊都補零"的方式往右shift 32 bit，接著轉為unsigned_32的方式傳給a1
+			case MULHU:{ 
+				uint64_t t1 = rf[i.a2.reg]; 
+                uint64_t t2 = rf[i.a3.reg]; 
+				uint64_t result_temp = t1 * t2;//u * u---->mulhu
+				rf[i.a1.reg] = (result_temp>>32); 	
+				break; 
+			}
+
+      		case DIV: {
+				int64_t t1 = (int32_t)rf[i.a2.reg]; 
+                int64_t t2 = (int32_t)rf[i.a3.reg]; 
+				uint64_t result_temp = 0; 
+   
+				result_temp = t1 / t2; //u / u---->divu
+				rf[i.a1.reg] = result_temp;							
+				printf("divu: %x\n", rf[i.a1.reg]); //divu
+			  	break; //! added	
+			}
+
+      		case DIVU:{ 
+				uint64_t t1 = rf[i.a2.reg]; 
+                uint64_t t2 = rf[i.a3.reg]; 
+				uint64_t result_temp = 0; 
+   
+				result_temp = t1 / t2; //u / u---->divu
+				rf[i.a1.reg] = result_temp;							
+				printf("divu: %x\n", rf[i.a1.reg]); //divu
+			  	break; //! added
+			}
+
+      		case REM:{ 
+
+				int64_t t1 = (int32_t)rf[i.a2.reg]; 
+                int64_t t2 = (int32_t)rf[i.a3.reg]; 
+				uint64_t result_temp = 0; 
+
+				result_temp = t1/t2; //s / s---->rem
+				result_temp = result_temp * t2;
+				result_temp = (~(result_temp) + 1); //2's complement
+				result_temp = t1 + result_temp;
+				rf[i.a1.reg] = result_temp;							
+			  	break; //! added
+			}
+
+      		case REMU: {
+				uint64_t t1 = rf[i.a2.reg]; 
+                uint64_t t2 = rf[i.a3.reg]; 
+				uint64_t result_temp = 0; 
+
+				result_temp = t1/t2; //u / u---->remu
+				result_temp = result_temp * t2;
+				result_temp = (~(result_temp) + 1); //2's complement
+				result_temp = t1 + result_temp;
+				rf[i.a1.reg] = result_temp;							
+			  	break; //! added
+			}
+
+      		case MAX: {
+				int32_t t1 = (int32_t)rf[i.a2.reg]; 
+                int32_t t2 = (int32_t)rf[i.a3.reg]; 
+				uint32_t result_temp = 0;
+				//printf("\n\nrf[i.a2.reg]: %x", rf[i.a2.reg]);	
+				//printf("\nrf[i.a3.reg]: %x", rf[i.a3.reg]);
+
+				result_temp = (t1 < t2) ? t2 : t1; //s/s-->max
+				rf[i.a1.reg] = result_temp;
+				//printf("\nrf[i.a1.reg]: %x\n\n", rf[i.a1.reg]);	
+			  	break; //! added
+			}
+
+      		case MAXU: {
+				uint32_t t1 = rf[i.a2.reg]; 
+                uint32_t t2 = rf[i.a3.reg]; 
+				uint32_t result_temp = 0;
+				//printf("\n\nrf[i.a2.reg]: %x", rf[i.a2.reg]);	
+				//printf("\nrf[i.a3.reg]: %x", rf[i.a3.reg]);
+
+				result_temp = (t1 < t2) ? t2 : t1; //u/u-->maxu
+				rf[i.a1.reg] = result_temp;			
+				//printf("\nrf[i.a1.reg]: %x\n\n", rf[i.a1.reg]);				
+			  	break; //! added
+			}
+
+      		case MIN: {
+				int32_t t1 = (int32_t)rf[i.a2.reg]; 
+                int32_t t2 = (int32_t)rf[i.a3.reg]; 
+				uint32_t result_temp = 0;
+				//printf("\n\nrf[i.a2.reg]: %x", rf[i.a2.reg]);	
+				//printf("\nrf[i.a3.reg]: %x", rf[i.a3.reg]);
+
+				result_temp = (t1 < t2) ? t1 : t2;  //s/s-->min
+				rf[i.a1.reg] = result_temp;		
+				//printf("\nrf[i.a1.reg]: %x\n\n", rf[i.a1.reg]);					
+			  	break; //! added					
+			}
+
+      		case MINU: {
+				uint32_t t1 = rf[i.a2.reg]; 
+                uint32_t t2 = rf[i.a3.reg]; 
+				uint32_t result_temp = 0;
+				//printf("\n\nrf[i.a2.reg]: %x", rf[i.a2.reg]);	
+				//printf("\nrf[i.a3.reg]: %x", rf[i.a3.reg]);
+
+				result_temp = (t1 < t2) ? t1 : t2; //u/u-->minu
+				rf[i.a1.reg] = result_temp;				
+				//printf("\nrf[i.a1.reg]: %x\n\n", rf[i.a1.reg]);		
+			  	break; //! added
+			}
+
+      		case ORN: { //orn:  X(rd) = X(rs1) | (~X(rs2));
+				//printf("\n\nrf[i.a2.reg]: %x", rf[i.a2.reg]);	
+				//printf("\nrf[i.a3.reg]: %x", rf[i.a3.reg]);
+
+				uint32_t result_temp = (rf[i.a2.reg] | (~(rf[i.a3.reg])));
+				rf[i.a1.reg] = result_temp;		
+				//printf("\nrf[i.a1.reg]: %x\n\n", rf[i.a1.reg]);	//orn: X(rd) = X(rs1) | (~X(rs2))			
+			  	break; //! added
+			}
+
+			//rev8:  reverse byte--8 bits----應該只有 rf[i.a1.reg]--rd     rf[i.a2.reg]--rs ??
+			//rev8 rd, rs
+			//input:   0x de  ad  be  ef
+			//output:  0x ef  be  ad  de
+      		case REV8: { //orn:  X(rd) = X(rs1) | (~X(rs2));
+				uint32_t temp_1 = 0x000000ff; //filter
+				uint32_t temp_2 = 0x0000ff00; //filter
+				uint32_t temp_3 = 0x00ff0000; //filter
+				uint32_t temp_4 = 0xff000000; //filter
+				uint32_t result_temp = 0;
+				//printf("\n\nrf[i.a2.reg]: %x", rf[i.a2.reg]);			
+
+				//temp = filter & rs      
+				temp_1 = (temp_1 & rf[i.a2.reg]); //[7:0]    
+				temp_2 = (temp_2 & rf[i.a2.reg]);  //[15:8]    
+				temp_3 = (temp_3 & rf[i.a2.reg]);  //[23:16]   
+				temp_4 = (temp_4 & rf[i.a2.reg]); //[31:24]  
+
+				//temp = temp-shift
+				temp_1 = (temp_1<<24); //[7:0]-->[31:24]
+				temp_2 = (temp_2<<8);  //[15:8]-->[23:16]
+				temp_3 = (temp_3>>8);  //[23:16]-->[15:8]
+				temp_4 = (temp_4>>24); //[31:24]-->[7:0]
+
+				result_temp = (temp_1 | temp_2 | temp_3 | temp_4);  //or all temps
+				rf[i.a1.reg] = result_temp;		
+				//printf("\nrf[i.a1.reg]: %x\n\n", rf[i.a1.reg]);	
+			  	break; //! added
+			}
+
+//			//sext.h:  Sign-extend halfword--8 bits
+//			//sext.h rd, rs
+//			//X(rd) = EXTS(X(rs)[15..0]);
+//			//input:   0x 0011 1100 1000 0001 1000 0111 1111 0000  ----32   0x3c8187f0
+//			//TEMP :   0x 1000 0111 1111 0000					   ----16   0x87f0
+//			//output:  0x 1111 1111 1111 1111 1000 0111 1111 0000  ----32   0xffff87f0
+//      		case SEXT_H: {
+//				uint16_t temp_1 = 0; //COLLECT LOW 16-bit
+//				uint32_t result_temp = 0;
+//				uint32_t HALF_FULL = 0xffff0000;
+//				uint32_t ZERO = 0;
+//				//rf[i.a2.reg] = 0x3c8137f0;
+//				//printf("\n\nrf[i.a2.reg]: %x", rf[i.a2.reg]);			
+//
+//				temp_1 = (rf[i.a2.reg]); //temp = LOW_16_bit(rs)      [31:0]----->[15:0]   
+//
+//				//temp_1做signed extension
+//				if((temp_1>>15)==1){  //if((temp_1>>15)==1) ---->[31...16]補1
+//					result_temp = (HALF_FULL | ((uint32_t)temp_1));
+//				}
+//				else{  //if((temp_1>>15)==0) ---->[31...16]補0
+//					result_temp = (ZERO | ((uint32_t)temp_1));
+//				}
+//
+//				rf[i.a1.reg] = result_temp;		
+//				//printf("\nrf[i.a1.reg]: %x\n\n", rf[i.a1.reg]);	
+//			  	break; //! added
+//			}
+//
+//
+//			//sext.b:  Sign-extend byte
+//			//sext.b rd, rs
+//			//X(rd) = EXTS(X(rs)[7..0]);
+//			//input:   0x 0011 1100 1000 0001 1000 0111 1111 0000  ----32   0x3c8187f0
+//			//TEMP :   0x 1111 0000					   ----16   0xf0
+//			//output:  0x 1111 1111 1111 1111 1111 1111 1111 0000  ----32   0xfffffff0
+//      		case SEXT_B: {
+//				uint8_t temp_1 = 0; //COLLECT LOW 8-bit
+//				uint32_t result_temp = 0;
+//				uint32_t HALF_FULL = 0xffffff00;
+//				uint32_t ZERO = 0;
+//				//rf[i.a2.reg] = 0x3c8137f0;
+//				//printf("\n\nrf[i.a2.reg]: %x", rf[i.a2.reg]);			
+//
+//				temp_1 = (rf[i.a2.reg]); //temp = LOW_8_bit(rs)      [31:0]----->[7:0]   
+//
+//				//temp_1做signed extension
+//				if((temp_1>>7)==1){  //if((temp_1>>7)==1) ---->[31...8]補1
+//					result_temp = (HALF_FULL | ((uint32_t)temp_1));
+//				}
+//				else{  //if((temp_1>>7)==0) ---->[31...8]補0
+//					result_temp = (ZERO | ((uint32_t)temp_1));
+//				}
+//
+//				rf[i.a1.reg] = result_temp;		
+//				//printf("\nrf[i.a1.reg]: %x\n\n", rf[i.a1.reg]);	
+//			  	break; //! added
+//			}
+
+
+
+			//orc_d:  orc.b rd, rs   
+			//Bitwise OR-Combine, byte granule
+			//rs的第i個byte為 0b 00000000 (裡面沒有任何1)--->則設rd的第i個byte為 0b 00000000
+    		//rs的第i個byte不為 0b 00000000 (裡面出現至少1個1)--->則設rd的第i個byte為 0b 11111111
+      		case ORCD:{		
+				uint32_t temp_1 = 0x000000ff; //filter
+				uint32_t temp_2 = 0x0000ff00; //filter
+				uint32_t temp_3 = 0x00ff0000; //filter
+				uint32_t temp_4 = 0xff000000; //filter				
+				uint32_t result_temp = 0;
+				//printf("\n\nrf[i.a2.reg]: %x", rf[i.a2.reg]);	
+
+				//filter & rs    temp = temp-shift
+				temp_1 = (temp_1 & rf[i.a2.reg]);               // [7:0]   -->[7:0]
+				temp_2 = ( (temp_2 & rf[i.a2.reg]) >> 8 );      // [15:8]  -->[7:0]
+				temp_3 = ( (temp_3 & rf[i.a2.reg]) >> 16 );     // [23:16] -->[7:0]
+				temp_4 = ( (temp_4 & rf[i.a2.reg]) >> 24 );     // [31:24] -->[7:0]
+
+				temp_1 = ((temp_1==0) ? (0x00): (0xff));         // [7:0] -->[7:0]
+				temp_2 = (((temp_2==0) ? (0x00): (0xff)) << 8 ); // [7:0] -->[15:8]
+				temp_3 = (((temp_3==0) ? (0x00): (0xff)) << 16); // [7:0] -->[23:16]
+				temp_4 = (((temp_4==0) ? (0x00): (0xff)) << 24); // [7:0] -->[31:24]
+
+				result_temp = (temp_1 | temp_2 | temp_3 | temp_4);  //or all temps
+				//printf("\nrf[i.a1.reg]: %x\n\n", rf[i.a1.reg]);	
+				rf[i.a1.reg] = result_temp;
+				break; //! added
+			} 
+			//---------KAI-HONG-WANG-----------------------------------------------------------
+
+
+
+
+
+
 
 			case ADD: rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
 			case SUB: rf[i.a1.reg] = rf[i.a2.reg] - rf[i.a3.reg]; break;
