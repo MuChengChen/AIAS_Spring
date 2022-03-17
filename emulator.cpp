@@ -49,6 +49,15 @@ void print_regfile(uint32_t rf[32]) {
 
 typedef enum {
 	UNIMPL = 0,
+	//songfung add inst
+	BSETI,
+	SEXTB,
+	SEXTH,
+	SH1ADD,
+	SH2ADD,
+	SH3ADD,
+	//******************
+	
 	ADD,
 	ADDI,
 	AND,
@@ -90,6 +99,14 @@ typedef enum {
 } instr_type;
 
 instr_type parse_instr(char* tok) {
+	//bit songfung
+	if ( streq(tok, "bseti") )  return BSETI;
+	if ( streq(tok, "sext.b") ) return SEXTB;
+	if ( streq(tok, "sext.h") ) return SEXTH;
+	if ( streq(tok, "sh1add") ) return SH1ADD;
+	if ( streq(tok, "sh2add") ) return SH2ADD;
+	if ( streq(tok, "sh3add") ) return SH3ADD;
+
 	// 2r->1r
 	if ( streq(tok, "add") ) return ADD;
 	if ( streq(tok, "sub") ) return SUB;
@@ -641,6 +658,26 @@ int parse_instr(int line, char* ftok, instr* imem, int memoff, label_loc* labels
 				i->a2.imm = (parse_imm(o2, 20, line));
 				return 1;
 			case HCF: return 1;
+			
+			//songfung add
+			case SEXTB: case SEXTH: 
+				if ( !o1 || !o2 || o3 || o4 ) print_syntax_error( line, "Invalid format" );
+				i->a1.reg = parse_reg(o1, line);
+				i->a2.reg = parse_reg(o2, line);
+				return 1;
+			case SH1ADD: case SH2ADD: case SH3ADD: 
+				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line, "Invalid format" );
+				i->a1.reg = parse_reg(o1, line);
+				i->a2.reg = parse_reg(o2, line);
+				i->a3.reg = parse_reg(o3, line);
+				return 1;
+			case BSETI:
+				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line, "Invalid format" );
+				i->a1.reg = parse_reg(o1, line);
+				i->a2.reg = parse_reg(o2, line);
+				i->a3.imm = parse_imm(o3, 5, line);
+				return 1;
+			//*************************
 		}
 
 	}
@@ -825,6 +862,38 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 		
 		int pc_next = pc + 4;
 		switch (i.op) {
+			//sonfung add
+			case BSETI:{
+				int index= (i.a3.imm & 31);
+				rf[i.a1.reg] = rf[i.a2.reg] | ((uint32_t)1<< index);
+				break;
+			}
+			case SEXTB:{
+				uint32_t x = rf[i.a2.reg];
+				uint32_t result = ((int32_t)(x << 24))>>24;
+				rf[i.a1.reg] =  result ;
+				break;
+			}
+			case SEXTH:{
+				uint32_t x = rf[i.a2.reg];
+				uint32_t result = ((int32_t)(x << 16)) >> 16;
+				rf[i.a1.reg] =  result ;
+				break;
+			}
+			case SH1ADD:{
+				rf[i.a1.reg] =( rf[i.a2.reg] << 1) + rf[i.a3.reg]; 
+				break;
+			} 
+			case SH2ADD:{
+				rf[i.a1.reg] =( rf[i.a2.reg] << 2) + rf[i.a3.reg]; 
+				break;
+			}
+			case SH3ADD:{
+				rf[i.a1.reg] =( rf[i.a2.reg] << 3) + rf[i.a3.reg]; 
+				break;
+			}
+			//***********************
+			
 			case ADD: rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
 			case SUB: rf[i.a1.reg] = rf[i.a2.reg] - rf[i.a3.reg]; break;
 			case SLT: rf[i.a1.reg] = (*(int32_t*)&rf[i.a2.reg]) < (*(int32_t*)&rf[i.a3.reg]) ? 1 : 0; break;
