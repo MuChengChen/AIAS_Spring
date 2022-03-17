@@ -91,7 +91,7 @@ typedef enum {
 	BINV,
 	BINVI,
 	BSET,
-	BSETI,
+	
 	//-----------culture0418-----------//
 
 
@@ -178,7 +178,6 @@ instr_type parse_instr(char* tok) {
 	if ( streq(tok, "binv") ) return BINV;
 	if ( streq(tok, "binvi") ) return BINVI;
 	if ( streq(tok, "bset") ) return BSET;
-	if ( streq(tok, "bseti") ) return BSETI;
 
 	//-----------culture0418-----------//
 
@@ -949,14 +948,6 @@ int parse_instr(int line, char* ftok, instr* imem, int memoff, label_loc* labels
 				    i->a1.reg = parse_reg(o1 , line);
 				    i->a2.reg = parse_reg(o2 , line);
 				    i->a3.reg = parse_reg(o3 , line);
-			    return 1;
-			}
-
-			case BSETI:{
-				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line,  "Invalid format" );
-				    i->a1.reg = parse_reg(o1 , line);
-				    i->a2.reg = parse_reg(o2 , line);
-				    i->a3.imm = parse_imm(o3, 5, line);
 			    return 1;
 			}
 
