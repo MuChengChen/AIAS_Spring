@@ -78,8 +78,8 @@ typedef enum {
 	ORCD, //! added-->orc.d
 	ORN, //! added
 	REV8, //! added-->rev8
-	SEXT_H,  //! added-->sext.h
-	SEXT_B,
+//	SEXT_H,  //! added-->sext.h
+//	SEXT_B,
 	//---------KAI HONG WANG-----------------------------------------------------------
 	
 	
@@ -102,7 +102,6 @@ typedef enum {
 	SH2ADD,
 	SH3ADD,
 	//-----------song-fung-yu----------//
-	
 
 
 	ADD,
@@ -175,8 +174,8 @@ instr_type parse_instr(char* tok) {
 	if ( streq(tok , "orc.d")) return ORCD; //! added
 	if ( streq(tok , "orn")) return ORN; //! added
 	if ( streq(tok , "rev8")) return REV8; //! added-->rev8-->8 bits
-	if ( streq(tok , "sext.h")) return SEXT_H; //! added-->sext.h
-	if ( streq(tok , "sext.b")) return SEXT_B; //! added-->sext.b
+//	if ( streq(tok , "sext.h")) return SEXT_H; //! added-->sext.h
+//	if ( streq(tok , "sext.b")) return SEXT_B; //! added-->sext.b
 	//---------KAI-HONG-WANG-----------------------------------------------------------
 
 
@@ -1653,39 +1652,6 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 			}
 
 			//-----------culture0418-----------//
-
-			//-----------song-fung-yu----------//
-			case BSETI:{
-				int index= (i.a3.imm & 31);
-				rf[i.a1.reg] = rf[i.a2.reg] | ((uint32_t)1<< index);
-				break;
-			}
-			case SEXTB:{
-				uint32_t x = rf[i.a2.reg];
-				uint32_t result = ((int32_t)(x << 24))>>24;
-				rf[i.a1.reg] =  result ;
-				break;
-			}
-			case SEXTH:{
-				uint32_t x = rf[i.a2.reg];
-				uint32_t result = ((int32_t)(x << 16)) >> 16;
-				rf[i.a1.reg] =  result ;
-				break;
-			}
-			case SH1ADD:{
-				rf[i.a1.reg] =( rf[i.a2.reg] << 1) + rf[i.a3.reg]; 
-				break;
-			} 
-			case SH2ADD:{
-				rf[i.a1.reg] =( rf[i.a2.reg] << 2) + rf[i.a3.reg]; 
-				break;
-			}
-			case SH3ADD:{
-				rf[i.a1.reg] =( rf[i.a2.reg] << 3) + rf[i.a3.reg]; 
-				break;
-			}
-			//-----------song-fung-yu----------//
-			
 
 			case ADD: rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
 			case SUB: rf[i.a1.reg] = rf[i.a2.reg] - rf[i.a3.reg]; break;
