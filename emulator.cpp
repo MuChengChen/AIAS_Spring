@@ -83,6 +83,18 @@ typedef enum {
 	//---------KAI HONG WANG-----------------------------------------------------------
 	
 	
+	//-----------culture0418-----------//
+	BCLR,
+	BCLRI,
+	BEXT,
+	BEXTI,
+	BINV,
+	BINVI,
+	BSET,
+	BSETI,
+	//-----------culture0418-----------//
+
+
 	ADD,
 	ADDI,
 	AND,
@@ -157,6 +169,20 @@ instr_type parse_instr(char* tok) {
 	if ( streq(tok , "sext.b")) return SEXT_B; //! added-->sext.b
 	//---------KAI-HONG-WANG-----------------------------------------------------------
 
+
+	//-----------culture0418-----------//
+	if ( streq(tok, "bclr") ) return BCLR;
+	if ( streq(tok, "bclri") ) return BCLRI;
+	if ( streq(tok, "bext") ) return BEXT;
+	if ( streq(tok, "bexti") ) return BEXTI;
+	if ( streq(tok, "binv") ) return BINV;
+	if ( streq(tok, "binvi") ) return BINVI;
+	if ( streq(tok, "bset") ) return BSET;
+	if ( streq(tok, "bseti") ) return BSETI;
+
+	//-----------culture0418-----------//
+
+	
 
 
 	// 2r->1r
@@ -868,8 +894,74 @@ int parse_instr(int line, char* ftok, instr* imem, int memoff, label_loc* labels
 //			     return 1;
 			//---------KAI-HONG-WANG-----------------------------------------------------------
 
+			//-----------culture0418-----------//
+			case BCLR:{ // bclr rd, rs1, rs2
+				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line,  "Invalid format" );
+				    i->a1.reg = parse_reg(o1 , line);
+				    i->a2.reg = parse_reg(o2 , line);
+				    i->a3.reg = parse_reg(o3 , line);
+			    return 1;
+			}
 
+			case BCLRI:{ // bclri rd, rs1, shamt
+				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line,  "Invalid format" );
+				    i->a1.reg = parse_reg(o1 , line);
+				    i->a2.reg = parse_reg(o2 , line);
+				    i->a3.imm = parse_imm(o3, 5, line);
+			    return 1;
+			}
+			
 
+			case BEXT:{ // bext rd, rs1, rs2
+				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line,  "Invalid format" );
+				    i->a1.reg = parse_reg(o1 , line);
+				    i->a2.reg = parse_reg(o2 , line);
+				    i->a3.reg = parse_reg(o3 , line);
+			    return 1;
+			}
+
+			case BEXTI:{ // bexti rd, rs1, shamt
+				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line,  "Invalid format" );
+				    i->a1.reg = parse_reg(o1 , line);
+				    i->a2.reg = parse_reg(o2 , line);
+				    i->a3.imm = parse_imm(o3, 5, line);
+			    return 1;
+			}
+
+			case BINV:{ // binv rd, rs1, rs2
+				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line,  "Invalid format" );
+				    i->a1.reg = parse_reg(o1 , line);
+				    i->a2.reg = parse_reg(o2 , line);
+				    i->a3.reg = parse_reg(o3 , line);
+			    return 1;
+			}
+
+			case BINVI:{  // binvi rd, rs1, shamt
+				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line,  "Invalid format" );
+				    i->a1.reg = parse_reg(o1 , line);
+				    i->a2.reg = parse_reg(o2 , line);
+				    i->a3.imm = parse_imm(o3, 5, line);
+			    return 1;
+			}
+
+			case BSET:{
+				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line,  "Invalid format" );
+				    i->a1.reg = parse_reg(o1 , line);
+				    i->a2.reg = parse_reg(o2 , line);
+				    i->a3.reg = parse_reg(o3 , line);
+			    return 1;
+			}
+
+			case BSETI:{
+				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line,  "Invalid format" );
+				    i->a1.reg = parse_reg(o1 , line);
+				    i->a2.reg = parse_reg(o2 , line);
+				    i->a3.imm = parse_imm(o3, 5, line);
+			    return 1;
+			}
+
+			//-----------culture0418-----------//
+			
 
 
 
@@ -1447,10 +1539,93 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 			//---------KAI-HONG-WANG-----------------------------------------------------------
 
 
+			//-----------culture0418-----------//
+			case BCLR:{ // bclr rd, rs1, rs2
+				unsigned rs1_tmp = rf[i.a2.reg];
+				unsigned n = rf[i.a3.reg];
+				unsigned tmp1 = 1;
+				rs1_tmp = (rs1_tmp) &  ~(tmp1 << n);
+				rf[i.a1.reg] = rs1_tmp; 
+				
+				// printf("rf[i.a1.reg]: %lx\n", rf[i.a1.reg]); 
+				break;
+			}
 
+			case BCLRI:{ // bclri rd, rs1, shamt
+				unsigned rs1_tmp = rf[i.a2.reg];
+				unsigned n = i.a3.imm;
+				unsigned tmp1 = 1;
 
+				rs1_tmp = rs1_tmp & ~(tmp1 << n);
+				rf[i.a1.reg] = rs1_tmp;
+				// printf("rf[i.a1.reg]: %lx\n", rf[i.a1.reg]); 
+				break;
+			}
 
+			case BEXT:{ // bext rd, rs1, rs2
+				unsigned rs1_tmp = rf[i.a2.reg];
+				unsigned n = rf[i.a3.reg];
+				unsigned tmp1 = 1;
 
+				rs1_tmp = (rs1_tmp >> (n)) & tmp1;
+				rf[i.a1.reg] = rs1_tmp;
+				// printf("rf[i.a1.reg]: %lx\n", rf[i.a1.reg]); 
+				break;
+			}
+
+			case BEXTI:{ // bexti rd, rs1, shamt
+				unsigned rs1_tmp = rf[i.a2.reg];
+				unsigned n = i.a3.imm;
+				unsigned tmp_len = 31;
+				unsigned tmp1 = 1;
+				
+				n = n & tmp_len;
+				rs1_tmp = (rs1_tmp >> n) & tmp1;
+				rf[i.a1.reg] = rs1_tmp;
+				// printf("rf[i.a1.reg]: %lx\n", rf[i.a1.reg]); 
+				break;
+			}
+
+			case BINV:{ // binv rd, rs1, rs2
+				unsigned rs1_tmp = rf[i.a2.reg];
+				unsigned n = rf[i.a3.reg];
+				unsigned tmp_len = 31;
+				unsigned tmp1 = 1;
+
+				n = n & tmp_len;
+				rs1_tmp = rs1_tmp ^ (tmp1 << n);
+				rf[i.a1.reg] = rs1_tmp;
+				// printf("rf[i.a1.reg]: %lx\n", rf[i.a1.reg]); 
+				break;
+			}
+
+			case BINVI	:{ // binvi rd, rs1, shamt
+				unsigned rs1_tmp = rf[i.a2.reg];
+				unsigned n = i.a3.imm;
+				unsigned tmp_len = 31;
+				unsigned tmp1 = 1;
+
+				n = n & tmp_len;
+				rs1_tmp = rs1_tmp ^ (tmp1 << n);
+				rf[i.a1.reg] = rs1_tmp;
+				// printf("rf[i.a1.reg]: %lx\n", rf[i.a1.reg]); 
+				break;
+			}
+
+			case BSET:{ // bset rd, rs1,rs2
+				unsigned rs1_tmp = rf[i.a2.reg];
+				unsigned n = rf[i.a3.reg];
+				unsigned tmp_len = 31;
+				unsigned tmp1 = 1;
+
+				n = n & tmp_len;
+				rs1_tmp = rs1_tmp | (tmp1 << n);
+				rf[i.a1.reg] = rs1_tmp;
+				// printf("rf[i.a1.reg]: %lx\n", rf[i.a1.reg]); 
+				break;
+			}
+
+			//-----------culture0418-----------//
 
 			case ADD: rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
 			case SUB: rf[i.a1.reg] = rf[i.a2.reg] - rf[i.a3.reg]; break;
