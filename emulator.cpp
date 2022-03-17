@@ -78,8 +78,8 @@ typedef enum {
 	ORCD, //! added-->orc.d
 	ORN, //! added
 	REV8, //! added-->rev8
-	SEXT_H,  //! added-->sext.h
-	SEXT_B,
+//	SEXT_H,  //! added-->sext.h
+//	SEXT_B,
 	//---------KAI HONG WANG-----------------------------------------------------------
 	
 	
@@ -165,8 +165,8 @@ instr_type parse_instr(char* tok) {
 	if ( streq(tok , "orc.d")) return ORCD; //! added
 	if ( streq(tok , "orn")) return ORN; //! added
 	if ( streq(tok , "rev8")) return REV8; //! added-->rev8-->8 bits
-	if ( streq(tok , "sext.h")) return SEXT_H; //! added-->sext.h
-	if ( streq(tok , "sext.b")) return SEXT_B; //! added-->sext.b
+//	if ( streq(tok , "sext.h")) return SEXT_H; //! added-->sext.h
+//	if ( streq(tok , "sext.b")) return SEXT_B; //! added-->sext.b
 	//---------KAI-HONG-WANG-----------------------------------------------------------
 
 
