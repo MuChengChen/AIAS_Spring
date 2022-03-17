@@ -1,0 +1,27 @@
+addi  x01, x0, 10
+andn  x02, x01, x0
+andn  x03, x0, x01
+
+addi  x04, x04, 162
+addi  x05, x05, 192
+clmul     x04, x04, x04
+clmul     x04, x04, x04
+clmul x06, x04, x05
+
+clmulh x07, x04, x05
+
+clmulr x08, x04, x05
+
+addi  x09, x0, 2047
+clz   x10, x09
+clz   x11, x0
+
+addi  x12, x0, 2047
+cpop  x13, x12
+cpop  x14, x0
+
+addi  x15, x0, 1536
+ctz   x16, x12
+ctz   x17, x0
+
+hcf
