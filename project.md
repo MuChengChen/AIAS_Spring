@@ -20,13 +20,13 @@
 ||&#10003;|cpopw _rd_, _rs_|[insns-cpopw](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/cpopw.adoc)||&#10003;|| ||
 |&#10003;|&#10003;|ctz _rd_, _rs_|[insns-ctz](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/ctz.adoc)||&#10003;|| |謝獻霆 |
 ||&#10003;|ctzw _rd_, _rs_|[insns-ctzw](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/ctzw.adoc)||&#10003;||||
-|&#10003;|&#10003;|max _rd_, _rs1_, _rs2_|[insns-max](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/max.adoc)||&#10003;|| | |
-|&#10003;|&#10003;|maxu _rd_, _rs1_, _rs2_|[insns-maxu](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/maxu.adoc)||&#10003;|| | |
-|&#10003;|&#10003;|min _rd_, _rs1_, _rs2_|[insns-min](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/min.adoc)||&#10003;|| | |
-|&#10003;|&#10003;|minu _rd_, _rs1_, _rs2_|[insns-minu](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/minu.adoc)||&#10003;|| | |
-|&#10003;|&#10003;|orc.b _rd_, _rs1_, _rs2_|[insns-orc_b](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/orc.adoc)||&#10003;|| | |
-|&#10003;|&#10003;|orn _rd_, _rs1_, _rs2_|[insns-orn](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/orn.adoc)||&#10003;|| | |
-|&#10003;|&#10003;|rev8 _rd_, _rs_|[insns-rev8](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/rev8.adoc)||&#10003;|| | |
+|&#10003;|&#10003;|max _rd_, _rs1_, _rs2_|[insns-max](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/max.adoc)||&#10003;|| |王凱弘 |
+|&#10003;|&#10003;|maxu _rd_, _rs1_, _rs2_|[insns-maxu](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/maxu.adoc)||&#10003;|| | 王凱弘|
+|&#10003;|&#10003;|min _rd_, _rs1_, _rs2_|[insns-min](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/min.adoc)||&#10003;|| |王凱弘 |
+|&#10003;|&#10003;|minu _rd_, _rs1_, _rs2_|[insns-minu](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/minu.adoc)||&#10003;|| |王凱弘 |
+|&#10003;|&#10003;|orc.b _rd_, _rs1_, _rs2_|[insns-orc_b](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/orc.adoc)||&#10003;|| | 王凱弘|
+|&#10003;|&#10003;|orn _rd_, _rs1_, _rs2_|[insns-orn](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/orn.adoc)||&#10003;|| |王凱弘 |
+|&#10003;|&#10003;|rev8 _rd_, _rs_|[insns-rev8](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/rev8.adoc)||&#10003;|| | 王凱弘|
 |&#10003;|&#10003;|rol _rd_, _rs1_, _rs2_|[insns-rol](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/rol.adoc)||&#10003;|| | |
 ||&#10003;|rolw _rd_, _rs1_, _rs2_|[insns-rolw](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/orlw.adoc)||&#10003;|| | |
 |&#10003;|&#10003;|ror _rd_, _rs1_, _rs2_|[insns-ror](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/ror.adoc)||&#10003;|| | |
