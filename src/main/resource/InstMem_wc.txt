@@ -40,3 +40,7 @@
 //bge x1 x0 12
 //bltu x1 x1 8
 //bgeu x1 x1 4
+
+//Hw5-4-9 J-type testing
+//jal x0 -20
+//jalr x0 x4 16

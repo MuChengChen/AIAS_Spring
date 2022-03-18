@@ -11,6 +11,7 @@ class topTest(dut:top) extends PeekPokeTester(dut){
         println("ALU out:" + peek(dut.io.alu_out).toInt.toString)
         println("WBdata:" + peek(dut.io.rf_wdata_out).toInt.toString)
         println("Br taken:" + peek(dut.io.brtaken_out).toString)
+        println("Jmp taken:" + peek(dut.io.jmptaken_out).toString)
         println("==============================")
         step(1)
     }

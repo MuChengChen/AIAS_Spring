@@ -9,6 +9,7 @@ class top extends Module {
         val alu_out = Output(UInt(32.W))
         val rf_wdata_out = Output(UInt(32.W))
         val brtaken_out = Output(Bool())
+        val jmptaken_out = Output(Bool())
     })
 
     val pc = Module(new PC())
@@ -58,4 +59,5 @@ class top extends Module {
     io.alu_out := alu.io.out 
     io.rf_wdata_out := rf.io.wdata
     io.brtaken_out := bc.io.brtaken
+    io.jmptaken_out := false.B // need to be changed
 }
