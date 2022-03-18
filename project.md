@@ -45,7 +45,11 @@
 |&#10003;|&#10003;|sext.h _rd_, _rs_|[insns-sext_h](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/sext_h.adoc)||&#10003;|| | |
 |&#10003;|&#10003;|sh1add _rd_, _rs1_, _rs2_|[insns-sh1add](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/sh1add.adoc)|&#10003;||| | |
 ||&#10003;|sh1add.uw _rd_, _rs1_, _rs2_|[insns-sh1add_uw](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/sh1add_uw.adoc)|&#10003;||| | |
+<<<<<<< HEAD
 |&#10003;|&#10003;|sh2add _rd_, _rs1_, _rs2_|[insns-sh2add](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/sh2add.adoc)|&#10003;||||
+=======
+|&#10003;|&#10003;|sh2add _rd_, _rs1_, _rs2_|[insns-sh2add](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/sh2add.adoc)|&#10003;|||宋方瑜|
+>>>>>>> parent of efab019 (modified projects)
 ||&#10003;|sh2add.uw _rd_, _rs1_, _rs2_|[insns-sh2add_uw](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/sh2add_uw.adoc)|&#10003;||| ||
 |&#10003;|&#10003;|sh3add _rd_, _rs2_, _rs2_|[insns-sh3add](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/sh3add.adoc)|&#10003;||| | |
 ||&#10003;|sh3add.uw _rd_, _rs1_, _rs2_|[nsns-sh3add_uw](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/sh3add_uw.adoc)|&#10003;||| ||
