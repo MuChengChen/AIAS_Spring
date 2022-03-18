@@ -8,6 +8,7 @@ class top extends Module {
         val pc_out = Output(UInt(32.W))
         val alu_out = Output(UInt(32.W))
         val rf_wdata_out = Output(UInt(32.W))
+        val brtaken_out = Output(Bool())
     })
 
     val pc = Module(new PC())
@@ -15,11 +16,12 @@ class top extends Module {
     val dc = Module(new Decoder())
     val rf = Module(new RegFile(2))
     val alu = Module(new ALU())
+    val bc = Module(new BranchComp())
     
     //PC
-    pc.io.jmptaken := false.B
-    pc.io.brtaken := false.B
-    pc.io.offset := 0.U
+    pc.io.jmptaken := false.B // Don't modify
+    pc.io.brtaken := false.B // Don't modify
+    pc.io.offset := 0.U // Don't modify
     
     //Insruction Memory
     im.io.raddr := pc.io.pc
@@ -32,11 +34,8 @@ class top extends Module {
     rf.io.raddr(1) := 0.U
     rf.io.wdata := alu.io.out
     
-    //Dont change in this Lab=========
-    rf.io.waddr := 0.U
-    rf.io.wen := false.B
-    //================================
-
+    rf.io.waddr := 0.U  // Don't modify
+    rf.io.wen := false.B // Don't modify
 
     //ALU
     val rdata_or_zero = WireDefault(0.U(32.W))
@@ -48,10 +47,15 @@ class top extends Module {
     //Data Memory
     
     //Branch Comparator
-    
-    
+    bc.io.en := false.B // need to be changed
+    bc.io.funct3 := dc.io.funct3
+    bc.io.src1 := rf.io.rdata(0)
+    bc.io.src2 := rf.io.rdata(1)
+
+
     //Check Ports
     io.pc_out := pc.io.pc
     io.alu_out := alu.io.out 
     io.rf_wdata_out := rf.io.wdata
+    io.brtaken_out := bc.io.brtaken
 }

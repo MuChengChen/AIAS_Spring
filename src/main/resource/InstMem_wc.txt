@@ -33,3 +33,10 @@
 //sh x1 x0 2
 //sw x1 x0 0
 
+//Hw5-4-8 B-type testing
+//beq x1 x1 24
+//bne x1 x1 20
+//blt x1 x2 16
+//bge x1 x0 12
+//bltu x1 x1 8
+//bgeu x1 x1 4
