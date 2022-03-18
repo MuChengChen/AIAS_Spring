@@ -101,7 +101,7 @@ typedef enum {
 	SH1ADD,
 	SH2ADD,
 	SH3ADD,
-	//-----------song-fung-yu----------//
+	//-----------song-fung-yu------------------//
 
 
 
@@ -201,6 +201,14 @@ instr_type parse_instr(char* tok) {
 	if ( streq(tok, "sh3add") ) return SH3ADD;
 	//-----------song-fung-yu----------//
 
+	//-----------song-fung-yu----------//
+	if ( streq(tok, "bseti") )  return BSETI;
+	if ( streq(tok, "sext.b") ) return SEXTB;
+	if ( streq(tok, "sext.h") ) return SEXTH;
+	if ( streq(tok, "sh1add") ) return SH1ADD;
+	if ( streq(tok, "sh2add") ) return SH2ADD;
+	if ( streq(tok, "sh3add") ) return SH3ADD;
+	//-----------song-fung-yu----------//
 	
 
 
