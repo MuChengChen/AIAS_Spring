@@ -94,7 +94,7 @@ typedef enum {
 	
 	//-----------culture0418-----------//
 	
-	//-----------song-fung-yu----------//
+	//-----------song-fung-yu----------------//
 	BSETI,
 	SEXTB,
 	SEXTH,
