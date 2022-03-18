@@ -104,6 +104,7 @@ typedef enum {
 	//-----------song-fung-yu----------//
 
 
+
 	ADD,
 	ADDI,
 	AND,
@@ -989,6 +990,8 @@ int parse_instr(int line, char* ftok, instr* imem, int memoff, label_loc* labels
 				i->a3.imm = parse_imm(o3, 5, line);
 				return 1;
 	//-----------song-fung-yu----------//
+			
+
 
 
 			case UNIMPL: return 1;
@@ -1652,6 +1655,41 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 			}
 
 			//-----------culture0418-----------//
+			
+			
+			
+			//-----------song-fung-yu----------//
+			case BSETI:{
+				int index= (i.a3.imm & 31);
+				rf[i.a1.reg] = rf[i.a2.reg] | ((uint32_t)1<< index);
+				break;
+			}
+			case SEXTB:{
+				uint32_t x = rf[i.a2.reg];
+				uint32_t result = ((int32_t)(x << 24))>>24;
+				rf[i.a1.reg] =  result ;
+				break;
+			}
+			case SEXTH:{
+				uint32_t x = rf[i.a2.reg];
+				uint32_t result = ((int32_t)(x << 16)) >> 16;
+				rf[i.a1.reg] =  result ;
+				break;
+			}
+			case SH1ADD:{
+				rf[i.a1.reg] =( rf[i.a2.reg] << 1) + rf[i.a3.reg]; 
+				break;
+			} 
+			case SH2ADD:{
+				rf[i.a1.reg] =( rf[i.a2.reg] << 2) + rf[i.a3.reg]; 
+				break;
+			}
+			case SH3ADD:{
+				rf[i.a1.reg] =( rf[i.a2.reg] << 3) + rf[i.a3.reg]; 
+				break;
+			}
+			//-----------song-fung-yu----------//
+
 
 			case ADD: rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
 			case SUB: rf[i.a1.reg] = rf[i.a2.reg] - rf[i.a3.reg]; break;
