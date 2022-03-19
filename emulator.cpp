@@ -93,7 +93,7 @@ typedef enum {
 	BSET,
 	
 	//-----------culture0418-----------//
-
+	
 	//-----------song-fung-yu----------//
 	BSETI,
 	SEXTB,
@@ -102,6 +102,8 @@ typedef enum {
 	SH2ADD,
 	SH3ADD,
 	//-----------song-fung-yu----------//
+
+
 
 
 	ADD,
@@ -972,6 +974,8 @@ int parse_instr(int line, char* ftok, instr* imem, int memoff, label_loc* labels
 
 			//-----------culture0418-----------//
 
+
+			
 	//-----------song-fung-yu----------//
 			case SEXTB: case SEXTH: 
 				if ( !o1 || !o2 || o3 || o4 ) print_syntax_error( line, "Invalid format" );
@@ -1656,8 +1660,9 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 			}
 
 			//-----------culture0418-----------//
-
-
+			
+			
+			
 			//-----------song-fung-yu----------//
 			case BSETI:{
 				int index= (i.a3.imm & 31);
@@ -1689,6 +1694,9 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 				break;
 			}
 			//-----------song-fung-yu----------//
+
+
+
 
 			case ADD: rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
 			case SUB: rf[i.a1.reg] = rf[i.a2.reg] - rf[i.a3.reg]; break;
