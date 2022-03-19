@@ -11,6 +11,8 @@ class DecoderTest(dut:Decoder) extends PeekPokeTester(dut){
         val seq = Seq.fill(extend)(bit)
         seq.reduce(2*_+_) << (32 - extend)
     }
+
+    var pass = 0
     
     for(i <- 0 until 20){
         var inst = rnd.nextInt(1<<24) << 8 
@@ -48,45 +50,76 @@ class DecoderTest(dut:Decoder) extends PeekPokeTester(dut){
         
         
         poke(dut.io.inst, inst + LOAD.litValue())
-        if(!expect(dut.io.imm,I_imm)){println("LOAD test failed!")}
+        if(!expect(dut.io.imm,I_imm)){
+            println("LOAD test failed!")
+            pass+=1
+        }
         step(1)
         
         poke(dut.io.inst, inst + STORE.litValue())
-        if(!expect(dut.io.imm,S_imm)){println("STORE test failed!")}
+        if(!expect(dut.io.imm,S_imm)){
+            println("STORE test failed!")
+            pass+=1
+        }
         step(1)
         
         poke(dut.io.inst, inst + BRANCH.litValue())
-        if(!expect(dut.io.imm,B_imm)){println("BRANCH test failed!")}
+        if(!expect(dut.io.imm,B_imm)){
+            println("BRANCH test failed!")
+            pass+=1
+        }
         step(1)
         
         poke(dut.io.inst, inst + JALR.litValue())
-        if(!expect(dut.io.imm,I_imm)){println("JALR test failed!")}
+        if(!expect(dut.io.imm,I_imm)){
+            println("JALR test failed!")
+            pass+=1
+        }
         step(1)
         
         poke(dut.io.inst, inst + JAL.litValue())
-        if(!expect(dut.io.imm,J_imm)){println("JAL test failed!")}
+        if(!expect(dut.io.imm,J_imm)){
+            println("JAL test failed!")
+            pass+=1
+        }
         step(1)
         
         poke(dut.io.inst, inst + OP_IMM.litValue())
-        if(!expect(dut.io.imm,I_imm)){println("OP_IMM test failed!")}
+        if(!expect(dut.io.imm,I_imm)){
+            println("OP_IMM test failed!")
+            pass+=1
+        }
         step(1)
         
         poke(dut.io.inst, inst + OP.litValue())
-        if(!expect(dut.io.imm,0)){println("OP test failed!")}
+        if(!expect(dut.io.imm,0)){
+            println("OP test failed!")
+            pass+=1
+        }
         step(1)
         
         poke(dut.io.inst, inst + AUIPC.litValue())
-        if(!expect(dut.io.imm,U_imm)){println("AUIPC test failed!")}
+        if(!expect(dut.io.imm,U_imm)){
+            println("AUIPC test failed!")
+            pass+=1
+        }
         step(1)
         
         poke(dut.io.inst, inst + LUI.litValue())
-        if(!expect(dut.io.imm,U_imm)){println("LUI test failed!")}
+        if(!expect(dut.io.imm,U_imm)){
+            println("LUI test failed!")
+            pass+=1
+        }
         step(1)
     }
+
+    if(pass == 0)
+        println("Decoder test completed!!!!!")
+    else
+        println(s"Decoder test failed...you have ${pass} errors to fix")
 }
 
 object DecoderTest extends App{
-    
     Driver.execute(args,()=>new Decoder()){
         c:Decoder => new DecoderTest(c)
     }

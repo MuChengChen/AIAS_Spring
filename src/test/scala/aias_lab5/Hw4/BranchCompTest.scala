@@ -7,14 +7,26 @@ import condition._
 
 class BranchCompTest(dut:BranchComp) extends PeekPokeTester(dut){
     
-    def u_int (in:Int):BigInt = {
-        val tmp: BigInt = in & 0x00000000ffffffff
-        tmp
+    def geu (src1:Int,src2:Int):Boolean = {
+        val sign_1 = (src1 >> 31) & 1
+        val sign_2 = (src2 >> 31) & 1
+
+        if(sign_1 == sign_2){
+            return (src1 >= src2)
+        }else{
+            if(sign_1 == 1){
+                return true
+            }else{
+                return false
+            }
+        }
     }
 
+    var pass = 0
+
     for(i <- 0 until 20){
-        var src1 = rnd.nextInt(1<<30) << 1 
-        var src2 = rnd.nextInt(1<<30) << 1 
+        var src1 = rnd.nextInt(1<<30) << 2 
+        var src2 = rnd.nextInt(1<<30) << 2 
 
         for (en <- Seq(true,false)){
             poke(dut.io.en,en)
@@ -23,39 +35,47 @@ class BranchCompTest(dut:BranchComp) extends PeekPokeTester(dut){
             //======================
 
             if(en == false){
-                expect(dut.io.brtaken,false)
+                if(!expect(dut.io.brtaken,false)){pass+=1}
                 step(1)
             }else{
                 poke(dut.io.funct3, EQ.litValue())
-                expect(dut.io.brtaken,if(src1==src2) true else false)
+                if(!expect(dut.io.brtaken,if(src1==src2) true else false)){pass+=1}
                 step(1)
 
                 poke(dut.io.funct3, NE.litValue())
-                expect(dut.io.brtaken,if(src1!=src2) true else false)
+                if(!expect(dut.io.brtaken,if(src1!=src2) true else false)){pass+=1}
                 step(1)
 
                 poke(dut.io.funct3, LT.litValue())
-                expect(dut.io.brtaken,if(src1<src2) true else false)
+                if(!expect(dut.io.brtaken,if(src1<src2) true else false)){pass+=1}
                 step(1)
 
                 poke(dut.io.funct3, GE.litValue())
-                expect(dut.io.brtaken,if(src1>=src2) true else false)
+                if(!expect(dut.io.brtaken,if(src1>=src2) true else false)){pass+=1}
                 step(1)
 
                 poke(dut.io.funct3, LTU.litValue())
-                expect(dut.io.brtaken,if(src1<src2) true else false)
+                if(!expect(dut.io.brtaken,if(!geu(src1,src2)) true else false)){
+                    pass+=1
+                }
                 step(1)
 
                 poke(dut.io.funct3, GEU.litValue())
-                expect(dut.io.brtaken,if(src1>=src2) true else false)
+                if(!expect(dut.io.brtaken,if(geu(src1,src2)) true else false)){
+                    pass+=1
+                }
                 step(1)
             }
         }
     }
+
+    if(pass == 0)
+        println("BranchComp test completed!!!!!")
+    else
+        println(s"BranchComp test failed...you have ${pass} errors to fix")
 }
 
 object BranchCompTest extends App{
-    
     Driver.execute(args,()=>new BranchComp()){
         c:BranchComp => new BranchCompTest(c)
     }

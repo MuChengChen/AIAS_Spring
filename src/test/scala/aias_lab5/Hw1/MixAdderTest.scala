@@ -3,18 +3,23 @@ package aias_lab5.Hw1
 import chisel3.iotesters.{Driver,PeekPokeTester}
 
 class MixAdderTest (dut:MixAdder) extends PeekPokeTester(dut){
-
+    var pass = 0
     for (i <- 0 until 1000){
         val x = rnd.nextInt(1<<30)
         val y = rnd.nextInt(1<<30)
 
         poke(dut.io.in1,x)
         poke(dut.io.in2,y)
-        expect(dut.io.Sum,x+y)
+        if(!expect(dut.io.Sum,x+y)){pass = pass + 1}
         step(1)
     }
-
-    println("MixAdder test completed!!!!!")
+    
+    if(pass == 0){
+        println("MixAdder test completed!!!!!")
+    }else{
+        println(s"MixAdder test failed...you have ${pass} errors to fix")
+    }
+    
 }
 
 object MixAdderTest extends App{

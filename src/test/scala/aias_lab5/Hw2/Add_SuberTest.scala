@@ -14,8 +14,7 @@ class Add_SuberTest (as : Add_Suber) extends PeekPokeTester(as){
 	}
   }
 
-  var total = 0
-  var num_correct = 0
+  var pass = 0
   for(in1 <- -8 until 8){
     for(in2 <- -8 until 8){
 	  for(op <- 0 to 1){
@@ -26,18 +25,22 @@ class Add_SuberTest (as : Add_Suber) extends PeekPokeTester(as){
 		val output = _signed(peek(as.io.out).toInt)
 		
 		if(answer < -8 || answer > 7){
-          expect(as.io.o_f,1)
+          if(!expect(as.io.o_f,1)){pass = pass + 1}
 		}else{
 		  //dtype of peek() is BigInt
           if(answer!=output){
 			  println("error!! output is :"+output+"the answer should be : "+answer)
+			  pass = pass + 1
 		  }
 		}
         step(1)
 	  }
 	}
   }
-  println("Add_Suber test completed!!!")
+  if(pass==0)
+    println("Add_Suber test completed!!!")
+  else
+	println(s"Add_Suber test failed...you have ${pass} errors to fix")
 }
 
 //>>>test:runMain aias_lab1.FAtester -td generated/ -tbn verilator
