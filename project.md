@@ -27,10 +27,10 @@
 |&#10003;|&#10003;|orc.b _rd_, _rs1_, _rs2_|[insns-orc_b](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/orc.adoc)||&#10003;|| | 王凱弘|
 |&#10003;|&#10003;|orn _rd_, _rs1_, _rs2_|[insns-orn](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/orn.adoc)||&#10003;|| |王凱弘 |
 |&#10003;|&#10003;|rev8 _rd_, _rs_|[insns-rev8](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/rev8.adoc)||&#10003;|| | 王凱弘|
-|&#10003;|&#10003;|rol _rd_, _rs1_, _rs2_|[insns-rol](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/rol.adoc)||&#10003;|| | |
+|&#10003;|&#10003;|rol _rd_, _rs1_, _rs2_|[insns-rol](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/rol.adoc)||&#10003;|| |陳慕丞 |
 ||&#10003;|rolw _rd_, _rs1_, _rs2_|[insns-rolw](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/orlw.adoc)||&#10003;|| | |
-|&#10003;|&#10003;|ror _rd_, _rs1_, _rs2_|[insns-ror](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/ror.adoc)||&#10003;|| | |
-|&#10003;|&#10003;|rori _rd_, _rs1_, _shamt_|[insns-rori](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/rori.adoc)||&#10003;|| | |
+|&#10003;|&#10003;|ror _rd_, _rs1_, _rs2_|[insns-ror](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/ror.adoc)||&#10003;|| | 陳慕丞|
+|&#10003;|&#10003;|rori _rd_, _rs1_, _shamt_|[insns-rori](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/rori.adoc)||&#10003;|| | 陳慕丞|
 ||&#10003;|roriw _rd_, _rs1_, _shamt_|[insns-roriw](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/roriw.adoc)||&#10003;|| | |
 ||&#10003;|rorw _rd_, _rs1_, _rs2_|[insns-rorw](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/rorw.adoc)||&#10003;|| | |
 |&#10003;|&#10003;|bclr _rd_, _rs1_, _rs2_|[insns-bclr](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/bclr.adoc)||||&#10003;| 陳玟樺| |
@@ -50,5 +50,5 @@
 |&#10003;|&#10003;|sh3add _rd_, _rs2_, _rs2_|[insns-sh3add](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/sh3add.adoc)|&#10003;||| | 宋方瑜|
 ||&#10003;|sh3add.uw _rd_, _rs1_, _rs2_|[nsns-sh3add_uw](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/sh3add_uw.adoc)|&#10003;||| ||
 ||&#10003;|slli.uw _rd_, _rs1_, _imm_|[insns-slli_uw](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/slli_uw.adoc)|&#10003;||| ||
-|&#10003;|&#10003;|xnor _rd_, _rs1_, _rs2_|[insns-xnor](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/xnor.adoc)||&#10003;|| | |
-|&#10003;|&#10003;|zext.h _rd_, _rs_|[insns-zext_h](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/zext.adoc)||&#10003;|| |
+|&#10003;|&#10003;|xnor _rd_, _rs1_, _rs2_|[insns-xnor](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/xnor.adoc)||&#10003;|| |陳慕丞 |
+|&#10003;|&#10003;|zext.h _rd_, _rs_|[insns-zext_h](https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/insns/zext.adoc)||&#10003;|| 陳慕丞|
