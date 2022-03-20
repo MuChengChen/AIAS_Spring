@@ -51,7 +51,13 @@ typedef enum {
 	//instruction added
     //MUL,
     //*****************
-
+	//-----------Chen-Mu-Cheng---Oscar-//
+	ROL,
+	ROR,
+	RORI,
+	XNOR,
+	ZEXTH,
+	//-----------Chen-Mu-Cheng---Oscar-//
 	ADD,
 	ADDI,
 	AND,
@@ -96,7 +102,13 @@ instr_type parse_instr(char* tok) {
 	//instruction added
     //if ( streq(tok , "mul")) return MUL;
     //*****************
-
+	//-----------Chen-Mu-Cheng---Oscar-//
+	if ( streq(tok, "rol") )  return ROL;
+	if ( streq(tok, "ror") ) return ROR;
+	if ( streq(tok, "rori") ) return RORI;
+	if ( streq(tok, "xnor") ) return XNOR;
+	if ( streq(tok, "zext.h") ) return ZEXTH;
+	//-----------Chen-Mu-Cheng---Oscar-//
 	if ( streq(tok, "add") ) return ADD;
 	if ( streq(tok, "sub") ) return SUB;
 	if ( streq(tok, "slt") ) return SLT;
@@ -530,7 +542,37 @@ int parse_instr(int line, char* ftok, instr* imem, int memoff, label_loc* labels
 			// 	    i->a3.reg = parse_reg(o3 , line);
 			//     return 1;
 			//****************
-
+			//-----------Chen-Mu-Cheng---Oscar-//
+			case ROL:  
+				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line, "Invalid format" );
+				i->a1.reg = parse_reg(o1, line);
+				i->a2.reg = parse_reg(o2, line);
+				i->a3.reg = parse_reg(o3, line);
+				return 1;
+			case ROR:
+				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line, "Invalid format" );
+				i->a1.reg = parse_reg(o1, line);
+				i->a2.reg = parse_reg(o2, line);
+				i->a3.reg = parse_reg(o3, line);
+				return 1;
+			case XNOR:
+				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line, "Invalid format" );
+				i->a1.reg = parse_reg(o1, line);
+				i->a2.reg = parse_reg(o2, line);
+				i->a3.reg = parse_reg(o3, line);
+				return 1;
+			case ZEXTH:
+				if ( !o1 || !o2 || o3 || o4 ) print_syntax_error( line, "Invalid format" );
+				i->a1.reg = parse_reg(o1, line);
+				i->a2.reg = parse_reg(o2, line);
+				return 1;
+			case RORI:
+				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line, "Invalid format" );
+				i->a1.reg = parse_reg(o1, line);
+				i->a2.reg = parse_reg(o2, line);
+				i->a3.imm = parse_imm(o3, 5, line);
+				return 1;
+			//-----------Chen-Mu-Cheng---Oscar-//
 			case JAL:
 				if ( o2 ) { // two operands, reg, label
 					if ( !o1 || !o2 || o3 || o4 ) print_syntax_error( line, "Invalid format" );
@@ -767,6 +809,33 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 			//instruction added
       		//case MUL: rf[i.a1.reg] = rf[i.a2.reg] * rf[i.a3.reg]; break;
       		//*****************
+			//-----------Chen-Mu-Cheng---Oscar-//
+			case ROL:{
+				uint32_t b=rf[i.a3.reg];
+				b=(b<<27)>>27;//取前5bits
+				rf[i.a1.reg]=(rf[i.a2.reg]<<b)|(rf[i.a2.reg]>>(32-b));
+				break;
+			}
+			case ROR:{
+				uint32_t b=rf[i.a3.reg];
+				b=(b<<27)>>27;//取前5bits
+				rf[i.a1.reg]=(rf[i.a2.reg]>>b)|(rf[i.a2.reg]<<(32-b));
+				break;
+			}
+			case RORI:{
+				uint32_t b=i.a3.imm;
+				b=(b<<27)>>27;//取前5bits
+				rf[i.a1.reg]=(rf[i.a2.reg]>>b)|(rf[i.a2.reg]<<(32-b));
+				break;
+			}
+			case XNOR:rf[i.a1.reg]=~(rf[i.a2.reg]^rf[i.a3.reg]); break;
+			case ZEXTH:{
+				uint32_t b=rf[i.a2.reg];
+				rf[i.a1.reg]=(b<<16)>>16;//取前16bits
+				break;
+			}
+			//-----------Chen-Mu-Cheng---Oscar-//
+			
 
 			case ADD: rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
 			case SUB: rf[i.a1.reg] = rf[i.a2.reg] - rf[i.a3.reg]; break;

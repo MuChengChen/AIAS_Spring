@@ -791,18 +791,21 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 			//instruction added
       		case MUL: rf[i.a1.reg] = rf[i.a2.reg] * rf[i.a3.reg]; break;
 			case MULHU:{
+					//because it is unsigned*unsigned number,use uint32_t prototype
 					uint32_t b1=rf[i.a2.reg];
 					uint32_t b2=rf[i.a3.reg]; 
 					rf[i.a1.reg]=b1*b2;
 					break;
 			}
 			case REM:{
+					//because it is signed%signed number,use int32_t prototype
 					int32_t b1=rf[i.a2.reg]; 
 					int32_t b2=rf[i.a3.reg];
 					rf[i.a1.reg]=b1%b2;
 					break;
 			}
 			case REMU:{
+					//because it is unsigned%unsigned number,use uint32_t prototype
 					uint32_t b1=rf[i.a2.reg];
 					uint32_t b2=rf[i.a3.reg]; 
 					rf[i.a1.reg]=b1%b2;
