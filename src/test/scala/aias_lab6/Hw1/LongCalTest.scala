@@ -50,6 +50,32 @@ class LongCalTest(dut:LongCal) extends PeekPokeTester(dut){
         println("Test 2 : 17-16+(-15)-14+13-12+(-11)= failed , your output is " + peek(dut.io.value.bits).toInt.toString)
     }
     step(1)
+
+    //Test 3
+    "(-15)=".foreach{ x =>
+        poke(dut.io.key_in,dict(x))
+        step(1)
+    }
+    while(peek(dut.io.value.valid) == 0){
+        step(1)
+    }
+    if(peek(dut.io.value.bits).toInt!=(-38)){
+        println("Test 3 : (-15)= failed , your output is " + peek(dut.io.value.bits).toInt.toString)
+    }
+    step(1)
+
+    //Test 4
+    "15=".foreach{ x =>
+        poke(dut.io.key_in,dict(x))
+        step(1)
+    }
+    while(peek(dut.io.value.valid) == 0){
+        step(1)
+    }
+    if(peek(dut.io.value.bits).toInt!=(-38)){
+        println("Test 4 : 15= failed , your output is " + peek(dut.io.value.bits).toInt.toString)
+    }
+    step(1)
 }
 
 object LongCalTest extends App{
