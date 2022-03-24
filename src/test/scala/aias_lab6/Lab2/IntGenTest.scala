@@ -32,6 +32,8 @@ class IntGenTest(dut:IntGen) extends PeekPokeTester(dut){
     println("Input: 1234= ")
     println("Output : "+peek(dut.io.value.bits).toString)
 
+    step(1)
+
     Seq('5','4','3','2','=').foreach{ x =>
         poke(dut.io.key_in,dict(x))
         step(1)
@@ -39,6 +41,8 @@ class IntGenTest(dut:IntGen) extends PeekPokeTester(dut){
     expect(dut.io.value.bits,Seq('5','4','3','2').map{dict(_)}.reduceLeft(10 *_ + _))
     println("Input: 5432= ")
     println("Output : "+peek(dut.io.value.bits).toString) 
+
+    step(1)
 }
 
 object IntGenTest extends App{

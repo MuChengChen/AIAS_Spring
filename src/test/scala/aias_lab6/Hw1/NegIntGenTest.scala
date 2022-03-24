@@ -3,6 +3,7 @@ package aias_lab6.Hw1
 import chisel3.iotesters.{Driver,PeekPokeTester}
 
 class NegIntGenTest(dut:NegIntGen) extends PeekPokeTester(dut){
+    implicit def bigint2boolean(b:BigInt):Boolean = if (b>0) true else false
 
     val dict = Map(
       '0' -> 0,
@@ -23,25 +24,42 @@ class NegIntGenTest(dut:NegIntGen) extends PeekPokeTester(dut){
       '=' -> 15
     )
     
+    //Test 1
     "(-1234)=".foreach{ x =>
         poke(dut.io.key_in,dict(x))
         step(1)
     }
-    assert(peek(dut.io.value.bits).toInt==(-1234))
-    step(1)
+    while(!peek(dut.io.value.valid)){step(1)}
 
+    if(peek(dut.io.value.bits).toInt!=(-1234)){
+        println("Test 1 : (-1234)= failed , your output is " + peek(dut.io.value.bits).toInt.toString)
+    }
+    step(1)
+   
+
+
+    //Test 2
     Seq('(','-','5','4','2','1',')','=').foreach{ x =>
         poke(dut.io.key_in,dict(x))
         step(1)
     }
-    assert(peek(dut.io.value.bits).toInt==(-5421))
+    while(!peek(dut.io.value.valid)){step(1)}
+    if(peek(dut.io.value.bits).toInt==(-5421)){
+        println("Test 2 : (-5421)= failed , your output is " + peek(dut.io.value.bits).toInt.toString)
+    }
     step(1)
+    
 
+
+    //Test 3
     "5487=".foreach{ x =>
         poke(dut.io.key_in,dict(x))
         step(1)
     }
-    expect(dut.io.value.bits,5487)
+    while(!peek(dut.io.value.valid)){step(1)}
+    if(peek(dut.io.value.bits).toInt==(5487)){
+        println("Test 3 : 5487= failed , your output is " + peek(dut.io.value.bits).toInt.toString)
+    }
     step(1)
 }
 

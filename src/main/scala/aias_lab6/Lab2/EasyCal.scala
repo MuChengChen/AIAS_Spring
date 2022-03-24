@@ -62,6 +62,7 @@ class EasyCal extends Module{
         src1 := 0.U
         src2 := 0.U
         op := 0.U
+        in_buffer := 0.U
     }
 
     io.value.valid := Mux(state === sEqual,true.B,false.B)

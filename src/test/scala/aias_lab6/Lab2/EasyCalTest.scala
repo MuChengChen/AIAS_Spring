@@ -28,12 +28,14 @@ class EasyCalTest(dut:EasyCal) extends PeekPokeTester(dut){
         step(1)
     }
     expect(dut.io.value.bits,1000)
+    step(1)
 
     "12*5=".foreach{ x =>
         poke(dut.io.key_in,dict(x))
         step(1)
     }
     expect(dut.io.value.bits,60)
+    step(1)
 
     "3-18=".foreach{ x =>
         poke(dut.io.key_in,dict(x))
@@ -41,6 +43,7 @@ class EasyCalTest(dut:EasyCal) extends PeekPokeTester(dut){
     }
     // expect(dut.io.value.bits,-15)
     assert(peek(dut.io.value.bits).toInt==(-15))
+    step(1)
     
 }
 

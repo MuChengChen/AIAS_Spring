@@ -1,0 +1,15 @@
+package aias_lab6.Hw1
+
+import chisel3._
+import chisel3.util._
+
+class NegIntGen extends Module{
+    val io = IO(new Bundle{
+        val key_in = Input(UInt(4.W))
+        val value = Output(Valid(UInt(32.W)))
+    })
+    
+    //please implement your code below
+    io.value.valid := false.B
+    io.value.bits := 0.U
+}

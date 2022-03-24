@@ -3,6 +3,8 @@ package aias_lab6.Hw1
 import chisel3.iotesters.{Driver,PeekPokeTester}
 
 class LongCalTest(dut:LongCal) extends PeekPokeTester(dut){
+    
+    implicit def bigint2boolean(b:BigInt):Boolean = if (b>0) true else false
 
     val dict = Map(
       '0' -> 0,
@@ -23,6 +25,7 @@ class LongCalTest(dut:LongCal) extends PeekPokeTester(dut){
       '=' -> 15
     )
     
+    //Test 1
     "(-15)-15-(-15)+(-15)=".foreach{ x =>
         poke(dut.io.key_in,dict(x))
         step(1)
@@ -30,18 +33,23 @@ class LongCalTest(dut:LongCal) extends PeekPokeTester(dut){
     while(peek(dut.io.value.valid) == 0){
         step(1)
     }
-    assert(peek(dut.io.value.bits).toInt==(-30))
+    if(peek(dut.io.value.bits).toInt!=(-30)){
+        println("Test 1 : (-15)-15-(-15)+(-15)= failed , your output is " + peek(dut.io.value.bits).toInt.toString)
+    }
     step(1)
-
-    // "17-16+(-15)-14+13-12+(-11)=".foreach{ x =>
-    //     poke(dut.io.key_in,dict(x))
-    //     step(1)
-    // }
-    // while(peek(dut.io.value.valid) == 0){
-    //     step(1)
-    // }
-    // expect(dut.io.value.bits,17-16+(-15)-14+13-12+(-11))
-    // step(1)
+    
+    //Test 2
+    "17-16+(-15)-14+13-12+(-11)=".foreach{ x =>
+        poke(dut.io.key_in,dict(x))
+        step(1)
+    }
+    while(peek(dut.io.value.valid) == 0){
+        step(1)
+    }
+    if(peek(dut.io.value.bits).toInt!=(-38)){
+        println("Test 2 : 17-16+(-15)-14+13-12+(-11)= failed , your output is " + peek(dut.io.value.bits).toInt.toString)
+    }
+    step(1)
 }
 
 object LongCalTest extends App{

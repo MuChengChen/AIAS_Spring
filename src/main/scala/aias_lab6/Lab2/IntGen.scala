@@ -33,6 +33,7 @@ class IntGen extends Module{
     when(state === sAccept){
         number := (number<<3.U) + (number<<1.U) + in_buffer
     }.elsewhen(state === sEqual){
+        in_buffer := 0.U
         number := 0.U
     }
 
