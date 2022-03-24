@@ -1,6 +1,7 @@
-package aias_lab6.Hw1
+package aias_lab6.Hw2
 
 import chisel3.iotesters.{Driver,PeekPokeTester}
+import scala.language.implicitConversions
 
 class LongCalTest(dut:LongCal) extends PeekPokeTester(dut){
     
@@ -35,6 +36,8 @@ class LongCalTest(dut:LongCal) extends PeekPokeTester(dut){
     }
     if(peek(dut.io.value.bits).toInt!=(-30)){
         println("Test 1 : (-15)-15-(-15)+(-15)= failed , your output is " + peek(dut.io.value.bits).toInt.toString)
+    }else{
+        println("Test 1 :  pass")
     }
     step(1)
     
@@ -48,6 +51,8 @@ class LongCalTest(dut:LongCal) extends PeekPokeTester(dut){
     }
     if(peek(dut.io.value.bits).toInt!=(-38)){
         println("Test 2 : 17-16+(-15)-14+13-12+(-11)= failed , your output is " + peek(dut.io.value.bits).toInt.toString)
+    }else{
+        println("Test 2 :  pass")
     }
     step(1)
 
@@ -59,8 +64,10 @@ class LongCalTest(dut:LongCal) extends PeekPokeTester(dut){
     while(peek(dut.io.value.valid) == 0){
         step(1)
     }
-    if(peek(dut.io.value.bits).toInt!=(-38)){
+    if(peek(dut.io.value.bits).toInt!=(-15)){
         println("Test 3 : (-15)= failed , your output is " + peek(dut.io.value.bits).toInt.toString)
+    }else{
+        println("Test 3 :  pass")
     }
     step(1)
 
@@ -72,8 +79,10 @@ class LongCalTest(dut:LongCal) extends PeekPokeTester(dut){
     while(peek(dut.io.value.valid) == 0){
         step(1)
     }
-    if(peek(dut.io.value.bits).toInt!=(-38)){
+    if(peek(dut.io.value.bits).toInt!=15){
         println("Test 4 : 15= failed , your output is " + peek(dut.io.value.bits).toInt.toString)
+    }else{
+        println("Test 4 :  pass")
     }
     step(1)
 }

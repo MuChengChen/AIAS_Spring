@@ -1,6 +1,7 @@
-package aias_lab6.Hw1
+package aias_lab6.Hw2
 
 import chisel3.iotesters.{Driver,PeekPokeTester}
+import scala.language.implicitConversions
 
 class CpxCalTest(dut:CpxCal) extends PeekPokeTester(dut){
 

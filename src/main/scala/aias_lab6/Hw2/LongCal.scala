@@ -1,4 +1,4 @@
-package aias_lab6.Hw1
+package aias_lab6.Hw2
 
 import chisel3._
 import chisel3.util._
