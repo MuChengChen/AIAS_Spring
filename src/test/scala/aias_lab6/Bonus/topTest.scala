@@ -5,6 +5,7 @@ import chisel3.util._
 import chisel3.iotesters.{Driver,PeekPokeTester}
 import scala.util.Random
 import scala.io.StdIn.readInt
+import scala.language.implicitConversions
 
 class topTest(dut:top) extends PeekPokeTester(dut) {
     
