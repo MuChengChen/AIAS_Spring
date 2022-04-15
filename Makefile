@@ -27,6 +27,11 @@ translate:
 migrate:
 	@bash migrate.sh
 
+validate:
+	@./obj/emulator ./src/main/resource/Hw1_inst.asm
+	@diff -q ./src/main/resource/Hw1_m_code.hex ./src/main/resource/m_code.hex
+	@diff -s ./src/main/resource/Hw1_m_code.hex ./src/main/resource/m_code.hex
+
 .PHONY: clean
 clean:
 	@echo [info] remove the generated file......
