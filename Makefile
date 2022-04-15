@@ -28,7 +28,11 @@ migrate:
 	@bash migrate.sh
 
 validate:
+	@echo [info] compate the generated file with the benchmark
+	@echo [info] transform 2 file from CRLF to LF
 	@./obj/emulator ./src/main/resource/Hw1_inst.asm
+	@sed -i "s/\r//" ./src/main/resource/Hw1_m_code.hex
+	@sed -i "s/\r//" ./src/main/resource/m_code.hex
 	@diff -q ./src/main/resource/Hw1_m_code.hex ./src/main/resource/m_code.hex
 	@diff -s ./src/main/resource/Hw1_m_code.hex ./src/main/resource/m_code.hex
 
