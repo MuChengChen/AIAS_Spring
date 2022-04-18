@@ -11,6 +11,10 @@ class top extends Module {
         val pc = Output(UInt(15.W))
         val regs = Output(Vec(32,UInt(32.W)))
         val Hcf = Output(Bool())
+
+        //for sure that IM and DM will be synthesized
+        val inst = Output(UInt(32.W))
+        val rdata = Output(UInt(32.W))
     })
 
     val sc = Module(new Single_Cycle())
@@ -35,6 +39,8 @@ class top extends Module {
     io.pc := sc.io.pc
     io.regs := sc.io.regs
     io.Hcf := sc.io.Hcf
+    io.inst := im.io.inst
+    io.rdata := dm.io.rdata
 }
 
 
