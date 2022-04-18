@@ -12,14 +12,6 @@ then
     then
         cp ./src/main/resource/Hw1_inst.asm ./src/main/resource/inst.asm
         cp ./src/main/resource/Hw1_m_code.hex ./src/main/resource/m_code.hex
-    elif [ "$1" = "Hw2" ]
-    then
-        cp ./src/main/resource/Hw2_inst.asm ./src/main/resource/inst.asm
-        cp ./src/main/resource/Hw2_m_code.hex ./src/main/resource/m_code.hex
-    elif [ "$1" = "Hw3" ]
-    then
-        cp ./src/main/resource/Hw3_inst.asm ./src/main/resource/inst.asm
-        cp ./src/main/resource/Hw3_m_code.hex ./src/main/resource/m_code.hex
     else
         echo "[Error] parameter 1 is wrong"
     fi
