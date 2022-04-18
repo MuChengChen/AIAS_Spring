@@ -27,7 +27,7 @@ class DataMem(bits:Int) extends Module {
   })
   val DATA_OFFSET = 1<<bits
   
-  val memory = Mem((1<<(bits-1)), UInt(8.W))
+  val memory = Mem((1<<(bits)), UInt(8.W))
   loadMemoryFromFile(memory, "./src/main/resource/data.hex")
   
   val srdata = Wire(SInt(32.W))
@@ -56,10 +56,10 @@ class DataMem(bits:Int) extends Module {
       memory(wa) := wd(7,0)
     }.elsewhen(io.funct3===Half){
       memory(wa) := wd(7,0)
-      memory(wa+1.U(bits.W)) := wd(bits,8)
+      memory(wa+1.U(bits.W)) := wd(15,8)
     }.elsewhen(io.funct3===Word){
       memory(wa) := wd(7,0)
-      memory(wa+1.U(bits.W)) := wd(bits,8)
+      memory(wa+1.U(bits.W)) := wd(15,8)
       memory(wa+2.U(bits.W)) := wd(23,16)
       memory(wa+3.U(bits.W)) := wd(31,24)
     }

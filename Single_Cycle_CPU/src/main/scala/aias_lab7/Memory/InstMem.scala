@@ -11,7 +11,7 @@ class InstMem(bits:Int) extends Module {
     val raddr = Input(UInt(bits.W))
     val inst = Output(UInt(32.W))
   })
-  val memory = Mem((1<<(bits-1)), UInt(8.W))
+  val memory = Mem((1<<bits), UInt(8.W))
   loadMemoryFromFile(memory, "./src/main/resource/m_code.hex")
   
   val rdata = Wire(UInt(32.W))
