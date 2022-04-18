@@ -45,7 +45,7 @@ class DataMem(bits:Int) extends Module {
 
   wd := MuxLookup(io.funct3,0.U,Seq(
     Byte -> io.wdata(7,0),
-    Half -> io.wdata(bits,0),
+    Half -> io.wdata(15,0),
     Word -> io.wdata,
   ))
 
