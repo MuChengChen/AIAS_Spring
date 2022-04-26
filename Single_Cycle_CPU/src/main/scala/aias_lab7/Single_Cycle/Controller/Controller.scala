@@ -28,6 +28,15 @@ object ALU_op{
   val AND  = 7.U
   val SUB  = 8.U
   val SRA  = 13.U
+  /*---wilson---*/
+  val clz  = 14.U
+  val ctz  = 15.U
+  val cpop = 16.U
+  val andn = 17.U
+  val orn  = 18.U
+  val xnor = 19.U
+  val min  = 20.U
+  /*---wilson---*/
 }
 
 object condition{
@@ -62,7 +71,7 @@ class Controller extends Module {
         val BrUn = Output(Bool())
         val BSel = Output(Bool())
         val ASel = Output(Bool())
-        val ALUSel = Output(UInt(4.W))
+        val ALUSel = Output(UInt(32.W))
         val MemRW = Output(Bool())
         val WBSel = Output(UInt(2.W))
 
@@ -76,6 +85,9 @@ class Controller extends Module {
 
     val funct3 = Wire(UInt(3.W))
     funct3 := io.Inst(14,12)
+    
+    val rs2 = Wire(UInt(5.W))
+    rs2 := io.Inst(24,20)
 
     val funct7 = Wire(UInt(7.W))
     funct7 := io.Inst(31,25)
@@ -94,7 +106,7 @@ class Controller extends Module {
         OP_IMM->I,
         OP->R,
         AUIPC->U,
-        LUI->U
+        LUI->U,
     ))
     io.ALUSel := Mux(opcode===OP||opcode===OP_IMM,funct3,ADD)
     when(funct7(5)===1.U && (opcode===OP || opcode===OP_IMM)){
@@ -113,16 +125,46 @@ class Controller extends Module {
             is(GEU) {io.PCSel := ~io.BrLT}
         }
     }
-    io.WBSel := MuxLookup(opcode,0.U,Seq(
-        //LOAD->0.U,
+    io.WBSel := MuxLookup(opcode,1.U,Seq(
+        LOAD->0.U,
         JALR->2.U,
         JAL->2.U,
-        OP_IMM->1.U,
-        OP->1.U,
-        AUIPC->1.U,
-        LUI->1.U
+        //OP_IMM->1.U,
+        //OP->1.U,
+        //AUIPC->1.U,
+        //LUI->1.U,
     ))
     io.RegWEn := Mux(opcode===STORE||opcode===BRANCH||opcode===HCF,false.B,true.B)
     io.Hcf := opcode === HCF
     io.Lui := opcode === LUI
+
+    /*--Extension--*/
+    when(opcode===OP_IMM){
+        /*-----wilson-----*/
+        when(funct7==="h30".U && rs2===0.U && funct3===1.U){
+            io.ALUSel := clz
+        }.elsewhen(funct7==="h30".U && rs2==="h1".U && funct3===1.U){
+            io.ALUSel := ctz
+        }.elsewhen(funct7==="h30".U && rs2==="h2".U && funct3===1.U){
+            io.ALUSel := cpop
+        }
+        /*-----wilson-----*/
+
+
+    }
+    when(opcode===OP){
+        /*-----wilson-----*/
+        when(funct7==="h20".U && funct3==="h7".U){
+            io.ALUSel := andn
+        }.elsewhen(funct7==="h20".U && funct3==="h6".U){
+            io.ALUSel := orn
+        }.elsewhen(funct7==="h20".U && funct3==="h4".U){
+            io.ALUSel := xnor
+        }.elsewhen(funct7==="h5".U && funct3==="h4".U){
+            io.ALUSel := min
+        }
+        /*-----wilson-----*/
+
+
+    }
 }

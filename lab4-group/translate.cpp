@@ -77,6 +77,72 @@ void translate_to_machine_code(uint8_t* mem,instr* imem, char* argv1){
 
         //follow the ISA and combine the fragment information in binary form
 		switch(i.op){
+			/*-----wilson-----*/
+			case clz:
+                                // rf[i.a1.reg] = rf[i.a2.reg] + i.a3.imm; break;
+                                binary = 0x13; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0b001 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += 0x0 << 20;    
+				binary += 0x30 << 25;   //funct7
+                        break;
+			case ctz:
+                                // rf[i.a1.reg] = rf[i.a2.reg] + i.a3.imm; break;
+				binary = 0x13; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0b001 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += 0x1 << 20;
+                                binary += 0x30 << 25;   //funct7
+                        break;
+			case cpop:
+                                // rf[i.a1.reg] = rf[i.a2.reg] + i.a3.imm; break;
+				binary = 0x13; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0b001 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += 0x2 << 20;     
+                                binary += 0x30 << 25;   //funct7
+                        break;
+			case andn:
+                            // rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x7 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += i.a3.reg << 20;    //rs2
+                                binary += 0x20 << 25;   //funct7
+                        break;
+			case ORN:
+                            // rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x6 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += i.a3.reg << 20;    //rs2
+                                binary += 0x20 << 25;   //funct7
+                        break;
+			case XNOR:
+                            // rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x4 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += i.a3.reg << 20;    //rs2
+                                binary += 0x20 << 25;   //funct7
+                        break;
+			case MIN:
+                            // rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x4 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += i.a3.reg << 20;    //rs2
+                                binary += 0x5 << 25;   //funct7
+                        break;
+			/*-----wilson-----*/
+			
 			case ADD:
 			    // rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
 				binary = (0x0C << 2) + 0x03; //opcode
