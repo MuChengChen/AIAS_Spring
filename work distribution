@@ -1,0 +1,31 @@
+  | Num | Mnemonic            | Owner |  Type  |
+  | --- | ------------------- | ----- |:------:|
+  | 1   | clz rd, rs          | 謝獻霆      | OP-IMM |
+  | 2   | ctz rd, rs          | 謝獻霆      | OP-IMM |
+  | 3   | cpop rd, rs         | 謝獻霆      | OP-IMM |
+  | 4   | andn rd, rs1, rs2   | 謝獻霆      |   OP   |
+  | 5   | orn rd, rs1, rs2    | 謝獻霆      |   OP   |
+  | 6   | xnor rd, rs1, rs2   | 謝獻霆      |   OP   |
+  | 7   | min rd, rs1, rs2    | 謝獻霆      |   OP   |
+  | 8   | max rd, rs1, rs2    |       |   OP   |
+  | 9   | minu rd, rs1, rs2   |       |   OP   |
+  | 10  | maxu rd, rs1, rs2   |       |   OP   |
+  | 11  | sext_b rd, rs       |       | OP-IMM |
+  | 12  | sext_h rd, rs       |       | OP-IMM |
+  | 13  | bset rd, rs1, rs2   |       |   OP   |
+  | 14  | bclr rd, rs1, rs2   |       |   OP   |
+  | 15  | binv rd, rs1, rs2   |       |   OP   |
+  | 16  | bext rd, rs1, rs2   |       |   OP   |
+  | 17  | bseti rd, rs1, imm  |       | OP-IMM |
+  | 18  | bclri rd, rs1, imm  |       | OP-IMM |
+  | 19  | binvi rd, rs1, imm  |       | OP-IMM |
+  | 20  | bexti rd, rs1, imm  |       | OP-IMM |
+  | 21  | ror rd, rs1, rs2    |       |   OP   |
+  | 22  | rol rd, rs1, rs2    |       |   OP   |
+  | 23  | rori rd, rs1, imm   |       | OP-IMM |
+  | 24  | sh1add rd, rs1, rs2 |       |   OP   |
+  | 25  | sh2add rd, rs1, rs2 |       |   OP   |
+  | 26  | sh3add rd, rs1, rs2 |       |   OP   |
+  | 27  | rev8 rd, rs         |       | OP-IMM |
+  | 28  | zext_h rd, rs       |       | OP-IMM |
+  | 29  | orc_b  rd, rs       |       | OP-IMM |
