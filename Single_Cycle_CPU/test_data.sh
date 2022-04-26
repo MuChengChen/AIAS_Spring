@@ -12,7 +12,7 @@ then
     then
         cp ./src/main/resource/Hw1_inst.asm ./src/main/resource/inst.asm
         cp ./src/main/resource/Hw1_m_code.hex ./src/main/resource/m_code.hex
-    elif [ "$1" = "try" ]
+    elif [ "$1" = "group" ]
     then
         cp ../lab4-group/example_code/inst.asm ./src/main/resource/inst.asm
         cp ../lab4-group/example_code/m_code.hex ./src/main/resource/m_code.hex

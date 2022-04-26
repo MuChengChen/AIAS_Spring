@@ -1,3 +1,4 @@
+# initialize
 addi x16, x0, 0xfec
 addi x17, x0, 0x472
 addi x18, x0, 0xab7
@@ -14,8 +15,12 @@ addi x28, x0, 0x55
 addi x29, x0, 0xffe
 addi x30, x0, 0x4
 addi x31, x0, 0xff1
+
 clz x1, x30
-cpop x2, x23
-xnor x3, x16, x17
-min x4, x31, x25
+ctz x2, x30
+cpop x3, x23
+andn x4, x16, x17
+orn x5, x16, x17
+xnor x6, x16, x17
+min x7, x31, x25
 hcf
