@@ -1,12 +1,12 @@
   | Num | Mnemonic            | Owner |  Type  |
   | --- | ------------------- | ----- |:------:|
-  | 1   | clz rd, rs          | 謝獻霆      | OP-IMM |
-  | 2   | ctz rd, rs          | 謝獻霆      | OP-IMM |
-  | 3   | cpop rd, rs         | 謝獻霆      | OP-IMM |
-  | 4   | andn rd, rs1, rs2   | 謝獻霆      |   OP   |
-  | 5   | orn rd, rs1, rs2    | 謝獻霆      |   OP   |
-  | 6   | xnor rd, rs1, rs2   | 謝獻霆      |   OP   |
-  | 7   | min rd, rs1, rs2    | 謝獻霆      |   OP   |
+  | 1   | clz rd, rs          | 謝獻霆| OP-IMM |
+  | 2   | ctz rd, rs          | 謝獻霆| OP-IMM |
+  | 3   | cpop rd, rs         | 謝獻霆| OP-IMM |
+  | 4   | andn rd, rs1, rs2   | 謝獻霆|   OP   |
+  | 5   | orn rd, rs1, rs2    | 謝獻霆|   OP   |
+  | 6   | xnor rd, rs1, rs2   | 謝獻霆|   OP   |
+  | 7   | min rd, rs1, rs2    | 謝獻霆|   OP   |
   | 8   | max rd, rs1, rs2    |       |   OP   |
   | 9   | minu rd, rs1, rs2   |       |   OP   |
   | 10  | maxu rd, rs1, rs2   |       |   OP   |
