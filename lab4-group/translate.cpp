@@ -144,7 +144,7 @@ void translate_to_machine_code(uint8_t* mem,instr* imem, char* argv1){
 			/*-----wilson-----*/
 
 			/*-----KAI-----*/
-			case sext_b:
+			case SEXTB:
                                 // rf[i.a1.reg] = rf[i.a2.reg] + i.a3.imm; break;
                                 binary = 0x13; //opcode
                                 binary += i.a1.reg << 7;     //rd
@@ -153,7 +153,7 @@ void translate_to_machine_code(uint8_t* mem,instr* imem, char* argv1){
                                 binary += 0x4 << 20;    
 				binary += 0x30 << 25;   //funct7
                         break;
-			case sext_h:
+			case SEXTH:
                                 // rf[i.a1.reg] = rf[i.a2.reg] + i.a3.imm; break;
 				binary = 0x13; //opcode
                                 binary += i.a1.reg << 7;     //rd
