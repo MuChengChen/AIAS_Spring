@@ -55,6 +55,61 @@ class ALU extends Module{
         }.otherwise{io.out := io.src2}
     }
     /*-----wilson-----*/
+
+
+    /*---KAI----------*/
+    is(sext_b){//Sign-extend byte: 把byte signed etension to 32-bit by R[rs](7)       X(rd) = EXTS(X(rs)[7..0]);
+        val for_signed_ext = Wire(SInt(32.W))
+        val temp = Wire(UInt(8.W))
+        temp := Cat(io.src1(7,0))
+        for_signed_ext := temp.asSInt //sign extension: 8bit signed to 32 bit就會自動做sign extension
+        io.out := for_signed_ext.asUInt
+    } 
+    is(sext_h){// Sign-extend halfword: X(rd) = EXTS(X(rs)[15..0]);
+        val for_signed_ext = Wire(SInt(32.W))
+        val temp = Wire(UInt(16.W))
+        temp := Cat(io.src1(15,0))
+        for_signed_ext := temp.asSInt //sign extension: 16bit signed to 32 bit就會自動做sign extension
+        io.out := for_signed_ext.asUInt        
+    } 
+
+    //!以下有shamt(而記住，I指令格式的指令會傳12-bit imm給ALU----12bit是 bit 20到bit 31)
+    is(bseti ){//Single-Bit Set (Immediate): 12-bit imm取low-5-bit存入shamt，用這個shamt左移1，然後將此結果與rs做bitwise-or
+        val shamt = Wire(UInt(5.W))
+        val shift_one = WireDefault(0.U(32.W))
+        shamt := Cat(io.src2(4,0))//12取5
+        shift_one := (1.U)<<shamt //1<<shamt
+        io.out := io.src1 | shift_one  //X(rd) = X(rs1) | (1 << index)
+    } 
+    is(bclri){//Single-Bit Clear (Immediate)
+        val shamt = Wire(UInt(5.W))
+        val shift_one = WireDefault(0.U(32.W))
+        shamt := Cat(io.src2(4,0))//12取5
+        shift_one := (1.U)<<shamt //1<<shamt
+        io.out := io.src1 & (~shift_one)  //X(rd) = X(rs1) & ~(1 << index)
+    } 
+    is(binvi){//Single-Bit Invert (Immediate)
+        val shamt = Wire(UInt(5.W))
+        val shift_one = WireDefault(0.U(32.W))
+        shamt := Cat(io.src2(4,0))//12取5
+        shift_one := (1.U)<<shamt //1<<shamt
+        io.out := io.src1 ^ shift_one  //X(rd) = X(rs1) ^ (1 << index)
+    } 
+    is(bexti){//Single-Bit Extract (Immediate)
+        val shamt = Wire(UInt(5.W))
+        shamt := Cat(io.src2(4,0))//12取5
+        io.out := (io.src1 >> shamt) & (1.U)  //X(rd) = (X(rs1) >> index) & 1;
+    } 
+    is(rori){//Rotate Right (Immediate)
+        val shamt = Wire(UInt(5.W))
+        shamt := Cat(io.src2(4,0))//12取5
+        io.out := (io.src1 >> shamt) | (io.src1 << (32.U-shamt)) //X(rd) = (X(rs1) >> shamt) | (X(rs1) << (xlen - shamt));
+    } 
+    /*---KAI----------*/
+
+
+
+
   }
 }
 
