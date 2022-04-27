@@ -10,19 +10,19 @@
   | 8   | max rd, rs1, rs2    |       |   OP   |
   | 9   | minu rd, rs1, rs2   |       |   OP   |
   | 10  | maxu rd, rs1, rs2   |       |   OP   |
-  | 11  | sext_b rd, rs       |       | OP-IMM |
-  | 12  | sext_h rd, rs       |       | OP-IMM |
+  | 11  | sext_b rd, rs       | 王凱弘      | OP-IMM |
+  | 12  | sext_h rd, rs       | 王凱弘      | OP-IMM |
   | 13  | bset rd, rs1, rs2   |       |   OP   |
   | 14  | bclr rd, rs1, rs2   |       |   OP   |
   | 15  | binv rd, rs1, rs2   |       |   OP   |
   | 16  | bext rd, rs1, rs2   |       |   OP   |
-  | 17  | bseti rd, rs1, imm  |       | OP-IMM |
-  | 18  | bclri rd, rs1, imm  |       | OP-IMM |
-  | 19  | binvi rd, rs1, imm  |       | OP-IMM |
-  | 20  | bexti rd, rs1, imm  |       | OP-IMM |
+  | 17  | bseti rd, rs1, imm  | 王凱弘      | OP-IMM |
+  | 18  | bclri rd, rs1, imm  | 王凱弘      | OP-IMM |
+  | 19  | binvi rd, rs1, imm  | 王凱弘      | OP-IMM |
+  | 20  | bexti rd, rs1, imm  | 王凱弘      | OP-IMM |
   | 21  | ror rd, rs1, rs2    |       |   OP   |
   | 22  | rol rd, rs1, rs2    |       |   OP   |
-  | 23  | rori rd, rs1, imm   |       | OP-IMM |
+  | 23  | rori rd, rs1, imm   | 王凱弘      | OP-IMM |
   | 24  | sh1add rd, rs1, rs2 |       |   OP   |
   | 25  | sh2add rd, rs1, rs2 |       |   OP   |
   | 26  | sh3add rd, rs1, rs2 |       |   OP   |
