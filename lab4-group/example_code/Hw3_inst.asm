@@ -49,7 +49,11 @@ add x16, x16, x16
 add x16, x16, x16
 add x16, x16, x16
 addi x16, x16, 0x55
-add x16, x16, x16 #x16 = 0xfeaa
+add x16, x16, x16  #x16 = 0xfeaa
+
+
+
+
 
 sext.b x1, x16      #x16 = 0xfeaa---->x1=0xffffffaa
 sext.h x2, x16      #x16 = 0xfeaa---->x2=0xfffffeaa

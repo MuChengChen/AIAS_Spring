@@ -164,7 +164,7 @@ void translate_to_machine_code(uint8_t* mem,instr* imem, char* argv1){
                         break;
 
                         //!以下有shamt
-			case bseti :
+			case BSETI ://?對應 lab7-group\lab4-group\emulator.cpp 的 instr_type parse_instr(char* tok) {} 裡面return的值
                                 // rf[i.a1.reg] = rf[i.a2.reg] + i.a3.imm; break;
 				binary = 0x13; //opcode
                                 binary += i.a1.reg << 7;     //rd
@@ -173,7 +173,7 @@ void translate_to_machine_code(uint8_t* mem,instr* imem, char* argv1){
                                 binary += i.a3.reg << 20;    //shamt    
                                 binary += 0x14 << 25;   //funct7
                         break;
-			case bclri:
+			case BCLRI:
                             // rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
                                 binary = 0x13; //opcode
                                 binary += i.a1.reg << 7;     //rd
@@ -182,7 +182,7 @@ void translate_to_machine_code(uint8_t* mem,instr* imem, char* argv1){
                                 binary += i.a3.reg << 20;    //shamt 
                                 binary += 0x24 << 25;   //funct7
                         break;
-			case binvi:
+			case BINVI:
                             // rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
                                 binary = 0x13; //opcode
                                 binary += i.a1.reg << 7;     //rd
@@ -191,7 +191,7 @@ void translate_to_machine_code(uint8_t* mem,instr* imem, char* argv1){
                                 binary += i.a3.reg << 20;    //shamt 
                                 binary += 0x34 << 25;   //funct7
                         break;
-			case bexti:
+			case BEXTI:
                             // rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
                                 binary = 0x13; //opcode
                                 binary += i.a1.reg << 7;     //rd
@@ -200,7 +200,7 @@ void translate_to_machine_code(uint8_t* mem,instr* imem, char* argv1){
                                 binary += i.a3.reg << 20;    //shamt 
                                 binary += 0x24 << 25;   //funct7
                         break;
-			case rori:
+			case RORI:
                             // rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
                                 binary = 0x13; //opcode
                                 binary += i.a1.reg << 7;     //rd
