@@ -1,4 +1,5 @@
 #這個應該會被指令$ ./obj/emulator example_code/Hw3_inst.asm 轉換成inst.asm
+#記得後面不能加註解喔，不能會有syntax error出現
 
 # initialize
 #addi x16, x0, 0xfec
@@ -37,10 +38,8 @@
 
 #hcf
 
-
-/*---KAI----------*/
 # initialize
-addi x16, x0, 0xfe
+addi x16, x0, 254
 add x16, x16, x16
 add x16, x16, x16
 add x16, x16, x16
@@ -48,21 +47,17 @@ add x16, x16, x16
 add x16, x16, x16
 add x16, x16, x16
 add x16, x16, x16
-addi x16, x16, 0x55
-add x16, x16, x16  #x16 = 0xfeaa
+addi x16, x16, 85
+add x16, x16, x16
 
-
-
-
-
-sext.b x1, x16      #x16 = 0xfeaa---->x1=0xffffffaa
-sext.h x2, x16      #x16 = 0xfeaa---->x2=0xfffffeaa
-bseti x3, x16, 31   #x16 = 0xfeaa---->x3=0x8000feaa
-bclri x4, x3, 31    #x3  = 0x8000feaa---->x4=0xfeaa
-binvi x5, x16, 31   #x16 = 0xfeaa---->x5=0x8000feaa
-bexti x6, x16, 31   #x16 = 0xfeaa---->x6=0
-rori  x7, x23, 16   #x16 = 0xfeaa---->x7=0xfeaa0000
+sext.b x1, x16    
+sext.h x2, x16    
+bseti x3, x16, 31 
+bclri x4, x3, 31  
+binvi x5, x16, 31 
+bexti x6, x16, 15
+rori  x7, x16, 16 
 hcf
-/*---KAI----------*/
+
 
 

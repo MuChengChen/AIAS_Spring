@@ -74,11 +74,11 @@ class ALU extends Module{
     } 
 
     //!以下有shamt(而記住，I指令格式的指令會傳12-bit imm給ALU----12bit是 bit 20到bit 31)
-    is(bseti ){//Single-Bit Set (Immediate): 12-bit imm取low-5-bit存入shamt，用這個shamt左移1，然後將此結果與rs做bitwise-or
+    is(bseti ){//Single-Bit Set (Immediate): 12-bit imm取low-5-bit存入shamt，用這個shamt左移1，然後將此結果與rs做bitwise-or//todo
         val shamt = Wire(UInt(5.W))
-        val shift_one = WireDefault(0.U(32.W))
+        val shift_one = Wire(UInt(32.W))
         shamt := Cat(io.src2(4,0))//12取5
-        shift_one := (1.U)<<shamt //1<<shamt
+        shift_one := (1.U(32.W))<<shamt //1<<shamt
         io.out := io.src1 | shift_one  //X(rd) = X(rs1) | (1 << index)
     } 
     is(bclri){//Single-Bit Clear (Immediate)
@@ -88,19 +88,19 @@ class ALU extends Module{
         shift_one := (1.U)<<shamt //1<<shamt
         io.out := io.src1 & (~shift_one)  //X(rd) = X(rs1) & ~(1 << index)
     } 
-    is(binvi){//Single-Bit Invert (Immediate)
+    is(binvi){//Single-Bit Invert (Immediate)//todo
         val shamt = Wire(UInt(5.W))
         val shift_one = WireDefault(0.U(32.W))
         shamt := Cat(io.src2(4,0))//12取5
         shift_one := (1.U)<<shamt //1<<shamt
         io.out := io.src1 ^ shift_one  //X(rd) = X(rs1) ^ (1 << index)
     } 
-    is(bexti){//Single-Bit Extract (Immediate)
+    is(bexti){//Single-Bit Extract (Immediate)//todo
         val shamt = Wire(UInt(5.W))
         shamt := Cat(io.src2(4,0))//12取5
         io.out := (io.src1 >> shamt) & (1.U)  //X(rd) = (X(rs1) >> index) & 1;
     } 
-    is(rori){//Rotate Right (Immediate)
+    is(rori){//Rotate Right (Immediate)//todo
         val shamt = Wire(UInt(5.W))
         shamt := Cat(io.src2(4,0))//12取5
         io.out := (io.src1 >> shamt) | (io.src1 << (32.U-shamt)) //X(rd) = (X(rs1) >> shamt) | (X(rs1) << (xlen - shamt));

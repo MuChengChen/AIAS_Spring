@@ -180,7 +180,7 @@ class Controller extends Module {
             io.ALUSel := binvi  
         }.elsewhen(funct7==="h24".U && funct3==="h5".U){//!shamt怎麼處理?    0x24  shamt  0x5--->bexti
             io.ALUSel := bexti 
-        }.elsewhen(funct7==="h30".U && funct3==="h5".U){//!shamt怎麼處理?    0x30  shamt  0x5--->
+        }.elsewhen(funct7==="h30".U && funct3==="h5".U){//!shamt怎麼處理?    0x30  shamt  0x5--->rori
             io.ALUSel := rori
         } 
         /*---KAI-----------*/

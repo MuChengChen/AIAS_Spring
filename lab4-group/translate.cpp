@@ -66,9 +66,9 @@ void translate_to_machine_code(uint8_t* mem,instr* imem, char* argv1){
 	char* path;
 	copy_path(argv1, &path);
 
-	FILE *mch_file = fopen(concat(path,"m_code.hex"), "w");
-	FILE *inst_file = fopen(concat(path,"inst.asm"), "w");
-	FILE *data_file = fopen(concat(path,"data.hex"), "w");
+	FILE *inst_file = fopen(concat(path,"inst.asm"), "w");   //!使用者撰寫的
+	FILE *mch_file = fopen(concat(path,"m_code.hex"), "w");  //!asm被emulator轉換為binary machine code是放進這裡
+	FILE *data_file = fopen(concat(path,"data.hex"), "w");  //!asm被emulator轉換為binary machine code裡的data應該是放進這裡
 
 	while(!dexit){
 		instr i = imem[inst_cnt];
@@ -170,44 +170,45 @@ void translate_to_machine_code(uint8_t* mem,instr* imem, char* argv1){
                                 binary += i.a1.reg << 7;     //rd
                                 binary += 0b001 << 12;       //funct3
                                 binary += i.a2.reg << 15;    //rs1
-                                binary += i.a3.reg << 20;    //shamt    
+                                binary += (i.a3.imm & 0x1f) << 20; // imm[4:0] -> inst[24:20]  shamt 
                                 binary += 0x14 << 25;   //funct7
+                                //printf( "\n\nbseti: %x\n\n", i.a3.imm );
                         break;
 			case BCLRI:
-                            // rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
                                 binary = 0x13; //opcode
                                 binary += i.a1.reg << 7;     //rd
                                 binary += 0b001 << 12;       //funct3
-                                binary += i.a2.reg << 15;    //rs1
-                                binary += i.a3.reg << 20;    //shamt 
+                                binary += i.a2.reg << 15;    //rs1  
+                                binary += (i.a3.imm & 0x1f) << 20; // imm[4:0] -> inst[24:20]  shamt 
                                 binary += 0x24 << 25;   //funct7
+                                //printf( "\n\nbclri: %x\n\n", i.a3.imm );
                         break;
 			case BINVI:
-                            // rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
                                 binary = 0x13; //opcode
                                 binary += i.a1.reg << 7;     //rd
                                 binary += 0b001 << 12;       //funct3
                                 binary += i.a2.reg << 15;    //rs1
-                                binary += i.a3.reg << 20;    //shamt 
+                                binary += (i.a3.imm & 0x1f) << 20; // imm[4:0] -> inst[24:20]  shamt 
                                 binary += 0x34 << 25;   //funct7
+                                //printf( "\n\nbinvi: %x\n\n", i.a3.imm );
                         break;
 			case BEXTI:
-                            // rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
                                 binary = 0x13; //opcode
                                 binary += i.a1.reg << 7;     //rd
                                 binary += 0x5 << 12;       //funct3
                                 binary += i.a2.reg << 15;    //rs1
-                                binary += i.a3.reg << 20;    //shamt 
+                                binary += (i.a3.imm & 0x1f) << 20;  // imm[4:0] -> inst[24:20]  shamt 
                                 binary += 0x24 << 25;   //funct7
+                                //printf( "\n\nbexti: %x\n\n", i.a3.imm );
                         break;
 			case RORI:
-                            // rf[i.a1.reg] = rf[i.a2.reg] + rf[i.a3.reg]; break;
                                 binary = 0x13; //opcode
                                 binary += i.a1.reg << 7;     //rd
                                 binary += 0x5 << 12;       //funct3
-                                binary += i.a2.reg << 15;    //rs1
-                                binary += i.a3.reg << 20;    //shamt 
+                                binary += i.a2.reg << 15;    //rs1 
+                                binary += (i.a3.imm & 0x1f) << 20;  // imm[4:0] -> inst[24:20]  shamt 
                                 binary += 0x30 << 25;   //funct7
+                                //printf( "\n\nrori: %x\n\n", i.a3.imm );
                         break;
 			/*-----KAI-----*/
 
