@@ -8,7 +8,7 @@ class topTest(dut:top) extends PeekPokeTester(dut){
 
     implicit def bigint2boolean(b:BigInt):Boolean = if (b>0) true else false
 
-    val filename = "./src/main/resource/inst.asm"
+    val filename = "./src/main/resource/inst.asm" //!是從這個檔案引入asm code喔(但這檔案的asm code來自Hw3_inst.asm這個檔案，會透過makefile去轉換)
     val lines = Source.fromFile(filename).getLines.toList
 
     while(!peek(dut.io.Hcf)){
@@ -55,3 +55,6 @@ object topTest extends App{
         c:top => new topTest(c)
     }
 }
+
+// in sbt shell
+//$ Test/runMain aias_lab7.topTest -tbn verilator -td ./generated

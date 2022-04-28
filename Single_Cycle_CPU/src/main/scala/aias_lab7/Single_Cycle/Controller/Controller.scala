@@ -37,6 +37,19 @@ object ALU_op{
   val xnor = 19.U
   val min  = 20.U
   /*---wilson---*/
+
+  /*---KAI---*/
+  val sext_b = 21.U
+  val sext_h = 22.U
+  val bseti  = 23.U
+  val bclri  = 24.U
+  val binvi  = 25.U
+  val bexti  = 26.U
+  val rori   = 27.U
+  /*---KAI---*/
+
+
+
 }
 
 object condition{
@@ -149,6 +162,31 @@ class Controller extends Module {
             io.ALUSel := cpop
         }
         /*-----wilson-----*/
+
+
+        /*---KAI----------*/
+        when(funct7==="h30".U && rs2==="h4".U && funct3===1.U){
+            io.ALUSel := sext_b
+        }.elsewhen(funct7==="h30".U && rs2==="h5".U && funct3===1.U){
+            io.ALUSel := sext_h
+        }
+        
+        //!以下無rs2，但有shamt
+        .elsewhen(funct7==="h14".U && funct3===1.U){ //!shamt怎麼處理?    0x14  shamt  0x1--->bseti()
+            io.ALUSel := bseti  
+        }.elsewhen(funct7==="h24".U && funct3===1.U){ //!shamt怎麼處理?    0x24  shamt  0x1--->bclri
+            io.ALUSel := bclri 
+        }.elsewhen(funct7==="h34".U && funct3===1.U){ //!shamt怎麼處理?    0x34  shamt  0x1--->binvi 
+            io.ALUSel := binvi  
+        }.elsewhen(funct7==="h24".U && funct3==="h5".U){//!shamt怎麼處理?    0x24  shamt  0x5--->bexti
+            io.ALUSel := bexti 
+        }.elsewhen(funct7==="h30".U && funct3==="h5".U){//!shamt怎麼處理?    0x30  shamt  0x5--->rori
+            io.ALUSel := rori
+        } 
+        /*---KAI-----------*/
+
+
+
 
 
     }
