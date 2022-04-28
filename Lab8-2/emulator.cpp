@@ -38,7 +38,7 @@ void print_regfile(uint32_t rf[32]) {
 
 void print_vector_regfile(uint64_t vrf[32]) {
 	for (int j= 0; j < 32; j++ ) {
-		printf( "\nVector register %d : %#018"PRIx64"" , j, vrf[j]);
+		printf( "\nVector register %d : %#018" PRIx64 "" , j, vrf[j]);
 	}
 }
 
@@ -717,6 +717,8 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 		// vector register reset
 		vrf[i] = 0;
 	}
+
+	rf[2] = SP_INIT_OFFSET;
 
 	bool stepping = !start_immediate;
 	int stepcnt = 0;
