@@ -1,3 +1,5 @@
+## Use the code in HW8-1
+
 .data 
 ## input data size = 2x8x8 
 input_data:

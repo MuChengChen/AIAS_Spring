@@ -81,24 +81,24 @@ addi t2,t2,1
 j dimK
 
 mult:
-mul t3,t0,s4    ## i*dimK     ->(for A matrix)
-add t3,t3,t2    ## i*dimK + k ->(get offset)
-add t3,s0,t3    ## base address of A + offset
-lb t3,0(t3)     ## get data
+mul t3,t0,s4
+add t3,t3,t2
+add t3,s0,t3
+lb t3,0(t3)
 
-mul t4,t2,s5    ## k*dimN     ->(for B matrix)
-add t4,t4,t1    ## k*dimN + j ->(get offset)
-add t4,s1,t4    ## base address of B + offset
-lb t4,0(t4)     ## get data
+mul t4,t2,s5  
+add t4,t4,t1   
+add t4,s1,t4   
+lb t4,0(t4)
 
-mul t5,t3,t4    ## A[i][k] * B[k][j]
+mul t5,t3,t4   
 
-mul t6,t0,s5    ## i*dimN     ->(for C matrix)
-add t6,t6,t1    ## i*dimN + j ->(get offset)
-add t6,s2,t6    ## base address of C + offset
-lb t3,0(t6)     ## original data in C + offset
-add t5,t5,t3    ## C[i][j] + A[i][k] * B[k][j]
-sb t5,0(t6)     ## store data
+mul t6,t0,s5   
+add t6,t6,t1   
+add t6,s2,t6 
+lb t3,0(t6)    
+add t5,t5,t3   
+sb t5,0(t6)
 ret
 
 return:
@@ -113,4 +113,5 @@ sw s4,16(sp)
 sw s5,20(sp)
 lw ra,24(sp)
 addi sp,sp,24
-hcf              ## Terminate
+hcf              
+## Terminate

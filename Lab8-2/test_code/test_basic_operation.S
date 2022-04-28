@@ -12,16 +12,16 @@ C:
 
 .text
 main:
-la a0 A            
-vle8_v v1 0(a0)
+la a0,A            
+vle8_v v1,0(a0)
 
-la a1 C
-vse8_v v1 0(a1)
-vle8_v v2 0(a1)
+la a1,C
+vse8_v v1,0(a1)
+vle8_v v2,0(a1)
 
-vadd_vv v3 v1 v2
+vadd_vv v3,v1,v2
 
-li t1,4
-vmul_vx v4 v3 t1
+li t4,4
+vmul_vx v4,v1,t4
 
 hcf 

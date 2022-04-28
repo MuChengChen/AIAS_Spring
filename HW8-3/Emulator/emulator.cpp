@@ -49,7 +49,7 @@ instr_type parse_instr(char* tok) {
     if ( streq(tok , "vle8_v")) return VLE8_V;
     if ( streq(tok , "vse8_v")) return VSE8_V;
     if ( streq(tok , "vadd_vv")) return VADD_VV;
-    if ( streq(tok , "vmul_vv")) return VMUL_VV;
+    if ( streq(tok , "vmul_vx")) return VMUL_VX;
     //*****************
 
 
@@ -576,11 +576,11 @@ int parse_instr(int line, char* ftok, instr* imem, int memoff, label_loc* labels
 				i->a3.reg = parse_vector_reg(o3, line);
 				return 1;
 
-			case VMUL_VV:
+			case VMUL_VX:
 				if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error( line, "Invalid format" );
 				i->a1.reg = parse_vector_reg(o1, line);
 				i->a2.reg = parse_vector_reg(o2, line);
-				i->a3.reg = parse_vector_reg(o3, line);
+				i->a3.reg = parse_reg(o3, line);
 				return 1;
 
 			case MUL:
@@ -862,12 +862,14 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
       			vrf[i.a1.reg] = *(uint64_t*) dest ;
       		break;
 
-      		case VMUL_VV:
-      			uint8_t src1_m[VLMAX], src2_m[VLMAX], dest_m[VLMAX];
+      		case VMUL_VX:
+      			uint8_t src1_m[VLMAX] ;
+      			uint8_t src2_m ;
+      			uint8_t dest_m[VLMAX] ;
       			for (int k=0; k<VLMAX; k++) {
       				src1_m[k] = (uint8_t) (vrf[i.a2.reg] >> k*VLMAX) ;
-      				src2_m[k] = (uint8_t) (vrf[i.a3.reg] >> k*VLMAX) ;
-      				dest_m[k] = src1_m[k] * src2_m[k];
+      				src2_m = (uint8_t) (rf[i.a3.reg]) ;
+      				dest_m[k] = src1_m[k] * src2_m;
       			};
       			vrf[i.a1.reg] = *(uint64_t*) dest_m ;
       		break;

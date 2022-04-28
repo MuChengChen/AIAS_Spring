@@ -34,7 +34,7 @@ typedef enum {
     VLE8_V,
     VSE8_V,
     VADD_VV,
-    VMUL_VV,
+    VMUL_VX,
     //*****************
 
 	ADD,
