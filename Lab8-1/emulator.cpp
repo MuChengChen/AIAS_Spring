@@ -38,7 +38,7 @@ void print_regfile(uint32_t rf[32]) {
 
 void print_vector_regfile(uint64_t vrf[32]) {
 	for (int j= 0; j < 32; j++ ) {
-		printf( "\nVector register %d : %#018"PRIx64"" , j, vrf[j]);
+		printf( "\nVector register %d : %#018" PRIx64 "" , j, vrf[j]);
 	}
 }
 
@@ -936,7 +936,6 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 			case JALR:
 				rf[i.a1.reg] = pc + 4;
 				pc_next = rf[i.a2.reg] + i.a3.imm;
-				printf( "jalr %d %d(%d)\n", i.a1.reg, i.a3.imm, i.a2.reg );
 				break;
 			case AUIPC:
 				rf[i.a1.reg] = pc + (i.a2.imm<<12);
