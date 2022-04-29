@@ -1,0 +1,18 @@
+{
+    "value": [
+        "ref:fea8b509:/workspace/projects/lab8/Lab8-3/src/main/scala/aias_lab8/Memory/DataMem.scala",
+        "ref:b3f8ee62:/workspace/projects/lab8/Lab8-3/src/main/scala/aias_lab8/Memory/InstMem.scala",
+        "ref:0e6bdd73:/workspace/projects/lab8/Lab8-3/src/main/scala/aias_lab8/Single_Cycle/Controller/Controller.scala",
+        "ref:efa41b2d:/workspace/projects/lab8/Lab8-3/src/main/scala/aias_lab8/Single_Cycle/Datapath/ALU.scala",
+        "ref:ce84394a:/workspace/projects/lab8/Lab8-3/src/main/scala/aias_lab8/Single_Cycle/Datapath/BranchComp.scala",
+        "ref:86551b74:/workspace/projects/lab8/Lab8-3/src/main/scala/aias_lab8/Single_Cycle/Datapath/ImmGen.scala",
+        "ref:b2fcae34:/workspace/projects/lab8/Lab8-3/src/main/scala/aias_lab8/Single_Cycle/Datapath/PC.scala",
+        "ref:4818da01:/workspace/projects/lab8/Lab8-3/src/main/scala/aias_lab8/Single_Cycle/Datapath/RegFile.scala",
+        "ref:1ac66389:/workspace/projects/lab8/Lab8-3/src/main/scala/aias_lab8/Single_Cycle/Datapath/Vector_ALU.scala",
+        "ref:19736997:/workspace/projects/lab8/Lab8-3/src/main/scala/aias_lab8/Single_Cycle/Datapath/Vector_RegFile.scala",
+        "ref:d4940855:/workspace/projects/lab8/Lab8-3/src/main/scala/aias_lab8/Single_Cycle/Single_cycle.scala",
+        "ref:1578634e:/workspace/projects/lab8/Lab8-3/src/main/scala/aias_lab8/top.scala"
+    ],
+    "valueHash": 789175260,
+    "inputsHash": -8823447
+}

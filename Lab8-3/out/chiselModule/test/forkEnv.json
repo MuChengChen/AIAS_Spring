@@ -1,0 +1,20 @@
+{
+    "value": {
+        "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/workspace/projects/riscv32-tools/riscv32-embecosm-ubuntu1804-gcc11.2.0/bin:/workspace/projects/riscv32-tools/xpack-riscv-none-embed-gcc-10.2.0-1.1/bin:/workspace/projects/qemu/build:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/workspace/projects/riscv32-tools/riscv32-embecosm-ubuntu1804-gcc11.2.0/bin:/workspace/projects/riscv32-tools/xpack-riscv-none-embed-gcc-10.2.0-1.1/bin",
+        "TERM": "xterm",
+        "LC_ALL": "en_US.UTF-8",
+        "JAVA_HOME": "/usr/lib/jvm/java-8-openjdk-amd64",
+        "HOSTNAME": "ae3f3f788552",
+        "HOME": "/home/base",
+        "LANGUAGE": "en_US:en",
+        "SHLVL": "1",
+        "QEMU_PACKAGES": "build-essential         ccache         chrpath         clang         cpio         diffstat         gawk         gettext         git         git-core         glusterfs-common         libaio-dev         libattr1-dev         libbrlapi-dev         libbz2-dev         libcacard-dev         libcap-ng-dev         libcurl4-gnutls-dev         libdrm-dev         libepoxy-dev         libfdt-dev         libgbm-dev         libibverbs-dev         libiscsi-dev         libjemalloc-dev         libjpeg-turbo8-dev         liblzo2-dev         libncursesw5-dev         libnfs-dev         libnss3-dev         libnuma-dev         libpixman-1-dev         librados-dev         librbd-dev         librdmacm-dev         libsasl2-dev         libseccomp-dev         libsnappy-dev         libspice-protocol-dev         libspice-server-dev         libssh-dev         libssl-dev         libusb-1.0-0-dev         libusbredirhost-dev         libvdeplug-dev         libvte-2.91-dev         libzstd-dev         locales         make         ninja-build         python3-yaml         python3-sphinx         python3-sphinx-rtd-theme         samba         sparse         texinfo         xfslibs-dev         libsdl2-dev",
+        "_": "/usr/local/bin/mill",
+        "PWD": "/workspace/projects/lab8/Lab8-3",
+        "LANG": "en_US.UTF-8",
+        "OLDPWD": "/workspace/projects/lab8/Lab8-2",
+        "PS1": "\\[\u001b[0;31m\\]\\u@\\[\u001b[m\u001b[0;34m\\]\\h\\[\u001b[m \u001b[0;32m\\] \\w[\\!]$\\[\u001b[m\\]  "
+    },
+    "valueHash": 1683834123,
+    "inputsHash": 1447985363
+}

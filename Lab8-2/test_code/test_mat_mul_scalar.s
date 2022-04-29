@@ -17,14 +17,7 @@ C:
 
 mat_mul_asm:
 prologue:
-addi sp,sp,-24
-sw s0,0(sp)
-sw s1,4(sp)
-sw s2,8(sp)
-sw s3,12(sp)
-sw s4,16(sp)
-sw s5,20(sp)
-sw ra,24(sp)
+li sp,0x10000
 
 ## testing parameter//
 ## s0 -> base address of A
@@ -105,13 +98,8 @@ return:
 ret
 
 epilogue:
-lw s0,0(sp)
-lw s1,4(sp)
-lw s2,8(sp)
-sw s3,12(sp)
-sw s4,16(sp)
-sw s5,20(sp)
-lw ra,24(sp)
-addi sp,sp,24
+vle8_v v20,0(s2)
+vle8_v v21,8(s2)
+vle8_v v22,16(s2)
 hcf              
 ## Terminate

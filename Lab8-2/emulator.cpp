@@ -718,8 +718,6 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 		vrf[i] = 0;
 	}
 
-	rf[2] = SP_INIT_OFFSET;
-
 	bool stepping = !start_immediate;
 	int stepcnt = 0;
 	char keybuf[128];
