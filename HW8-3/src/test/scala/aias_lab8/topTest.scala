@@ -29,14 +29,14 @@ class topTest(dut:top) extends PeekPokeTester(dut){
 
     println("Value in the RegFile")
     for(i <- 0 until 4){
-        var value_0 = String.format("%" + 8 + "s", peek(dut.io.regs(8*i+0)).toString(8)).replace(' ', '0')
-        var value_1 = String.format("%" + 8 + "s", peek(dut.io.regs(8*i+1)).toString(8)).replace(' ', '0')
-        var value_2 = String.format("%" + 8 + "s", peek(dut.io.regs(8*i+2)).toString(8)).replace(' ', '0')
-        var value_3 = String.format("%" + 8 + "s", peek(dut.io.regs(8*i+3)).toString(8)).replace(' ', '0')
-        var value_4 = String.format("%" + 8 + "s", peek(dut.io.regs(8*i+4)).toString(8)).replace(' ', '0')
-        var value_5 = String.format("%" + 8 + "s", peek(dut.io.regs(8*i+5)).toString(8)).replace(' ', '0')
-        var value_6 = String.format("%" + 8 + "s", peek(dut.io.regs(8*i+6)).toString(8)).replace(' ', '0')
-        var value_7 = String.format("%" + 8 + "s", peek(dut.io.regs(8*i+7)).toString(8)).replace(' ', '0')
+        var value_0 = String.format("%" + 8 + "s", peek(dut.io.regs(8*i+0)).toString(16)).replace(' ', '0')
+        var value_1 = String.format("%" + 8 + "s", peek(dut.io.regs(8*i+1)).toString(16)).replace(' ', '0')
+        var value_2 = String.format("%" + 8 + "s", peek(dut.io.regs(8*i+2)).toString(16)).replace(' ', '0')
+        var value_3 = String.format("%" + 8 + "s", peek(dut.io.regs(8*i+3)).toString(16)).replace(' ', '0')
+        var value_4 = String.format("%" + 8 + "s", peek(dut.io.regs(8*i+4)).toString(16)).replace(' ', '0')
+        var value_5 = String.format("%" + 8 + "s", peek(dut.io.regs(8*i+5)).toString(16)).replace(' ', '0')
+        var value_6 = String.format("%" + 8 + "s", peek(dut.io.regs(8*i+6)).toString(16)).replace(' ', '0')
+        var value_7 = String.format("%" + 8 + "s", peek(dut.io.regs(8*i+7)).toString(16)).replace(' ', '0')
 
 
         println(s"reg[${"%02d".format(8*i+0)}]：${value_0} " +
