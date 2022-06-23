@@ -12,7 +12,12 @@ class PC extends Module {
     })
 
     val pcReg = RegInit(0.U(32.W))
-    pcReg := pcReg + 4.U
+    when(io.brtaken===true.B || io.jmptaken===true.B){
+        pcReg := io.offset>>2<<2 //PC 只做加四的運算，其他給ALU做
+    }.otherwise{
+        pcReg := pcReg + 4.U
+    }
+
     io.pc := pcReg
 }
 

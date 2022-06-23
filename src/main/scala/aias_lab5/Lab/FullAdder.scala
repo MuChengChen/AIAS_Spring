@@ -38,3 +38,4 @@ class FullAdder extends Module{
   io.Cout := ha1.io.Carry | ha2.io.Carry
 }
 
+

@@ -14,7 +14,29 @@ class Add_Suber extends Module{
   })
 
   //please implement your code below
+  val FA_Array=Array.fill(4)(Module(new FullAdder()).io)
+  val in_2_twos=Wire(UInt(4.W)) //B
+  val carry=Wire(Vec(5,UInt(1.W)))
+  val sum=Wire(Vec(4,UInt(1.W)))
+
   
-  io.out := 0.U
-  io.o_f := false.B
+  when(io.op === true.B){
+    carry(0):=true.B
+    in_2_twos:=(~io.in_2)
+  }.otherwise{
+    carry(0):=false.B
+    in_2_twos:=io.in_2
+  }
+
+
+  for(i<-0 until 4){
+    FA_Array(i).A:=io.in_1(i)
+    FA_Array(i).B:=in_2_twos(i)
+    FA_Array(i).Cin:=carry(i)
+    carry(i+1):=FA_Array(i).Cout
+    sum(i):=FA_Array(i).Sum
+  }
+
+  io.out := sum.asUInt
+  io.o_f := (carry(3)^carry(4))|((io.in_2===8.U)&io.op===true.B) 
 }

@@ -4,12 +4,12 @@ import chisel3._
 import chisel3.util._
 
 object condition{
-  val EQ = 0.U
-  val NE = 0.U
-  val LT = 0.U
-  val GE = 0.U
-  val LTU = 0.U
-  val GEU = 0.U
+  val EQ = "b000".U
+  val NE = "b001".U
+  val LT = "b100".U
+  val GE = "b101".U
+  val LTU = "b110".U
+  val GEU = "b111".U
 }
 
 import condition._
@@ -25,5 +25,16 @@ class BranchComp extends Module{
     })
     
     //please implement your code below
-    io.brtaken := false.B
+    io.brtaken:=false.B
+    when(io.en){
+      io.brtaken := MuxLookup(io.funct3,false.B,Seq(
+      EQ->Mux(io.src1===io.src2,true.B,false.B),
+      NE->Mux(io.src1=/=io.src2,true.B,false.B),
+      LT->Mux(io.src1.asSInt<io.src2.asSInt,true.B,false.B),
+      GE->Mux(io.src1.asSInt>=io.src2.asSInt,true.B,false.B),
+      LTU->Mux(io.src1<io.src2,true.B,false.B),
+      GEU->Mux(io.src1>=io.src2,true.B,false.B)
+    ))
+    }
+  
 }

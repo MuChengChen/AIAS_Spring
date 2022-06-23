@@ -3,6 +3,7 @@ package aias_lab5.Hw4
 import chisel3._
 import chisel3.util._
 
+
 class top extends Module {
     val io = IO(new Bundle{
         val pc_out = Output(UInt(32.W))
@@ -18,6 +19,7 @@ class top extends Module {
     val rf = Module(new RegFile(2))
     val alu = Module(new ALU())
     val bc = Module(new BranchComp())
+    val dm = Module(new DataMem())
     
     //PC
     pc.io.jmptaken := false.B // Don't modify
@@ -32,23 +34,32 @@ class top extends Module {
     
     //RegFile
     rf.io.raddr(0) := dc.io.rs1
-    rf.io.raddr(1) := 0.U
-    rf.io.wdata := alu.io.out
+    rf.io.raddr(1) := dc.io.rs2
+    rf.io.wdata := MuxLookup(dc.io.ctrl_WBSel, 0.U, Seq(
+                        0.U -> dm.io.rdata.asUInt,
+                        1.U -> alu.io.out,
+                        2.U -> (pc.io.pc + 4.U)
+                    ))
     
     rf.io.waddr := 0.U  // Don't modify
     rf.io.wen := false.B // Don't modify
 
     //ALU
     val rdata_or_zero = WireDefault(0.U(32.W))
-    alu.io.src1 := rf.io.rdata(0)
-    alu.io.src2 := dc.io.imm.asUInt
+    alu.io.src1 := Mux(dc.io.ctrl_ASel,pc.io.pc,rf.io.rdata(0))
+    alu.io.src2 := Mux(dc.io.ctrl_BSel,dc.io.imm.asUInt,rf.io.rdata(1))
     alu.io.funct3 := dc.io.funct3
+    alu.io.funct7 := dc.io.funct7
     alu.io.opcode := dc.io.opcode
     
     //Data Memory
-    
+    dm.io.wen   := dc.io.ctrl_MemRW
+    dm.io.funct3 := dc.io.funct3
+    dm.io.raddr := alu.io.out
+    dm.io.waddr := alu.io.out
+    dm.io.wdata := rf.io.rdata(1)
     //Branch Comparator
-    bc.io.en := false.B // need to be changed
+    bc.io.en := dc.io.ctrl_Br // need to be changed
     bc.io.funct3 := dc.io.funct3
     bc.io.src1 := rf.io.rdata(0)
     bc.io.src2 := rf.io.rdata(1)
@@ -59,5 +70,5 @@ class top extends Module {
     io.alu_out := alu.io.out 
     io.rf_wdata_out := rf.io.wdata
     io.brtaken_out := bc.io.brtaken
-    io.jmptaken_out := false.B // need to be changed
+    io.jmptaken_out := dc.io.ctrl_Jmp // need to be changed
 }

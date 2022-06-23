@@ -12,6 +12,23 @@ class MixAdder (n:Int) extends Module{
       val Cout = Output(UInt(1.W))
   })
   //please implement your code below
-  io.Sum := 0.U
-  io.Cout := 0.U
+  val CLAdder_Array=Array.fill(n)(Module(new CLAdder()).io)
+  val carry=Wire(Vec(n+1,UInt(1.W)))
+  val sum=Wire(Vec(4*n,Bool()))
+
+  carry(0):=io.Cin
+
+  for(i<-0 until n){
+    CLAdder_Array(i).in1:=io.in1(4 * (i + 1) - 1, 4 * i)
+    CLAdder_Array(i).in2:=io.in2(4 * (i + 1) - 1, 4 * i)
+    CLAdder_Array(i).Cin:=carry(i)
+    carry(i+1):=CLAdder_Array(i).Cout
+    for (n<-0 until 4){
+      sum(4*i+n):=CLAdder_Array(i).Sum(n)
+    }
+    
+  }
+
+  io.Sum := sum.asUInt
+  io.Cout := carry(n)
 }

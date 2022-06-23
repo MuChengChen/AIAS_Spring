@@ -36,31 +36,39 @@ class DataMem extends Module {
 
   wa := MuxLookup(io.funct3,0.U(10.W),Seq(
     Byte -> io.waddr,
-    Half -> 0.U, // needs to be changed
-    Word -> 0.U, // needs to be changed
+    Half -> ((io.waddr>>1)<<1), // needs to be changed
+    Word -> ((io.waddr>>2)<<2), // needs to be changed
   ))
 
   wd := MuxLookup(io.funct3,0.U,Seq(
-    Byte -> 0.U, // needs to be changed
-    Half -> 0.U, // needs to be changed
+    Byte -> io.wdata, // needs to be changed
+    Half -> io.wdata, // needs to be changed
     Word -> io.wdata,
   ))
+
+  val rdataU=0.U(32.W)
 
   when(io.wen){ //STORE
     when(io.funct3===Byte){
       memory(wa) := wd(7,0)
     }.elsewhen(io.funct3===Half){
       //Please fill in the blanks by yourself
+      memory(wa) := wd(7,0)
+      memory(wa+1.U):=wd(15,8)
     }.elsewhen(io.funct3===Word){
       //Please fill in the blanks by yourself
+      memory(wa) := wd(7,0)
+      memory(wa+1.U) := wd(15,8)
+      memory(wa+2.U) := wd(23,16)
+      memory(wa+3.U) := wd(31,24)
     }
   }.otherwise{ //LOAD
-    io.rdata := MuxLookup(io.funct3,0.S,Seq(
-      Byte -> memory(io.raddr).asSInt,
-      Half -> 0.S, // needs to be changed
-      Word -> 0.S, // needs to be changed
-      UByte -> 0.S, // needs to be changed
-      UHalf -> 0.S // needs to be changed
-    ))
+    switch(io.funct3){
+      is(Byte){io.rdata := memory(io.raddr).asSInt}
+      is(Half){io.rdata := Cat(memory(io.raddr+1.U),memory(io.raddr)).asSInt}
+      is(Word){io.rdata := Cat(memory(io.raddr+3.U),memory(io.raddr+2.U),memory(io.raddr+1.U),memory(io.raddr)).asSInt}
+      is(UByte){io.rdata := (rdataU+memory(io.raddr)).asSInt}
+      is(UHalf){io.rdata := (rdataU+Cat(memory(io.raddr+1.U),memory(io.raddr))).asSInt}
+    }
   }
 }
