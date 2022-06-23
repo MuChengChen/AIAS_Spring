@@ -37,7 +37,7 @@ class LongCalTest(dut:LongCal) extends PeekPokeTester(dut){
     if(peek(dut.io.value.bits).toInt!=(-30)){
         println("Test 1 : (-15)-15-(-15)+(-15)= failed , your output is " + peek(dut.io.value.bits).toInt.toString)
     }else{
-        println("Test 1 :  pass")
+        println("Test 1 : (-15)-15-(-15)+(-15)= pass")
     }
     step(1)
     
@@ -52,7 +52,7 @@ class LongCalTest(dut:LongCal) extends PeekPokeTester(dut){
     if(peek(dut.io.value.bits).toInt!=(-38)){
         println("Test 2 : 17-16+(-15)-14+13-12+(-11)= failed , your output is " + peek(dut.io.value.bits).toInt.toString)
     }else{
-        println("Test 2 :  pass")
+        println("Test 2 : 17-16+(-15)-14+13-12+(-11)= pass")
     }
     step(1)
 
@@ -67,7 +67,7 @@ class LongCalTest(dut:LongCal) extends PeekPokeTester(dut){
     if(peek(dut.io.value.bits).toInt!=(-15)){
         println("Test 3 : (-15)= failed , your output is " + peek(dut.io.value.bits).toInt.toString)
     }else{
-        println("Test 3 :  pass")
+        println("Test 3 : (-15)= pass")
     }
     step(1)
 
@@ -82,7 +82,7 @@ class LongCalTest(dut:LongCal) extends PeekPokeTester(dut){
     if(peek(dut.io.value.bits).toInt!=15){
         println("Test 4 : 15= failed , your output is " + peek(dut.io.value.bits).toInt.toString)
     }else{
-        println("Test 4 :  pass")
+        println("Test 4 : 15= pass")
     }
     step(1)
 }

@@ -1,0 +1,20 @@
+[
+  {
+    "class":"firrtl.stage.FirrtlFileAnnotation",
+    "file":"generatoed-tbn/aias_lab6.Hw2.NegIntGenTest762390448/NegIntGen.lo.fir"
+  },
+  {
+    "class":"firrtl.EmitCircuitAnnotation",
+    "emitter":"firrtl.LowFirrtlEmitter"
+  },
+  {
+    "class":"logger.LogLevelAnnotation",
+    "globalLogLevel":{
+      
+    }
+  },
+  {
+    "class":"firrtl.transforms.BlackBoxTargetDirAnno",
+    "targetDir":"./generatoed-tbn/aias_lab6.Hw2.NegIntGenTest762390448"
+  }
+]
