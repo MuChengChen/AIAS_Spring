@@ -106,10 +106,65 @@ class ALU extends Module{
         io.out := (io.src1 >> shamt) | (io.src1 << (32.U-shamt)) //X(rd) = (X(rs1) >> shamt) | (X(rs1) << (xlen - shamt));
     } 
     /*---KAI----------*/
+    /*-----Song-----*/
+
+
+    is(max ){
+        when(io.src1.asSInt <= io.src2.asSInt){
+            io.out := io.src2
+        }.otherwise{io.out := io.src1}
+    }
+    is(maxu ){
+        when(io.src1.asUInt <= io.src2.asUInt){
+            io.out := io.src2
+        }.otherwise{io.out := io.src1}
+    }
+    is(minu ){
+        when(io.src1.asUInt <= io.src2.asUInt){
+            io.out := io.src1
+        }.otherwise{io.out := io.src2}
+    }
+    is(bset){
+        val index = Wire(UInt(5.W))
+        val index_shift = Wire(UInt(32.W))
+        index := Cat(io.src2(4,0))
+        index_shift := (1.U(32.W)) << index
+        io.out := io.src1 | index_shift  
+    }
+    is(bclr){
+        val index = Wire(UInt(5.W))
+        val index_shift = Wire(UInt(32.W))
+        index := Cat(io.src2(4,0))
+        index_shift := (1.U(32.W)) << index
+        io.out := io.src1 &  ( ~index_shift)  
+    }
+    is(binv){
+        val index = Wire(UInt(5.W))
+        val index_shift = Wire(UInt(32.W))
+        index := Cat(io.src2(4,0))
+        index_shift := (1.U(32.W)) << index
+        io.out := io.src1 ^ index_shift 
+    }
+    is(bext){
+        val index = Wire(UInt(5.W))
+        index := Cat(io.src2(4,0))
+        io.out := (io.src1 >> index) & 1.U(1.W)
+    }
+    is(ror){
+        val shamt = Wire(UInt(5.W))
+        shamt := Cat(io.src2(4,0))
+        io.out := (io.src1 >> shamt) | ( io.src1 << (32.U - shamt))
+    }
+    is(rol){
+        val shamt = Wire(UInt(5.W))
+        shamt := Cat(io.src2(4,0))
+        io.out := (io.src1 << shamt) | ( io.src1 >> (32.U - shamt))
+    }
+
+    /*-----Song-----*/
 
 
 
-
-  }
+}
 }
 
