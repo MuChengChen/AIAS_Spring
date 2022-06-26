@@ -143,7 +143,6 @@ void translate_to_machine_code(uint8_t* mem,instr* imem, char* argv1){
                         break;
 			/*-----wilson-----*/
 
-
 			/*-----KAI-----*/
 			case SEXTB:
                                 // rf[i.a1.reg] = rf[i.a2.reg] + i.a3.imm; break;

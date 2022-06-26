@@ -29,7 +29,6 @@ object ALU_op{
   val SUB  = 8.U
   val SRA  = 13.U
   /*---wilson---*/
- 
   val clz  = 14.U
   val ctz  = 15.U
   val cpop = 16.U
@@ -37,14 +36,11 @@ object ALU_op{
   val orn  = 18.U
   val xnor = 19.U
   val min  = 20.U
-  
   /*---wilson---*/
 
   /*---KAI---*/
-
   val sext_b = 21.U
   val sext_h = 22.U
-
   val bseti  = 23.U
   val bclri  = 24.U
   val binvi  = 25.U
