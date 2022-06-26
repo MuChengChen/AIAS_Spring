@@ -48,6 +48,18 @@ object ALU_op{
   val rori   = 27.U
   /*---KAI---*/
 
+/*-----song----*/
+  val max = 28.U
+  val minu = 29.U
+  val maxu = 30.U
+  val bset = 31.U
+  val bclr = 32.U
+  val binv = 33.U
+  val bext = 34.U
+  val ror = 35.U
+  val rol = 36.U  
+/*-----song----*/
+
 
 
 }
@@ -199,9 +211,31 @@ class Controller extends Module {
         }.elsewhen(funct7==="h20".U && funct3==="h4".U){
             io.ALUSel := xnor
         }.elsewhen(funct7==="h5".U && funct3==="h4".U){
-            io.ALUSel := min
-        }
+            io.ALUSel := min 
         /*-----wilson-----*/
+        /*-----Song-----*/
+        }.elsewhen(funct7==="h5".U && funct3==="h6".U){
+            io.ALUSel := max
+        }.elsewhen(funct7==="h5".U && funct3==="h5".U){
+            io.ALUSel := minu
+        }.elsewhen(funct7==="h5".U && funct3==="h7".U){
+            io.ALUSel := maxu
+        }.elsewhen(funct7==="h14".U && funct3==="h1".U){
+            io.ALUSel := bset
+        }.elsewhen(funct7==="h24".U && funct3==="h1".U){
+            io.ALUSel := bclr
+        }.elsewhen(funct7==="h34".U && funct3==="h1".U){
+            io.ALUSel := binv
+        }.elsewhen(funct7==="h24".U && funct3==="h5".U){
+            io.ALUSel := bext
+        }.elsewhen(funct7==="h30".U && funct3==="h5".U){
+            io.ALUSel := ror
+        }.elsewhen(funct7==="h30".U && funct3==="h1".U){
+            io.ALUSel := rol
+        }
+        /*-----Song-----*/
+
+
 
 
     }

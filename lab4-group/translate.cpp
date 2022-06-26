@@ -212,6 +212,83 @@ void translate_to_machine_code(uint8_t* mem,instr* imem, char* argv1){
                         break;
 			/*-----KAI-----*/
 
+                        /*-----Song----*/
+                        case MAX:
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x6 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += i.a3.reg << 20;    //rs2
+                                binary += 0x05 << 25;   //funct7
+                        break;
+                        case MINU:
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x5 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += i.a3.reg << 20;    //rs2
+                                binary += 0x05 << 25;   //funct7
+                        break;
+                        case MAXU:
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x7 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += i.a3.reg << 20;    //rs2
+                                binary += 0x05 << 25;   //funct7
+                        break;
+                        case BSET:
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x1 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += i.a3.reg << 20;    //rs2
+                                binary += 0x14 << 25;   //funct7
+                        break;
+                        case BCLR:
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x1 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += i.a3.reg << 20;    //rs2
+                                binary += 0x24 << 25;   //funct7
+                        break;
+                        case BINV:
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x1 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += i.a3.reg << 20;    //rs2
+                                binary += 0x34 << 25;   //funct7
+                        break;
+                        case BEXT:
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x5 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += i.a3.reg << 20;    //rs2
+                                binary += 0x24 << 25;   //funct7
+                        break;
+                        case ROR:
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x5 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += i.a3.reg << 20;    //rs2
+                                binary += 0x30 << 25;   //funct7
+                        break;
+
+                        case ROL:
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x1 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += i.a3.reg << 20;    //rs2
+                                binary += 0x30 << 25;   //funct7
+                        break;
+
+                        /*-----Song----*/
+
 
 
 
