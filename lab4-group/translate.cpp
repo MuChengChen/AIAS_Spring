@@ -288,7 +288,61 @@ void translate_to_machine_code(uint8_t* mem,instr* imem, char* argv1){
                         break;
 
                         /*-----Song----*/
+                        /*-----Oscar---*/
 
+                        case SH1ADD:
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x2 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += i.a3.reg << 20;    //rs2
+                                binary += 0x10 << 25;   //funct7
+                        break;
+
+                        case SH2ADD:
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x4 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += i.a3.reg << 20;    //rs2
+                                binary += 0x10 << 25;   //funct7
+                        break;
+
+                        case SH3ADD:
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x6 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += i.a3.reg << 20;    //rs2
+                                binary += 0x10 << 25;   //funct7
+                        break;
+
+                        case REV8:
+                                binary = 0x13; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x5 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1   
+                                binary += 0x698 << 20;   //imm
+                        break;
+
+                        case ZEXTH:
+                                binary = 0x33; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x4 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1
+                                binary += 0x0 << 20;    //rs2
+                                binary += 0x04 << 25;   //funct7
+                        break;
+
+                        case ORCD:
+                                binary = 0x13; //opcode
+                                binary += i.a1.reg << 7;     //rd
+                                binary += 0x5 << 12;       //funct3
+                                binary += i.a2.reg << 15;    //rs1   
+                                binary += 0x287 << 20;   //imm
+                        break;
+
+                        /*-----Oscar---*/
 
 
 

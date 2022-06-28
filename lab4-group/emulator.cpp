@@ -60,7 +60,7 @@ instr_type parse_instr(char* tok) {
 	if ( streq(tok , "maxu")) return MAXU; //! added
 	if ( streq(tok , "min")) return MIN; //! added
 	if ( streq(tok , "minu")) return MINU; //! added
-	if ( streq(tok , "orc.d")) return ORCD; //! added
+	if ( streq(tok , "orc_d")) return ORCD; //! added
 	if ( streq(tok , "orn")) return ORN; //! added
 	if ( streq(tok , "rev8")) return REV8; //! added-->rev8-->8 bits
 //	if ( streq(tok , "sext.h")) return SEXT_H; //! added-->sext.h
@@ -93,7 +93,7 @@ instr_type parse_instr(char* tok) {
 	if ( streq(tok, "ror") ) return ROR;
 	if ( streq(tok, "rori") ) return RORI;
 	if ( streq(tok, "xnor") ) return XNOR;
-	if ( streq(tok, "zext.h") ) return ZEXTH;
+	if ( streq(tok, "zext_h") ) return ZEXTH;
 	//-----------Chen-Mu-Cheng---Oscar-//
 	
 

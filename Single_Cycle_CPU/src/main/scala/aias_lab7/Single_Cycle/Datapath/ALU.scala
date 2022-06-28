@@ -163,7 +163,73 @@ class ALU extends Module{
 
     /*-----Song-----*/
 
+    /*-----Oscar---*/
 
+    is(rev8){
+        val mask=Wire(UInt(32.W))
+        val mask2=Wire(UInt(32.W))
+        val mask3=Wire(UInt(32.W))
+        val mask4=Wire(UInt(32.W))
+
+        mask:="h000000ff".U
+        mask2:="h0000ff00".U
+        mask3:="h00ff0000".U
+        mask4:="hff000000".U
+
+        val w1=Wire(UInt(32.W))
+        val w2=Wire(UInt(32.W))
+        val w3=Wire(UInt(32.W))
+        val w4=Wire(UInt(32.W))
+
+        w1:=(mask & io.src1)<<24.U
+        w2:=(mask2 & io.src1)<<8.U
+        w3:=(mask3 & io.src1)>>8.U
+        w4:=(mask4 & io.src1)>>24.U
+
+        io.out:=(w1|w2|w3|w4)
+    }
+    is(orc_d){
+        val mask=Wire(UInt(32.W))
+        val mask2=Wire(UInt(32.W))
+        val mask3=Wire(UInt(32.W))
+        val mask4=Wire(UInt(32.W))
+
+        //mask:="h000000ff".U
+        //mask2:="h0000ff00".U
+        //mask3:="h00ff0000".U
+       // mask4:="hff000000".U
+
+        val w1=Wire(UInt(32.W))
+        val w2=Wire(UInt(32.W))
+        val w3=Wire(UInt(32.W))
+        val w4=Wire(UInt(32.W))
+
+        mask:="h000000ff".U & io.src1
+        mask2:=("h0000ff00".U & io.src1)>>8.U
+        mask3:=("h00ff0000".U & io.src1)>>16.U
+        mask4:=("hff000000".U & io.src1)>>24.U
+
+        w1:=Mux(mask===0.U,0.U,0xff.U)
+        w2:=Mux(mask2===0.U,0.U,0xff.U<<8.U)
+        w3:=Mux(mask3===0.U,0.U,0xff.U<<16.U)
+        w4:=Mux(mask4===0.U,0.U,0xff.U<<24.U)
+
+        io.out:=(w4|w3|w2|w1)
+
+    }
+    is(zext_h){
+        io.out := Cat(0.U,io.src1(15,0))
+    }
+    is(sh1add){
+        io.out := io.src2+(io.src1<<1.U)
+    }
+    is(sh2add){
+        io.out := io.src2+(io.src1<<2.U)
+    }
+    is(sh3add){
+        io.out := io.src2+(io.src1<<3.U)
+    }
+    /*-----Oscar---*/
 
 }
 }

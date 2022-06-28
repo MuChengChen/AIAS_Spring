@@ -23,9 +23,9 @@
   | 21  | ror rd, rs1, rs2    | 宋方瑜 |   OP   |
   | 22  | rol rd, rs1, rs2    | 宋方瑜 |   OP   |
   | 23  | rori rd, rs1, imm   | 王凱弘      | OP-IMM |
-  | 24  | sh1add rd, rs1, rs2 |       |   OP   |
-  | 25  | sh2add rd, rs1, rs2 |       |   OP   |
-  | 26  | sh3add rd, rs1, rs2 |       |   OP   |
-  | 27  | rev8 rd, rs         |       | OP-IMM |
-  | 28  | zext_h rd, rs       |       | OP-IMM |
-  | 29  | orc_b  rd, rs       |       | OP-IMM |
+  | 24  | sh1add rd, rs1, rs2 | 陳慕丞 |   OP   |
+  | 25  | sh2add rd, rs1, rs2 | 陳慕丞 |   OP   |
+  | 26  | sh3add rd, rs1, rs2 | 陳慕丞 |   OP   |
+  | 27  | rev8 rd, rs         | 陳慕丞 | OP-IMM |
+  | 28  | zext_h rd, rs       | 陳慕丞 | OP-IMM |
+  | 29  | orc_b  rd, rs       | 陳慕丞 | OP-IMM |

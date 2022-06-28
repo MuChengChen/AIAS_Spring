@@ -60,7 +60,14 @@ object ALU_op{
   val rol = 36.U  
 /*-----song----*/
 
-
+/*-----Oscar---*/
+val sh1add = 37.U 
+val sh2add = 38.U
+val sh3add = 39.U 
+val rev8 = 40.U 
+val zext_h = 41.U 
+val orc_d = 42.U  
+/*-----Oscar---*/
 
 }
 
@@ -197,9 +204,14 @@ class Controller extends Module {
         } 
         /*---KAI-----------*/
 
-
-
-
+        /*-----Oscar---*/
+        val fr=Cat(funct7,rs2)
+        when(fr==="h698".U && funct3==="h5".U){
+            io.ALUSel := rev8
+        }.elsewhen(fr==="h287".U && funct3==="h5".U){
+            io.ALUSel := orc_d
+        }
+        /*-----Oscar---*/
 
     }
     when(opcode===OP){
@@ -235,7 +247,17 @@ class Controller extends Module {
         }
         /*-----Song-----*/
 
-
+        /*-----Oscar---*/
+        when(funct7==="h10".U && funct3==="h2".U){
+            io.ALUSel := sh1add
+        }.elsewhen(funct7==="h10".U && funct3==="h4".U){
+            io.ALUSel := sh2add
+        }.elsewhen(funct7==="h10".U && funct3==="h6".U){
+            io.ALUSel := sh3add
+        }.elsewhen(funct7==="h4".U && funct3==="h4".U){
+            io.ALUSel := zext_h
+        }
+        /*-----Oscar---*/
 
 
     }
