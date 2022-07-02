@@ -3,51 +3,59 @@ package aias_lab9.AXILite
 import chisel3._
 import chisel3.util._
 
-// the required signals on an AXI4-Lite interface
-// 0. Global
-// ACLK
-// ARESETn
-// 1. Write address channel
-// AWVALID
-// AWREADY
-// AWADDR
-// AWPROT
-// 2. Write data channel
-// WVALID
-// WREADY
-// WDATA
-// WSTRB
-// 3. Write response channel
-// BVALID
-// BREADY
-// BRESP
-// 4. Read address channel
-// ARVALID
-// ARREADY
-// ARADDR
-// ARPROT
-// 5. Read data channel
-// RVALID
-// RREADY
-// RDATA
-// RRESP
+// ! the required signals on an AXI4-Lite interface
+// * 0. Global channel
+// ---> ACLK
+// ---> ARESETN
+
+// * 1. Write address channel
+// --> AWVALID
+// --> AWREADY
+// --> AWADDR
+
+// * 2. Write data channel
+// --> WVALID
+// --> WREADY
+// --> WDATA
+// --> WSTRB
+
+// * 3. Write response channel
+// --> BVALID
+// --> BREADY
+// --> BRESP
+
+// * 4. Read address channel
+// --> ARVALID
+// --> ARREADY
+// --> ARADDR
+
+// * 5. Read data channel
+// --> RVALID
+// --> RREADY
+// --> RDATA
+// --> RRESP
+
+// ! Ignore "override def clone...", the statement is irrelevant to this homework
 
 class AXILiteAddress(val addrWidth: Int) extends Bundle {
-  val addr           = UInt(addrWidth.W)
+  val addr = UInt(addrWidth.W) // read/write address
+
   override def clone = { new AXILiteAddress(addrWidth).asInstanceOf[this.type] }
 }
 
 class AXILiteWriteData(val dataWidth: Int) extends Bundle {
-  val data = UInt(dataWidth.W)
+  val data = UInt(dataWidth.W)       // write data
   val strb = UInt((dataWidth / 8).W) // byte masked
+
   override def clone = {
     new AXILiteWriteData(dataWidth).asInstanceOf[this.type]
   }
 }
 
 class AXILiteReadData(val dataWidth: Int) extends Bundle {
-  val data = UInt(dataWidth.W)
-  val resp = UInt(2.W)
+  val data = UInt(dataWidth.W) // read data from slave to master
+  val resp = UInt(2.W)         // read response (2 bits)
+
   override def clone = {
     new AXILiteReadData(dataWidth).asInstanceOf[this.type]
   }
@@ -55,19 +63,19 @@ class AXILiteReadData(val dataWidth: Int) extends Bundle {
 
 class AXILiteSlaveIF(val addrWidth: Int, val dataWidth: Int) extends Bundle {
   // write address channel
-  val writeAddr = Flipped(Decoupled(new AXILiteAddress(addrWidth)))
+  val writeAddr = Flipped(Decoupled(new AXILiteAddress(addrWidth))) // write addr (from master to slave)
 
   // write data channel
-  val writeData = Flipped(Decoupled(new AXILiteWriteData(dataWidth)))
+  val writeData = Flipped(Decoupled(new AXILiteWriteData(dataWidth))) // write data (from mater to slave)
 
   // write response channel
-  val writeResp = Decoupled(UInt(2.W))
+  val writeResp = Decoupled(UInt(2.W)) // write response (from slave to master)
 
   // read address channel
-  val readAddr = Flipped(Decoupled(new AXILiteAddress(addrWidth)))
+  val readAddr = Flipped(Decoupled(new AXILiteAddress(addrWidth))) // read address (from master to slave)
 
   // read data channel
-  val readData = Decoupled(new AXILiteReadData(dataWidth))
+  val readData = Decoupled(new AXILiteReadData(dataWidth)) // read data (from slave to master)
 
   override def clone = {
     new AXILiteSlaveIF(addrWidth, dataWidth).asInstanceOf[this.type]
@@ -96,6 +104,11 @@ class AXILiteMasterIF(val addrWidth: Int, val dataWidth: Int) extends Bundle {
 }
 
 class Interface extends MultiIOModule {
+  /*
+   * this Interface class is to generate example verilog code
+   * in your homework, you can ignore this class
+   */
+
   val io = IO(new Bundle {
     val slave  = new AXILiteSlaveIF(8, 32)
     val master = new AXILiteMasterIF(8, 32)
