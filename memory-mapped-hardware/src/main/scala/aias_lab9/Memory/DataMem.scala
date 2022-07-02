@@ -14,7 +14,7 @@ class DataMem(size: Int, addrWidth: Int, dataWidth: Int, binaryFile: String) ext
   val sIdle :: sReadResp :: sWriteResp :: Nil = Enum(3)
 
   val stateReg = RegInit(sIdle)
-  val memory = Mem((1 << (size)), UInt(8.W))
+  val memory   = Mem((1 << (size)), UInt(8.W))
 
   loadMemoryFromFile(memory, binaryFile)
 
@@ -38,15 +38,15 @@ class DataMem(size: Int, addrWidth: Int, dataWidth: Int, binaryFile: String) ext
   }
 
   // AXI slave interface output - ready / valid
-  io.bus_slave.readAddr.ready := false.B
-  io.bus_slave.readData.valid := false.B
+  io.bus_slave.readAddr.ready  := false.B
+  io.bus_slave.readData.valid  := false.B
   io.bus_slave.writeAddr.ready := false.B
   io.bus_slave.writeData.ready := false.B
   io.bus_slave.writeResp.valid := false.B
 
   switch(stateReg) {
     is(sIdle) {
-      io.bus_slave.readAddr.ready := true.B
+      io.bus_slave.readAddr.ready  := true.B
       io.bus_slave.writeAddr.ready := true.B
       io.bus_slave.writeData.ready := true.B
     }
@@ -83,9 +83,15 @@ class DataMem(size: Int, addrWidth: Int, dataWidth: Int, binaryFile: String) ext
   }
 
   io.bus_slave.readData.bits.data := Cat(
-    memory(addrReg + 7.U), memory(addrReg + 6.U), memory(addrReg + 5.U), memory(addrReg + 4.U),
-    memory(addrReg + 3.U), memory(addrReg + 2.U), memory(addrReg + 1.U), memory(addrReg)
+    memory(addrReg + 7.U),
+    memory(addrReg + 6.U),
+    memory(addrReg + 5.U),
+    memory(addrReg + 4.U),
+    memory(addrReg + 3.U),
+    memory(addrReg + 2.U),
+    memory(addrReg + 1.U),
+    memory(addrReg)
   )
   io.bus_slave.readData.bits.resp := 0.U
-  io.bus_slave.writeResp.bits := 0.U
+  io.bus_slave.writeResp.bits     := 0.U
 }

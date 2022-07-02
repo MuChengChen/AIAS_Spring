@@ -4,12 +4,12 @@ import chisel3._
 import chisel3.util._
 
 class writeOut(val addrWidth: Int, val dataWidth: Int) extends Bundle {
-  val writeResp = Flipped(Decoupled(UInt(2.W))) // response from slave to check write status
-  val writeAddr = Decoupled(new AXILiteAddress(addrWidth)) // output address to slave for writing data
+  val writeResp = Flipped(Decoupled(UInt(2.W)))              // response from slave to check write status
+  val writeAddr = Decoupled(new AXILiteAddress(addrWidth))   // output address to slave for writing data
   val writeData = Decoupled(new AXILiteWriteData(dataWidth)) // output data to write into slave
 }
 class writeIns(val addrWidth: Int, val dataWidth: Int) extends Bundle {
-  val writeAddr = Flipped(Decoupled(new AXILiteAddress(addrWidth))) // input address from writebus
+  val writeAddr = Flipped(Decoupled(new AXILiteAddress(addrWidth)))   // input address from writebus
   val writeData = Flipped(Decoupled(new AXILiteWriteData(dataWidth))) // input write data from  writebus
   val writeResp = Decoupled(UInt(2.W)) // output write response(response from slave) to writebus
 }
@@ -32,7 +32,7 @@ class AXISlaveWriteMux(val nMasters: Int, val addrWidth: Int, val dataWidth: Int
   for (i <- 0 until nMasters) {
     io.ins(i).writeData.ready := false.B
     io.ins(i).writeResp.valid := false.B
-    io.ins(i).writeResp.bits := 0.U
+    io.ins(i).writeResp.bits  := 0.U
   }
 
   io.out.writeData <> io.ins(arbiter.io.chosen.asUInt).writeData

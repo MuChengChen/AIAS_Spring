@@ -4,12 +4,12 @@ import chisel3._
 
 class RegFile(readPorts: Int) extends Module {
   val io = IO(new Bundle {
-    val wen = Input(Bool())
+    val wen   = Input(Bool())
     val waddr = Input(UInt(5.W))
     val wdata = Input(UInt(32.W))
     val raddr = Input(Vec(readPorts, UInt(5.W)))
     val rdata = Output(Vec(readPorts, UInt(32.W)))
-    val regs = Output(Vec(32, UInt(32.W)))
+    val regs  = Output(Vec(32, UInt(32.W)))
   })
 
   val regs = RegInit(VecInit(Seq.fill(2)(0.U(32.W)) ++ Seq("h10000".U(32.W) - 1.U) ++ Seq.fill(29)(0.U(32.W))))

@@ -3,10 +3,16 @@ package aias_lab9.AXILite
 import chisel3._
 import chisel3.util._
 
-class AXILiteXBar(val nMasters: Int, val mSlaves: Int, val addrWidth: Int, val dataWidth: Int, val addrMap: List[(UInt, UInt)]) extends Module {
+class AXILiteXBar(
+    val nMasters: Int,
+    val mSlaves: Int,
+    val addrWidth: Int,
+    val dataWidth: Int,
+    val addrMap: List[(UInt, UInt)]
+) extends Module {
   val io = IO(new Bundle {
     val masters = Flipped(Vec(nMasters, new AXILiteMasterIF(addrWidth, dataWidth)))
-    val slaves = Flipped(Vec(mSlaves, new AXILiteSlaveIF(addrWidth, dataWidth)))
+    val slaves  = Flipped(Vec(mSlaves, new AXILiteSlaveIF(addrWidth, dataWidth)))
   })
 
   // read channels
