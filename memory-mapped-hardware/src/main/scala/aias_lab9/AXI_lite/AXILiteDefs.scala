@@ -37,12 +37,14 @@ import chisel3.util._
 
 // ! Ignore "override def clone...", the statement is irrelevant to this homework
 
+// * Read/Write Address Channel (without ready/valid)
 class AXILiteAddress(val addrWidth: Int) extends Bundle {
   val addr = UInt(addrWidth.W) // read/write address
 
   override def clone = { new AXILiteAddress(addrWidth).asInstanceOf[this.type] }
 }
 
+// * Write Data Channel Def (without ready/valid)
 class AXILiteWriteData(val dataWidth: Int) extends Bundle {
   val data = UInt(dataWidth.W)       // write data
   val strb = UInt((dataWidth / 8).W) // byte masked
@@ -52,6 +54,7 @@ class AXILiteWriteData(val dataWidth: Int) extends Bundle {
   }
 }
 
+// * Read Data channel Def (without ready/valid)
 class AXILiteReadData(val dataWidth: Int) extends Bundle {
   val data = UInt(dataWidth.W) // read data from slave to master
   val resp = UInt(2.W)         // read response (2 bits)
@@ -61,6 +64,7 @@ class AXILiteReadData(val dataWidth: Int) extends Bundle {
   }
 }
 
+// * Slave Interface Def
 class AXILiteSlaveIF(val addrWidth: Int, val dataWidth: Int) extends Bundle {
   // write address channel
   val writeAddr = Flipped(Decoupled(new AXILiteAddress(addrWidth))) // write addr (from master to slave)
@@ -82,6 +86,7 @@ class AXILiteSlaveIF(val addrWidth: Int, val dataWidth: Int) extends Bundle {
   }
 }
 
+// * Master Interface Def
 class AXILiteMasterIF(val addrWidth: Int, val dataWidth: Int) extends Bundle {
   // write address channel
   val writeAddr = Decoupled(new AXILiteAddress(addrWidth))

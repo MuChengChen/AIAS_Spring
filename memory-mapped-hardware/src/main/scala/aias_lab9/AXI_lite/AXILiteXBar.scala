@@ -4,6 +4,7 @@ import chisel3._
 import chisel3.util._
 
 class AXILiteXBar(
+    // * arguments of AXI-Lite Crossbar
     val nMasters: Int,
     val mSlaves: Int,
     val addrWidth: Int,
@@ -11,11 +12,12 @@ class AXILiteXBar(
     val addrMap: List[(UInt, UInt)]
 ) extends Module {
   val io = IO(new Bundle {
+    // master and slave interfaces
     val masters = Flipped(Vec(nMasters, new AXILiteMasterIF(addrWidth, dataWidth)))
     val slaves  = Flipped(Vec(mSlaves, new AXILiteSlaveIF(addrWidth, dataWidth)))
   })
 
-  // * read channels
+  // * read bus/mux channels
   val readBuses = List.fill(nMasters) {
     Module(new AXIReadBus(mSlaves, addrWidth, dataWidth, addrMap))
   }
@@ -23,7 +25,7 @@ class AXILiteXBar(
     Module(new AXISlaveReadMux(nMasters, addrWidth, dataWidth))
   }
 
-  // * write channels
+  // * write bus/mux channels
   val writeBuses = List.fill(nMasters) {
     Module(new AXIWriteBus(mSlaves, addrWidth, dataWidth, addrMap))
   }
@@ -50,12 +52,12 @@ class AXILiteXBar(
     writeMuxes(i).io.out.writeResp <> io.slaves(i).writeResp
   }
 
-  // wiring
+  // wiring between read bus and mux
   for (m <- 0 until nMasters; s <- 0 until mSlaves) yield {
     readBuses(m).io.slave(s) <> readMuxes(s).io.ins(m)
   }
 
-  // wiring
+  // wiring between write bus and mux
   for (m <- 0 until nMasters; s <- 0 until mSlaves) yield {
     writeBuses(m).io.slave(s) <> writeMuxes(s).io.ins(m)
   }

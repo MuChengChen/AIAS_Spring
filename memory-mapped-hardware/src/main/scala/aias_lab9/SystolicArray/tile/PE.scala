@@ -23,7 +23,7 @@ class PE(val bits: Int = 8) extends Module {
   val weightReg_bits  = RegInit(0.U(bits.W))
   val weightReg_valid = RegInit(false.B)
 
-  // internal weight register
+  // internal weight register (bits and valid)
   weightReg_bits  := Mux(io.preload, io.weight.bits, weightReg_bits)
   weightReg_valid := Mux(io.preload, io.weight.valid, weightReg_valid)
 
@@ -34,7 +34,7 @@ class PE(val bits: Int = 8) extends Module {
   io.fwd_input <> RegNext(io.input)
 
   io.fwd_ps.valid := RegNext(io.input.valid)
-  io.fwd_ps.bits  := RegNext(io.ps + weightReg * io.input.bits)
+  io.fwd_ps.bits  := RegNext(io.ps + weightReg_bits * io.input.bits)
 }
 
 object PE extends App {

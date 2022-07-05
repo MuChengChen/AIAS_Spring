@@ -6,16 +6,16 @@ import chisel3.util._
 import aias_lab9.AXILite._
 
 class MMIO(val reg_width: Int) extends Bundle {
-  val ENABLE_OUT          = Output(Bool())
-  val STATUS_OUT          = Output(Bool())
-  val MATA_SIZE           = Output(UInt(reg_width.W))
-  val MATB_SIZE           = Output(UInt(reg_width.W))
-  val MATC_SIZE           = Output(UInt(reg_width.W))
-  val MATA_MEM_ADDR       = Output(UInt(reg_width.W))
-  val MATB_MEM_ADDR       = Output(UInt(reg_width.W))
-  val MATC_MEM_ADDR       = Output(UInt(reg_width.W))
-  val MAT_MEM_STRIDE      = Output(UInt(reg_width.W))
-  val MAT_GOLDEN_MEM_ADDR = Output(UInt(reg_width.W))
+  val ENABLE_OUT     = Output(Bool())
+  val STATUS_OUT     = Output(Bool())
+  val MATA_SIZE      = Output(UInt(reg_width.W))
+  val MATB_SIZE      = Output(UInt(reg_width.W))
+  val MATC_SIZE      = Output(UInt(reg_width.W))
+  val MATA_MEM_ADDR  = Output(UInt(reg_width.W))
+  val MATB_MEM_ADDR  = Output(UInt(reg_width.W))
+  val MATC_MEM_ADDR  = Output(UInt(reg_width.W))
+  val MAT_MEM_STRIDE = Output(UInt(reg_width.W))
+  val MAT_BUF        = Output(UInt(reg_width.W))
 
   val WEN       = Input(Bool())
   val ENABLE_IN = Input(Bool())
@@ -48,7 +48,7 @@ class MMIO_Regfile(addr_width: Int, reg_width: Int) extends Module {
     16.U(reg_width.W),          // MATB_MEM_ADDR
     32.U(reg_width.W),          // MATC_MEM_ADDR
     "h010101".U(reg_width.W),   // MAT_MEM_STRIDE
-    48.U(reg_width.W)           // MAT_GOLDEN_MEM_ADDR
+    48.U(reg_width.W)           // MAT_BUF
   )
 
   val RegFile = RegInit(VecInit(initial_table))
