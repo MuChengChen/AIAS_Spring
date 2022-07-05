@@ -11,10 +11,12 @@ class DataMem(size: Int, addrWidth: Int, dataWidth: Int, binaryFile: String) ext
     val bus_slave = new AXILiteSlaveIF(addrWidth, dataWidth)
   })
 
+  // * FSM Design >>>>>
   val sIdle :: sReadResp :: sWriteResp :: Nil = Enum(3)
+  val stateReg                                = RegInit(sIdle)
+  // * FSM Design <<<<<
 
-  val stateReg = RegInit(sIdle)
-  val memory   = Mem((1 << (size)), UInt(8.W))
+  val memory = Mem((1 << (size)), UInt(8.W))
 
   loadMemoryFromFile(memory, binaryFile)
 

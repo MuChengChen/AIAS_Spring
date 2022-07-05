@@ -35,6 +35,7 @@ class AXISlaveWriteMux(val nMasters: Int, val addrWidth: Int, val dataWidth: Int
     io.ins(i).writeResp.bits  := 0.U
   }
 
+  // arbiter.io.chosen.asUInt -> which master is chosen
   io.out.writeData <> io.ins(arbiter.io.chosen.asUInt).writeData
   io.ins(arbiter.io.chosen.asUInt).writeResp <> io.out.writeResp
 }

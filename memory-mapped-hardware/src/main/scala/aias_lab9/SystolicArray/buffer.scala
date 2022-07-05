@@ -11,7 +11,9 @@ class buffer(size: Int, bits: Int) extends Module {
   })
 
   val taps = Seq.range(0, size).map { length =>
+    // ++ -> union operation of two sequences
     val tap_bits = Seq(io.input(length).bits) ++ Seq.fill(length)(RegInit(0.U(bits.W)))
+
     tap_bits.zip(tap_bits.tail).foreach { case (front, back) =>
       back := front
     }
@@ -19,6 +21,7 @@ class buffer(size: Int, bits: Int) extends Module {
     io.output(length).bits := tap_bits.last
 
     val tap_valid = Seq(io.input(length).valid) ++ Seq.fill(length)(RegInit(false.B))
+
     tap_valid.zip(tap_valid.tail).foreach { case (front, back) =>
       back := front
     }

@@ -36,6 +36,7 @@ class AXIWriteBus(val mSlaves: Int, val addrWidth: Int, val dataWidth: Int, val 
   }
 
   for (i <- 0 until mSlaves) {
+    // initialize
     io.slave(i).writeData.valid     := false.B
     io.slave(i).writeData.bits.data := 0.U
     io.slave(i).writeData.bits.strb := 0.U
@@ -43,14 +44,20 @@ class AXIWriteBus(val mSlaves: Int, val addrWidth: Int, val dataWidth: Int, val 
     io.slave(i).writeAddr.bits.addr := 0.U
     io.slave(i).writeResp.ready     := false.B
 
+    // check whether slave_write_startAddr(i) <= io.master.writeAddr.bits.addr <= slave_write_endAddr
+    // to find the target slave port
     when(
       slave_write_startAddr(i) <= io.master.writeAddr.bits.addr && io.master.writeAddr.bits.addr < slave_write_endAddr(
         i
       )
     ) {
-      write_port := i.U // 找出slave的port
+      write_port := i.U // if true -> number of target slave port is i
+    }.otherwise {
+      write_port := 0.U
     }
   }
+
+  // master port input initialization
   io.master.writeData.ready := false.B
   io.master.writeAddr.ready := false.B
   io.master.writeResp.valid := false.B

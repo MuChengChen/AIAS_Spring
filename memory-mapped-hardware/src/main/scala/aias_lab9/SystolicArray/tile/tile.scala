@@ -25,7 +25,7 @@ class tile(rows: Int, cols: Int, bits: Int) extends Module {
         sa(i)(j).input <> sa(i)(j - 1).fwd_input
       }
 
-      // Wiring: preload
+      // Wiring: preload (connect io.preload to every PEs in the tile)
       sa(i)(j).preload := io.preload
 
       // Wiring: weight & partial sum

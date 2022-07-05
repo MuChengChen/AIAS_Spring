@@ -15,7 +15,7 @@ class AXILiteXBar(
     val slaves  = Flipped(Vec(mSlaves, new AXILiteSlaveIF(addrWidth, dataWidth)))
   })
 
-  // read channels
+  // * read channels
   val readBuses = List.fill(nMasters) {
     Module(new AXIReadBus(mSlaves, addrWidth, dataWidth, addrMap))
   }
@@ -23,7 +23,7 @@ class AXILiteXBar(
     Module(new AXISlaveReadMux(nMasters, addrWidth, dataWidth))
   }
 
-  // write channels
+  // * write channels
   val writeBuses = List.fill(nMasters) {
     Module(new AXIWriteBus(mSlaves, addrWidth, dataWidth, addrMap))
   }
@@ -32,6 +32,7 @@ class AXILiteXBar(
     Module(new AXISlaveWriteMux(nMasters, addrWidth, dataWidth))
   }
 
+  // wiring
   for (i <- 0 until nMasters) {
     readBuses(i).io.master.readAddr <> io.masters(i).readAddr
     io.masters(i).readData <> readBuses(i).io.master.readData
@@ -40,6 +41,7 @@ class AXILiteXBar(
     io.masters(i).writeResp <> writeBuses(i).io.master.writeResp
   }
 
+  // wiring
   for (i <- 0 until mSlaves) {
     io.slaves(i).readAddr <> readMuxes(i).io.out.readAddr
     readMuxes(i).io.out.readData <> io.slaves(i).readData
@@ -48,12 +50,13 @@ class AXILiteXBar(
     writeMuxes(i).io.out.writeResp <> io.slaves(i).writeResp
   }
 
+  // wiring
   for (m <- 0 until nMasters; s <- 0 until mSlaves) yield {
     readBuses(m).io.slave(s) <> readMuxes(s).io.ins(m)
   }
 
+  // wiring
   for (m <- 0 until nMasters; s <- 0 until mSlaves) yield {
     writeBuses(m).io.slave(s) <> writeMuxes(s).io.ins(m)
   }
-
 }

@@ -49,7 +49,6 @@ class LocalMem(mem_size: Int, addr_width: Int, data_width: Int) extends Module {
 
   when(io.finish) {
     printf("\n\t\tLocal Memory Value: (Unit:Double Word) \n")
-
     for (i <- 0 until 6) {
       var data = Cat(
         localMem(8 * i + 7),
@@ -66,5 +65,4 @@ class LocalMem(mem_size: Int, addr_width: Int, data_width: Int) extends Module {
     }
     printf("\n")
   }
-
 }
