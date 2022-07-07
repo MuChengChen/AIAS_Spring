@@ -15,26 +15,26 @@ class PE(val bits: Int = 8) extends Module {
 
     val preload = Input(Bool())
 
-    // partial sum propagation (ps: partial sum)
+    // partial sum propagation (ps is short for partial sum)
     val ps     = Input(UInt((bits * 2).W))
     val fwd_ps = Output(Valid(UInt((bits * 2).W)))
   })
 
-  val weightReg_bits  = RegInit(0.U(bits.W))
-  val weightReg_valid = RegInit(false.B)
+  // weightReg includes 2 parts: bits and valid
+  val weightReg = RegInit(VecInit(Seq(0.U(bits.W), false.B)))
 
   // internal weight register (bits and valid)
-  weightReg_bits  := Mux(io.preload, io.weight.bits, weightReg_bits)
-  weightReg_valid := Mux(io.preload, io.weight.valid, weightReg_valid)
+  weightReg(0) := Mux(io.preload, io.weight.bits, weightReg(0))
+  weightReg(1) := Mux(io.preload, io.weight.valid, weightReg(1))
 
   // output
-  io.fwd_weight.bits  := weightReg_bits
-  io.fwd_weight.valid := weightReg_valid
+  io.fwd_weight.bits  := weightReg(0)
+  io.fwd_weight.valid := weightReg(1)
 
   io.fwd_input <> RegNext(io.input)
 
   io.fwd_ps.valid := RegNext(io.input.valid)
-  io.fwd_ps.bits  := RegNext(io.ps + weightReg_bits * io.input.bits)
+  io.fwd_ps.bits  := RegNext(io.ps + weightReg(0) * io.input.bits)
 }
 
 object PE extends App {

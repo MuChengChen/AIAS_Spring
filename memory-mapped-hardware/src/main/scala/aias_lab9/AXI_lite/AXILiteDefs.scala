@@ -36,6 +36,7 @@ import chisel3.util._
 // --> RRESP
 
 // ! Ignore "override def clone...", the statement is irrelevant to this homework
+// ! this syntax is due to some problem about nested class
 
 // * Read/Write Address Channel (without ready/valid)
 class AXILiteAddress(val addrWidth: Int) extends Bundle {
@@ -68,16 +69,12 @@ class AXILiteReadData(val dataWidth: Int) extends Bundle {
 class AXILiteSlaveIF(val addrWidth: Int, val dataWidth: Int) extends Bundle {
   // write address channel
   val writeAddr = Flipped(Decoupled(new AXILiteAddress(addrWidth))) // write addr (from master to slave)
-
   // write data channel
   val writeData = Flipped(Decoupled(new AXILiteWriteData(dataWidth))) // write data (from mater to slave)
-
   // write response channel
   val writeResp = Decoupled(UInt(2.W)) // write response (from slave to master)
-
   // read address channel
   val readAddr = Flipped(Decoupled(new AXILiteAddress(addrWidth))) // read address (from master to slave)
-
   // read data channel
   val readData = Decoupled(new AXILiteReadData(dataWidth)) // read data (from slave to master)
 
@@ -90,16 +87,12 @@ class AXILiteSlaveIF(val addrWidth: Int, val dataWidth: Int) extends Bundle {
 class AXILiteMasterIF(val addrWidth: Int, val dataWidth: Int) extends Bundle {
   // write address channel
   val writeAddr = Decoupled(new AXILiteAddress(addrWidth))
-
   // write data channel
   val writeData = Decoupled(new AXILiteWriteData(dataWidth))
-
   // write response channel
   val writeResp = Flipped(Decoupled(UInt(2.W)))
-
   // read address channel
   val readAddr = Decoupled(new AXILiteAddress(addrWidth))
-
   // read data channel
   val readData = Flipped(Decoupled(new AXILiteReadData(dataWidth)))
 
@@ -119,6 +112,7 @@ class Interface extends MultiIOModule {
     val master = new AXILiteMasterIF(8, 32)
   })
 
+  // input signal default values
   io.slave.writeData.ready := false.B
   io.slave.writeAddr.ready := false.B
   io.slave.readAddr.ready  := false.B

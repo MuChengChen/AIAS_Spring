@@ -9,7 +9,7 @@ import aias_lab9.AXILite._
 
 class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int) extends Module {
   val io = IO(new Bundle {
-    // for the connection to mmio
+    // for the connection to Memory_Mapped
     val mmio = Flipped(new MMIO(reg_width))
 
     // for access localmem when SA still be a slave
@@ -25,7 +25,7 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
     val finish = Output(Bool())
   })
 
-  // constant declaration
+  // constant declaration (information from MMIO_Regfile)
   val byte       = 8
   val mat_a_rows = io.mmio.MATA_SIZE(11, 0) + 1.U
   val mat_a_cols = io.mmio.MATA_SIZE(27, 16) + 1.U
@@ -35,14 +35,14 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
   val mat_c_cols = io.mmio.MATC_SIZE(27, 16) + 1.U
 
   // Module Declaration
-  val i_buffer = Module(new buffer(rows, byte))
-  val o_buffer = Module(new buffer(cols, byte))
-  val tile     = Module(new tile(rows, cols, byte))
+  val i_buffer = Module(new buffer(rows, byte))     // input buffer
+  val o_buffer = Module(new buffer(cols, byte))     // output buffer
+  val tile     = Module(new tile(rows, cols, byte)) // single tile
 
   // counter declaration
   val w_cnt = RegInit(0.U(4.W)) // used for "weight" data access
   val i_cnt = RegInit(0.U(4.W)) // used for "input" data access
-  val o_cnt = RegInit(0.U(4.W)) // used for "input" data access
+  val o_cnt = RegInit(0.U(4.W)) // used for "output" write back counting
 
   // Enable Register
   val ENABLE_REG = RegInit(false.B)
@@ -169,16 +169,11 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
   io.mmio.WEN       := state === sFinish
   io.mmio.STATUS_IN := state === sFinish
   io.mmio.ENABLE_IN := ENABLE_REG
-  // state := Mux(!io.mmio.ENABLE,sReady,sPreload)
-
-//     //--------------------------------------------------------------------
-//     io.c_rdata := c_rdata
-
 }
 
 object SA extends App {
   (new chisel3.stage.ChiselStage).emitVerilog(
-    new SA(4, 4, 32, 64, 32),
+    new SA(4, 4, 32, 64, 32), // rows, cols, addr_width, data_width, reg_width
     Array("-td", "./generated/SA")
   )
 }

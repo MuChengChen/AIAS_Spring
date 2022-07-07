@@ -5,6 +5,7 @@ import chisel3.util._
 
 import aias_lab9.AXILite._
 
+// declare MMIO interface between MMIO_Regfiel and SA
 class MMIO(val reg_width: Int) extends Bundle {
   val ENABLE_OUT     = Output(Bool())
   val STATUS_OUT     = Output(Bool())
@@ -38,6 +39,8 @@ class MMIO_Regfile(addr_width: Int, reg_width: Int) extends Module {
     val wdata = Input(UInt(reg_width.W))
   })
 
+  // this initial_table is used for lab testing
+  // it may become useless when doing your homework
   val initial_table = Seq(
     0.U(reg_width.W),           // ENABLE
     0.U(reg_width.W),           // STATUS
@@ -51,28 +54,30 @@ class MMIO_Regfile(addr_width: Int, reg_width: Int) extends Module {
     48.U(reg_width.W)           // MAT_BUF
   )
 
+  // totally 10 registers
   val RegFile = RegInit(VecInit(initial_table))
 
   // MMIO circuit declaration
   // Output
-  io.mmio.ENABLE_OUT          := RegNext(RegFile(0)(0).asBool)
-  io.mmio.STATUS_OUT          := RegNext(RegFile(1)(0).asBool)
-  io.mmio.MATA_SIZE           := RegNext(RegFile(2))
-  io.mmio.MATB_SIZE           := RegNext(RegFile(3))
-  io.mmio.MATC_SIZE           := RegNext(RegFile(4))
-  io.mmio.MATA_MEM_ADDR       := RegNext(RegFile(5))
-  io.mmio.MATB_MEM_ADDR       := RegNext(RegFile(6))
-  io.mmio.MATC_MEM_ADDR       := RegNext(RegFile(7))
-  io.mmio.MAT_MEM_STRIDE      := RegNext(RegFile(8))
-  io.mmio.MAT_GOLDEN_MEM_ADDR := RegNext(RegFile(9))
+  io.mmio.ENABLE_OUT     := RegNext(RegFile(0)(0).asBool)
+  io.mmio.STATUS_OUT     := RegNext(RegFile(1)(0).asBool)
+  io.mmio.MATA_SIZE      := RegNext(RegFile(2))
+  io.mmio.MATB_SIZE      := RegNext(RegFile(3))
+  io.mmio.MATC_SIZE      := RegNext(RegFile(4))
+  io.mmio.MATA_MEM_ADDR  := RegNext(RegFile(5))
+  io.mmio.MATB_MEM_ADDR  := RegNext(RegFile(6))
+  io.mmio.MATC_MEM_ADDR  := RegNext(RegFile(7))
+  io.mmio.MAT_MEM_STRIDE := RegNext(RegFile(8))
+  io.mmio.MAT_BUF        := RegNext(RegFile(9))
 
-  // Input
+  // when io.mmio.WEN === true.B -> SA attempt to write MMIO_RegFIle
   when(io.mmio.WEN) {
     RegFile(1) := io.mmio.STATUS_IN.asUInt
     RegFile(0) := io.mmio.ENABLE_IN.asUInt
   }
 
-  // r/w function declaration
+  // when io.wen === true.B -> some master send request(except for SA) to r/w MMIO_RegFIle
+  // SA will r/w MMIO_Regfile cross MMIO interface, not io.wen
   io.rdata := RegFile(io.raddr)
   when(io.wen) { RegFile(io.waddr) := io.wdata }
 }

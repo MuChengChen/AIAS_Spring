@@ -11,13 +11,19 @@ class DataMem(size: Int, addrWidth: Int, dataWidth: Int, binaryFile: String) ext
     val bus_slave = new AXILiteSlaveIF(addrWidth, dataWidth)
   })
 
-  // * FSM Design >>>>>
+  /*
+    state declaration
+    1. sIdle
+    2. sReadResp -> send readResp to the bus
+    2. sWriteResp -> send writeResp to the bus
+   */
   val sIdle :: sReadResp :: sWriteResp :: Nil = Enum(3)
-  val stateReg                                = RegInit(sIdle)
-  // * FSM Design <<<<<
+  // state reg
+  val stateReg = RegInit(sIdle)
 
   val memory = Mem((1 << (size)), UInt(8.W))
 
+  // pre-load data into mem
   loadMemoryFromFile(memory, binaryFile)
 
   // Next state decoder
@@ -48,14 +54,17 @@ class DataMem(size: Int, addrWidth: Int, dataWidth: Int, binaryFile: String) ext
 
   switch(stateReg) {
     is(sIdle) {
+      // Idle -> ready to accept request from master
       io.bus_slave.readAddr.ready  := true.B
       io.bus_slave.writeAddr.ready := true.B
       io.bus_slave.writeData.ready := true.B
     }
     is(sReadResp) {
+      // read request done -> set io.bus_slave.readData.valid to HIGH
       io.bus_slave.readData.valid := true.B
     }
     is(sWriteResp) {
+      // write request done -> set io.bus_slave.writeResp.valid to HIGH
       io.bus_slave.writeResp.valid := true.B
     }
   }

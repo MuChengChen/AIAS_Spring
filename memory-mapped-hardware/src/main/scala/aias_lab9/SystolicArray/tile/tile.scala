@@ -6,13 +6,14 @@ import chisel3.stage.ChiselStage
 
 class tile(rows: Int, cols: Int, bits: Int) extends Module {
   val io = IO(new Bundle {
-    val input   = Input(Vec(rows, Valid(UInt(bits.W))))
-    val weight  = Input(Vec(cols, Valid(UInt(bits.W))))
+    val input  = Input(Vec(rows, Valid(UInt(bits.W))))
+    val weight = Input(Vec(cols, Valid(UInt(bits.W))))
+    // input preload control signal will be connect to every PEs in the tile
     val preload = Input(Bool())
     val output  = Output(Vec(cols, Valid(UInt((2 * bits).W))))
   })
 
-  // sa: systolic array
+  // sa: systolic array (single tile, [rows x cols] PEs in a tile)
   val sa = Array.fill(rows, cols)(Module(new PE(bits)).io)
 
   for (i <- 0 until rows) {

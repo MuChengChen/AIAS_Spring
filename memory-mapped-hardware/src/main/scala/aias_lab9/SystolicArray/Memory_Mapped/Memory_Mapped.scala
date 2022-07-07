@@ -10,7 +10,10 @@ class Memory_Mapped(mem_size: Int, addr_width: Int, data_width: Int, reg_width: 
     // for CPU to access the Reg and Memory
     val slave = new AXILiteSlaveIF(addr_width, data_width)
 
-    // for reg to access SA
+    /*
+      mmio source: SA
+      mmio destination: MMIO_Regfile
+     */
     val mmio = new MMIO(reg_width)
 
     // for SA to read/write LocalMem when it still a slave

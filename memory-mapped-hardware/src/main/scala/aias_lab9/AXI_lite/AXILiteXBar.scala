@@ -34,7 +34,7 @@ class AXILiteXBar(
     Module(new AXISlaveWriteMux(nMasters, addrWidth, dataWidth))
   }
 
-  // wiring
+  // wiring between IO input/output and r/w buses
   for (i <- 0 until nMasters) {
     readBuses(i).io.master.readAddr <> io.masters(i).readAddr
     io.masters(i).readData <> readBuses(i).io.master.readData
@@ -43,7 +43,7 @@ class AXILiteXBar(
     io.masters(i).writeResp <> writeBuses(i).io.master.writeResp
   }
 
-  // wiring
+  // wiring between IO input/output and r/w muxes
   for (i <- 0 until mSlaves) {
     io.slaves(i).readAddr <> readMuxes(i).io.out.readAddr
     readMuxes(i).io.out.readData <> io.slaves(i).readData
