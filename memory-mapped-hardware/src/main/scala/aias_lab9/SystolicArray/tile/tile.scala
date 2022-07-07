@@ -18,11 +18,12 @@ class tile(rows: Int, cols: Int, bits: Int) extends Module {
 
   for (i <- 0 until rows) {
     for (j <- 0 until cols) {
-
       // Wiring: input
       if (j == 0) {
+        // first column
         sa(i)(j).input <> io.input(i)
       } else {
+        // not first column
         sa(i)(j).input <> sa(i)(j - 1).fwd_input
       }
 
@@ -31,14 +32,17 @@ class tile(rows: Int, cols: Int, bits: Int) extends Module {
 
       // Wiring: weight & partial sum
       if (i == 0) {
+        // first row
         sa(i)(j).weight <> io.weight(j)
         sa(i)(j).ps := 0.U
       } else {
+        // not first row
         sa(i)(j).weight <> sa(i - 1)(j).fwd_weight
         sa(i)(j).ps := sa(i - 1)(j).fwd_ps.bits
       }
     }
   }
 
+  // connect io.output(x) to sa(rows - 1)(x).fwd_ps, the range of x is from 0 to (cols - 1)
   List.range(0, cols).map { x => io.output(x) <> sa(rows - 1)(x).fwd_ps }
 }

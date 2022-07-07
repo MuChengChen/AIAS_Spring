@@ -9,13 +9,12 @@ import aias_lab9.AXILite._
 
 class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int) extends Module {
   val io = IO(new Bundle {
-    // for the connection to Memory_Mapped
+    // connect to Memory_Mapped
     val mmio = Flipped(new MMIO(reg_width))
 
     // for access localmem when SA still be a slave
     val raddr = Output(UInt(addr_width.W))
     val rdata = Input(UInt(data_width.W))
-
     val wen   = Output(Bool())
     val waddr = Output(UInt(addr_width.W))
     val wdata = Output(UInt(data_width.W))
@@ -25,8 +24,9 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
     val finish = Output(Bool())
   })
 
-  // constant declaration (information from MMIO_Regfile)
-  val byte       = 8
+  // constant declaration
+  val byte = 8
+  // information from MMIO_Regfile
   val mat_a_rows = io.mmio.MATA_SIZE(11, 0) + 1.U
   val mat_a_cols = io.mmio.MATA_SIZE(27, 16) + 1.U
   val mat_b_rows = io.mmio.MATB_SIZE(11, 0) + 1.U
@@ -55,29 +55,20 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
 
   // state declaration
   val sIdle :: sReady :: sStall_0 :: sPreload :: sStall_1 :: sPropagate :: sCheck :: sFinish :: Nil = Enum(8)
-  val state                                                                                         = RegInit(sIdle)
+  // state reg
+  val state = RegInit(sIdle)
 
   when(state === sReady) {
     io.raddr := 0.U
+  }.elsewhen(state === sStall_0 || state === sPreload) {
+    io.raddr := b_base_addr + (w_cnt << 2)
+  }.elsewhen(state === sStall_1 || state === sPropagate) {
+    io.raddr := a_base_addr + (i_cnt << 2)
+  }.elsewhen(state === sCheck) {
+    io.raddr := c_base_addr + (o_cnt << 2)
+  }.otherwise {
+    io.raddr := 0.U
   }
-    .elsewhen(state === sStall_0) {
-      io.raddr := b_base_addr + (w_cnt << 2)
-    }
-    .elsewhen(state === sPreload) {
-      io.raddr := b_base_addr + (w_cnt << 2)
-    }
-    .elsewhen(state === sStall_1) {
-      io.raddr := a_base_addr + (i_cnt << 2)
-    }
-    .elsewhen(state === sPropagate) {
-      io.raddr := a_base_addr + (i_cnt << 2)
-    }
-    .elsewhen(state === sCheck) {
-      io.raddr := c_base_addr + (o_cnt << 2)
-    }
-    .otherwise {
-      io.raddr := 0.U
-    }
 
   val rdata_picker = RegNext(io.raddr)
   val rdata        = Mux(rdata_picker(2) === 0.U, io.rdata(63, 32), io.rdata(31, 0))
@@ -102,8 +93,7 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
 
   // In our design, the preload of weight doesn't pass through the buffer
   List.range(0, cols).map { x =>
-    tile.io.weight(x).bits := Mux(state === sPreload, rdata((cols - x) * byte - 1, (cols - x - 1) * byte), 0.U)
-
+    tile.io.weight(x).bits  := Mux(state === sPreload, rdata((cols - x) * byte - 1, (cols - x - 1) * byte), 0.U)
     tile.io.weight(x).valid := state === sPreload
   }
 
@@ -126,45 +116,38 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
 
   when(state === sIdle) {
     state := sReady
+  }.elsewhen(state === sReady) {
+    state      := Mux(io.mmio.ENABLE_OUT, sStall_0, sReady)
+    ENABLE_REG := io.mmio.ENABLE_OUT
+  }.elsewhen(state === sStall_0) {
+    state := sPreload
+    w_cnt := w_cnt + 1.U
+  }.elsewhen(state === sPreload) {
+    when(io.mmio.ENABLE_OUT) {
+      state := Mux(w_cnt === rows.U, sStall_1, sPreload)
+      w_cnt := Mux(w_cnt === rows.U, 0.U, w_cnt + 1.U)
+    }.otherwise {
+      state := sReady
+      w_cnt := 0.U
+    }
+  }.elsewhen(state === sStall_1) {
+    state := sPropagate
+    i_cnt := i_cnt + 1.U
+  }.elsewhen(state === sPropagate) {
+    when(io.mmio.ENABLE_OUT) {
+      state := Mux(i_cnt === (cols + rows - 1).U, sCheck, sPropagate)
+      i_cnt := i_cnt + Mux(i_cnt === (cols + rows - 1).U, 0.U, 1.U)
+    }.otherwise {
+      state := sReady
+      i_cnt := 0.U
+    }
+  }.elsewhen(state === sCheck) {
+    state      := Mux(o_cnt === (rows - 1).U, sFinish, sCheck)
+    o_cnt      := Mux(o_cnt === (rows - 1).U, 0.U, o_cnt + 1.U)
+    ENABLE_REG := Mux(o_cnt === (rows - 1).U, false.B, ENABLE_REG)
+  }.elsewhen(state === sFinish) {
+    state := sIdle
   }
-    .elsewhen(state === sReady) {
-      state      := Mux(io.mmio.ENABLE_OUT, sStall_0, sReady)
-      ENABLE_REG := io.mmio.ENABLE_OUT
-    }
-    .elsewhen(state === sStall_0) {
-      state := sPreload
-      w_cnt := w_cnt + 1.U
-    }
-    .elsewhen(state === sPreload) {
-      when(io.mmio.ENABLE_OUT) {
-        state := Mux(w_cnt === rows.U, sStall_1, sPreload)
-        w_cnt := Mux(w_cnt === rows.U, 0.U, w_cnt + 1.U)
-      }.otherwise {
-        state := sReady
-        w_cnt := 0.U
-      }
-    }
-    .elsewhen(state === sStall_1) {
-      state := sPropagate
-      i_cnt := i_cnt + 1.U
-    }
-    .elsewhen(state === sPropagate) {
-      when(io.mmio.ENABLE_OUT) {
-        state := Mux(i_cnt === (cols + rows - 1).U, sCheck, sPropagate)
-        i_cnt := i_cnt + Mux(i_cnt === (cols + rows - 1).U, 0.U, 1.U)
-      }.otherwise {
-        state := sReady
-        i_cnt := 0.U
-      }
-    }
-    .elsewhen(state === sCheck) {
-      state      := Mux(o_cnt === (rows - 1).U, sFinish, sCheck)
-      o_cnt      := Mux(o_cnt === (rows - 1).U, 0.U, o_cnt + 1.U)
-      ENABLE_REG := Mux(o_cnt === (rows - 1).U, false.B, ENABLE_REG)
-    }
-    .elsewhen(state === sFinish) {
-      state := sIdle
-    }
 
   io.mmio.WEN       := state === sFinish
   io.mmio.STATUS_IN := state === sFinish

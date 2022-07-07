@@ -21,20 +21,23 @@ class PE(val bits: Int = 8) extends Module {
   })
 
   // weightReg includes 2 parts: bits and valid
-  val weightReg = RegInit(VecInit(Seq(0.U(bits.W), false.B)))
+  val weight_wire = Wire(Valid(UInt(bits.W)))
+  weight_wire.bits  := 0.U     // initialize
+  weight_wire.valid := false.B // initialize
+  val weightReg = RegInit(weight_wire)
 
   // internal weight register (bits and valid)
-  weightReg(0) := Mux(io.preload, io.weight.bits, weightReg(0))
-  weightReg(1) := Mux(io.preload, io.weight.valid, weightReg(1))
+  weightReg.bits  := Mux(io.preload, io.weight.bits, weightReg.bits)
+  weightReg.valid := Mux(io.preload, io.weight.valid, weightReg.valid)
 
   // output
-  io.fwd_weight.bits  := weightReg(0)
-  io.fwd_weight.valid := weightReg(1)
+  io.fwd_weight.bits  := weightReg.bits
+  io.fwd_weight.valid := weightReg.valid
 
   io.fwd_input <> RegNext(io.input)
 
   io.fwd_ps.valid := RegNext(io.input.valid)
-  io.fwd_ps.bits  := RegNext(io.ps + weightReg(0) * io.input.bits)
+  io.fwd_ps.bits  := RegNext(io.ps + weightReg.bits * io.input.bits)
 }
 
 object PE extends App {
