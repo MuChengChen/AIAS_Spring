@@ -4,9 +4,7 @@ import chisel3._
 import chisel3.iotesters.{Driver, PeekPokeTester}
 
 class AXILiteXBarTest(dut: AXILiteXBar) extends PeekPokeTester(dut) {
-
   for (i <- 0 until 2) {
-
     poke(dut.io.masters(i).writeAddr.valid, false)
     poke(dut.io.masters(i).writeAddr.bits.addr, 0)
     poke(dut.io.masters(i).writeData.valid, false)
@@ -98,6 +96,7 @@ class AXILiteXBarTest(dut: AXILiteXBar) extends PeekPokeTester(dut) {
 }
 
 object AXILiteXBarTest extends App {
+  // allocation of 2 slaves in memory space
   val addr_map = List(("h8000".U, "h10000".U), ("h10000".U, "h20000".U))
 
   Driver.execute(args, () => new AXILiteXBar(2, 2, 32, 64, addr_map)) { c =>

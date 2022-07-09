@@ -7,7 +7,13 @@ import scala.io.Source
 
 import aias_lab9.AXILite._
 
-class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int) extends Module {
+/*
+  SA module
+  includes a tile and input/output buffers
+  also the control logic of systolic array
+ */
+
+class _SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int) extends Module {
   val io = IO(new Bundle {
     // connect to Memory_Mapped
     val mmio = Flipped(new MMIO(reg_width))
@@ -97,7 +103,7 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
     tile.io.weight(x).valid := state === sPreload
   }
 
-  tile.io.preload := state === sPreload
+  tile.io.preload := Mux(state === sPreload, true.B, false.B)
 
   // mem to input buffer wiring
   List.range(0, rows).map { x =>
@@ -142,21 +148,23 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
       i_cnt := 0.U
     }
   }.elsewhen(state === sCheck) {
+    // when o_cnt === (rows - 1).U -> all outputs have been written back to internal mem
     state      := Mux(o_cnt === (rows - 1).U, sFinish, sCheck)
     o_cnt      := Mux(o_cnt === (rows - 1).U, 0.U, o_cnt + 1.U)
     ENABLE_REG := Mux(o_cnt === (rows - 1).U, false.B, ENABLE_REG)
   }.elsewhen(state === sFinish) {
-    state := sIdle
+    state := sReady
   }
 
-  io.mmio.WEN       := state === sFinish
-  io.mmio.STATUS_IN := state === sFinish
+  // when state === sFinish -> write output data back to internal mem
+  io.mmio.WEN       := Mux(state === sFinish, true.B, false.B)
+  io.mmio.STATUS_IN := Mux(state === sFinish, true.B, false.B)
   io.mmio.ENABLE_IN := ENABLE_REG
 }
 
-object SA extends App {
+object _SA extends App {
   (new chisel3.stage.ChiselStage).emitVerilog(
-    new SA(4, 4, 32, 64, 32), // rows, cols, addr_width, data_width, reg_width
+    new _SA(4, 4, 32, 64, 32), // rows, cols, addr_width, data_width, reg_width
     Array("-td", "./generated/SA")
   )
 }

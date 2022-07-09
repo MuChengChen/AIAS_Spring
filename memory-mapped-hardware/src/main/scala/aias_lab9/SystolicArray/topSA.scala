@@ -5,6 +5,12 @@ import chisel3.util._
 
 import aias_lab9.AXILite._
 
+/*
+  topSA module
+  includes Memory_Mapped and SA modules
+  pure wiring between these two modules and I/O
+ */
+
 class topSA(addr_width: Int, data_width: Int, reg_width: Int) extends Module {
   val io = IO(new Bundle {
     // slave interface for connecting to AXI bus
@@ -12,7 +18,7 @@ class topSA(addr_width: Int, data_width: Int, reg_width: Int) extends Module {
   })
 
   // module declaration
-  val sa = Module(new SA(4, 4, addr_width, data_width, reg_width))
+  val sa = Module(new _SA(4, 4, addr_width, data_width, reg_width))
   val mm = Module(new Memory_Mapped(0x8000, addr_width, data_width, reg_width))
 
   // module wiring

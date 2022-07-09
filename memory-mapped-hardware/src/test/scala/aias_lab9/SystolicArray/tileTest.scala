@@ -7,7 +7,6 @@ import aias_lab9.SystolicArray
 import scala.language.implicitConversions
 
 class tileTest(dut: tile) extends PeekPokeTester(dut) {
-
   implicit def bigint2bool(bi: BigInt) = if (bi != 0) true else false
 
   def mmul(a: Array[Array[Int]], b: Array[Array[Int]]): Array[Array[Int]] = {
@@ -116,10 +115,8 @@ class tileTest(dut: tile) extends PeekPokeTester(dut) {
       }
       print("============================================\n")
     }
-
     step(1)
   }
-
   step(10)
 }
 

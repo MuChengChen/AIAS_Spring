@@ -4,6 +4,11 @@ import chisel3._
 import chisel3.util._
 import chisel3.util.experimental.loadMemoryFromFile
 
+/*
+  LocalMem module
+  internal memory of systolic array
+ */
+
 class LocalMem(mem_size: Int, addr_width: Int, data_width: Int) extends Module {
   val io = IO(new Bundle {
     // from SA(slave) or CPU(master)
@@ -24,12 +29,12 @@ class LocalMem(mem_size: Int, addr_width: Int, data_width: Int) extends Module {
   val localMem = SyncReadMem(mem_size, UInt(byte.W))
   loadMemoryFromFile(localMem, "src/main/resource/SystolicArray/LocalMem.hex")
 
-  val raddr_aligned = WireDefault(io.raddr & ~(7.U(data_width.W)))
-  val waddr_aligned = WireDefault(io.waddr & ~(7.U(data_width.W)))
+  val raddr_aligned = WireDefault(io.raddr & ~(7.U(addr_width.W)))
+  val waddr_aligned = WireDefault(io.waddr & ~(7.U(addr_width.W)))
 
   val rdata = WireDefault(
     List
-      .range(0, data_width >> 3)
+      .range(0, data_width >> 3) // how many bytes of out data
       .map { x =>
         // data_width>>3 === 64/8=8
         localMem(raddr_aligned + x.U) << (((data_width >> 3) - 1 - x) * byte)
@@ -47,6 +52,7 @@ class LocalMem(mem_size: Int, addr_width: Int, data_width: Int) extends Module {
     }
   }
 
+  // when io.finish === true.B -> print the values of LocalMem in terminal
   when(io.finish) {
     printf("\n\t\tLocal Memory Value: (Unit:Double Word) \n")
     for (i <- 0 until 6) {

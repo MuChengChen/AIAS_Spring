@@ -8,190 +8,190 @@
 #define GET_BITS(addr, begin, end) ((addr & BIT_MASKS(begin, end)) >> end)
 
 namespace INSTR_FORMAT {
-    namespace R_TYPE {
-        size_t opcode = 0;
-        size_t rd = 7;
-        size_t funct3 = 12;
-        size_t rs1 = 15;
-        size_t rs2 = 20;
-        size_t funct7 = 25;
-    }
-    namespace I_TYPE {
-        size_t opcode = 0;
-        size_t rd = 7;
-        size_t funct3 = 12;
-        size_t rs1 = 15;
-        size_t imm = 20;
-    }
-    namespace S_TYPE {
-        size_t opcode = 0;
-        size_t imm_4_0 = 7;
-        size_t funct3 = 12;
-        size_t rs1 = 15;
-        size_t rs2 = 20;
-        size_t imm_11_5 = 25;
-    }
-    namespace B_TYPE {
-        size_t opcode = 0;
-        size_t imm_11 = 7;
-        size_t imm_4_1 = 8;
-        size_t funct3 = 12;
-        size_t rs1 = 15;
-        size_t rs2 = 20;
-        size_t imm_10_5 = 25;
-        size_t imm_12 = 31;
-    }
-    namespace U_TYPE {
-        size_t opcode = 0;
-        size_t rd = 7;
-        size_t imm_31_12 = 12;
-    }
-    namespace J_TYPE {
-        size_t opcode = 0;
-        size_t rd = 7;
-        size_t imm_19_12 = 12;
-        size_t imm_11 = 20;
-        size_t imm_10_1 = 21;
-        size_t imm_20 = 31;
-    }
+namespace R_TYPE {
+size_t opcode = 0;
+size_t rd = 7;
+size_t funct3 = 12;
+size_t rs1 = 15;
+size_t rs2 = 20;
+size_t funct7 = 25;
+}  // namespace R_TYPE
+namespace I_TYPE {
+size_t opcode = 0;
+size_t rd = 7;
+size_t funct3 = 12;
+size_t rs1 = 15;
+size_t imm = 20;
+}  // namespace I_TYPE
+namespace S_TYPE {
+size_t opcode = 0;
+size_t imm_4_0 = 7;
+size_t funct3 = 12;
+size_t rs1 = 15;
+size_t rs2 = 20;
+size_t imm_11_5 = 25;
+}  // namespace S_TYPE
+namespace B_TYPE {
+size_t opcode = 0;
+size_t imm_11 = 7;
+size_t imm_4_1 = 8;
+size_t funct3 = 12;
+size_t rs1 = 15;
+size_t rs2 = 20;
+size_t imm_10_5 = 25;
+size_t imm_12 = 31;
+}  // namespace B_TYPE
+namespace U_TYPE {
+size_t opcode = 0;
+size_t rd = 7;
+size_t imm_31_12 = 12;
+}  // namespace U_TYPE
+namespace J_TYPE {
+size_t opcode = 0;
+size_t rd = 7;
+size_t imm_19_12 = 12;
+size_t imm_11 = 20;
+size_t imm_10_1 = 21;
+size_t imm_20 = 31;
+}  // namespace J_TYPE
 
-    namespace VL_TYPE {
-        size_t opcode = 0;
-        size_t vd = 7;
-        size_t width = 12;
-        size_t rs1 = 15;
-        size_t lumop = 20;
-        size_t vm = 25;
-        size_t mop = 26;
-        size_t mew = 28;
-        size_t nf = 29;
-    }
+namespace VL_TYPE {
+size_t opcode = 0;
+size_t vd = 7;
+size_t width = 12;
+size_t rs1 = 15;
+size_t lumop = 20;
+size_t vm = 25;
+size_t mop = 26;
+size_t mew = 28;
+size_t nf = 29;
+}  // namespace VL_TYPE
 
-    namespace VS_TYPE {
-        size_t opcode = 0;
-        size_t vs3 = 7;
-        size_t width = 12;
-        size_t rs1 = 15;
-        size_t sumop = 20;
-        size_t vm = 25;
-        size_t mop = 26;
-        size_t mew = 28;
-        size_t nf = 29;
-    }
+namespace VS_TYPE {
+size_t opcode = 0;
+size_t vs3 = 7;
+size_t width = 12;
+size_t rs1 = 15;
+size_t sumop = 20;
+size_t vm = 25;
+size_t mop = 26;
+size_t mew = 28;
+size_t nf = 29;
+}  // namespace VS_TYPE
 
-    namespace OPVV_TYPE {
-        size_t opcode = 0;
-        size_t vd = 7;
-        size_t funct3 = 12;
-        size_t vs1 = 15;
-        size_t vs2 = 20;
-        size_t vm = 25;
-        size_t funct6 = 26;
-    }
+namespace OPVV_TYPE {
+size_t opcode = 0;
+size_t vd = 7;
+size_t funct3 = 12;
+size_t vs1 = 15;
+size_t vs2 = 20;
+size_t vm = 25;
+size_t funct6 = 26;
+}  // namespace OPVV_TYPE
 
-    namespace OPVX_TYPE {
-        size_t opcode = 0;
-        size_t vd = 7;
-        size_t funct3 = 12;
-        size_t rs1 = 15;
-        size_t vs2 = 20;
-        size_t vm = 25;
-        size_t funct6 = 26;
-    }
-}
+namespace OPVX_TYPE {
+size_t opcode = 0;
+size_t vd = 7;
+size_t funct3 = 12;
+size_t rs1 = 15;
+size_t vs2 = 20;
+size_t vm = 25;
+size_t funct6 = 26;
+}  // namespace OPVX_TYPE
+}  // namespace INSTR_FORMAT
 
 namespace OPCODE {
-    uint32_t OP = 0b0110011;
-    uint32_t OP_IMM = 0b0010011;
-    uint32_t LOAD = 0b0000011;
-    uint32_t STORE = 0b0100011;
-    uint32_t BRANCH = 0b1100011;
-    uint32_t JALR = 0b1100111;
-    uint32_t JAL = 0b1101111;
-    uint32_t AUIPC = 0b0010111;
-    uint32_t LUI = 0b0110111;
-    uint32_t VL = 0b0000111;
-    uint32_t VS = 0b0100111;
-    uint32_t OP_V = 0b1010111;
-}
+uint32_t OP = 0b0110011;
+uint32_t OP_IMM = 0b0010011;
+uint32_t LOAD = 0b0000011;
+uint32_t STORE = 0b0100011;
+uint32_t BRANCH = 0b1100011;
+uint32_t JALR = 0b1100111;
+uint32_t JAL = 0b1101111;
+uint32_t AUIPC = 0b0010111;
+uint32_t LUI = 0b0110111;
+uint32_t VL = 0b0000111;
+uint32_t VS = 0b0100111;
+uint32_t OP_V = 0b1010111;
+}  // namespace OPCODE
 
-namespace FUNCT {       // with offset
-    // op
-    uint32_t ADD = (0b0 << 30) | (0b000 << 12);
-    uint32_t SUB = (0b1 << 30) | (0b000 << 12);
-    uint32_t SLL = (0b0 << 30) | (0b001 << 12);
-    uint32_t SLT = (0b0 << 30) | (0b010 << 12);
-    uint32_t SLTU = (0b0 << 30) | (0b011 << 12);
-    uint32_t XOR = (0b0 << 30) | (0b100 << 12);
-    uint32_t SRL = (0b0 << 30) | (0b101 << 12);
-    uint32_t SRA = (0b1 << 30) | (0b101 << 12);
-    uint32_t OR = (0b0 << 30) | (0b110 << 12);
-    uint32_t AND = (0b0 << 30) | (0b111 << 12);
-    uint32_t MULDIV = (0b01 << INSTR_FORMAT::R_TYPE::funct7) | (0b000 << INSTR_FORMAT::R_TYPE::funct3);
+namespace FUNCT {  // with offset
+// op
+uint32_t ADD = (0b0 << 30) | (0b000 << 12);
+uint32_t SUB = (0b1 << 30) | (0b000 << 12);
+uint32_t SLL = (0b0 << 30) | (0b001 << 12);
+uint32_t SLT = (0b0 << 30) | (0b010 << 12);
+uint32_t SLTU = (0b0 << 30) | (0b011 << 12);
+uint32_t XOR = (0b0 << 30) | (0b100 << 12);
+uint32_t SRL = (0b0 << 30) | (0b101 << 12);
+uint32_t SRA = (0b1 << 30) | (0b101 << 12);
+uint32_t OR = (0b0 << 30) | (0b110 << 12);
+uint32_t AND = (0b0 << 30) | (0b111 << 12);
+uint32_t MULDIV = (0b01 << INSTR_FORMAT::R_TYPE::funct7) | (0b000 << INSTR_FORMAT::R_TYPE::funct3);
 
-    // load / store
-    uint32_t BYTE = 0b000 << INSTR_FORMAT::I_TYPE::funct3;
-    uint32_t HALF = 0b001 << INSTR_FORMAT::I_TYPE::funct3;
-    uint32_t WORD = 0b010 << INSTR_FORMAT::I_TYPE::funct3;
-    uint32_t BYTE_U = 0b100 << INSTR_FORMAT::I_TYPE::funct3;
-    uint32_t HALF_U = 0b101 << INSTR_FORMAT::I_TYPE::funct3;
+// load / store
+uint32_t BYTE = 0b000 << INSTR_FORMAT::I_TYPE::funct3;
+uint32_t HALF = 0b001 << INSTR_FORMAT::I_TYPE::funct3;
+uint32_t WORD = 0b010 << INSTR_FORMAT::I_TYPE::funct3;
+uint32_t BYTE_U = 0b100 << INSTR_FORMAT::I_TYPE::funct3;
+uint32_t HALF_U = 0b101 << INSTR_FORMAT::I_TYPE::funct3;
 
-    // branch
-    uint32_t EQ = 0b000 << INSTR_FORMAT::B_TYPE::funct3;
-    uint32_t NE = 0b001 << INSTR_FORMAT::B_TYPE::funct3;
-    uint32_t LT = 0b100 << INSTR_FORMAT::B_TYPE::funct3;
-    uint32_t GE = 0b101 << INSTR_FORMAT::B_TYPE::funct3;
-    uint32_t LTU = 0b110 << INSTR_FORMAT::B_TYPE::funct3;
-    uint32_t GEU = 0b111 << INSTR_FORMAT::B_TYPE::funct3;
+// branch
+uint32_t EQ = 0b000 << INSTR_FORMAT::B_TYPE::funct3;
+uint32_t NE = 0b001 << INSTR_FORMAT::B_TYPE::funct3;
+uint32_t LT = 0b100 << INSTR_FORMAT::B_TYPE::funct3;
+uint32_t GE = 0b101 << INSTR_FORMAT::B_TYPE::funct3;
+uint32_t LTU = 0b110 << INSTR_FORMAT::B_TYPE::funct3;
+uint32_t GEU = 0b111 << INSTR_FORMAT::B_TYPE::funct3;
 
-    // bitmanip extension
-    uint32_t ANDN = (0b1 << 30) | (0b111 << 12);    // AND
-    uint32_t ORN = (0b1 << 30) | (0b110 << 12);     // OR
-    uint32_t XNOR = (0b1 << 30) | (0b100 << 12);    // XOR
-    uint32_t ROL = (0b11 << 29) | (0b001 << 12);    // SLL
-    uint32_t ROR = (0b11 << 29) | (0b101 << 12);    // SRA
+// bitmanip extension
+uint32_t ANDN = (0b1 << 30) | (0b111 << 12);  // AND
+uint32_t ORN = (0b1 << 30) | (0b110 << 12);   // OR
+uint32_t XNOR = (0b1 << 30) | (0b100 << 12);  // XOR
+uint32_t ROL = (0b11 << 29) | (0b001 << 12);  // SLL
+uint32_t ROR = (0b11 << 29) | (0b101 << 12);  // SRA
 
-    uint32_t SH1ADD = (0x10 << INSTR_FORMAT::R_TYPE::funct7) | (0b010 << INSTR_FORMAT::R_TYPE::funct3);
-    uint32_t SH2ADD = (0x10 << INSTR_FORMAT::R_TYPE::funct7) | (0b100 << INSTR_FORMAT::R_TYPE::funct3);
-    uint32_t SH3ADD = (0x10 << INSTR_FORMAT::R_TYPE::funct7) | (0b110 << INSTR_FORMAT::R_TYPE::funct3);
+uint32_t SH1ADD = (0x10 << INSTR_FORMAT::R_TYPE::funct7) | (0b010 << INSTR_FORMAT::R_TYPE::funct3);
+uint32_t SH2ADD = (0x10 << INSTR_FORMAT::R_TYPE::funct7) | (0b100 << INSTR_FORMAT::R_TYPE::funct3);
+uint32_t SH3ADD = (0x10 << INSTR_FORMAT::R_TYPE::funct7) | (0b110 << INSTR_FORMAT::R_TYPE::funct3);
 
-    uint32_t BCLR = (0x24 << INSTR_FORMAT::R_TYPE::funct7) | (0b001 << INSTR_FORMAT::R_TYPE::funct3);
-    uint32_t BSET = (0x14 << INSTR_FORMAT::R_TYPE::funct7) | (0b001 << INSTR_FORMAT::R_TYPE::funct3);
-    uint32_t BINV = (0x34 << INSTR_FORMAT::R_TYPE::funct7) | (0b001 << INSTR_FORMAT::R_TYPE::funct3);
-    uint32_t BEXT = (0x24 << INSTR_FORMAT::R_TYPE::funct7) | (0b101 << INSTR_FORMAT::R_TYPE::funct3);
+uint32_t BCLR = (0x24 << INSTR_FORMAT::R_TYPE::funct7) | (0b001 << INSTR_FORMAT::R_TYPE::funct3);
+uint32_t BSET = (0x14 << INSTR_FORMAT::R_TYPE::funct7) | (0b001 << INSTR_FORMAT::R_TYPE::funct3);
+uint32_t BINV = (0x34 << INSTR_FORMAT::R_TYPE::funct7) | (0b001 << INSTR_FORMAT::R_TYPE::funct3);
+uint32_t BEXT = (0x24 << INSTR_FORMAT::R_TYPE::funct7) | (0b101 << INSTR_FORMAT::R_TYPE::funct3);
 
-    uint32_t CLZ = (((0x30 << 5) | 0x0) << INSTR_FORMAT::I_TYPE::imm) | (0x1 << INSTR_FORMAT::I_TYPE::funct3);
-    uint32_t CTZ = (((0x30 << 5) | 0x1) << INSTR_FORMAT::I_TYPE::imm) | (0x1 << INSTR_FORMAT::I_TYPE::funct3);
-    uint32_t CPOP = (((0x30 << 5) | 0x2) << INSTR_FORMAT::I_TYPE::imm) | (0x1 << INSTR_FORMAT::I_TYPE::funct3);
-    uint32_t SEXT_B = (((0x30 << 5) | 0x4) << INSTR_FORMAT::I_TYPE::imm) | (0x1 << INSTR_FORMAT::I_TYPE::funct3);
-    uint32_t SEXT_H = (((0x30 << 5) | 0x5) << INSTR_FORMAT::I_TYPE::imm) | (0x1 << INSTR_FORMAT::I_TYPE::funct3);
-    uint32_t REV8 = (0x698 << INSTR_FORMAT::I_TYPE::imm) | (0x5 << INSTR_FORMAT::I_TYPE::funct3);
-    uint32_t ORC_B = (0x287 << INSTR_FORMAT::I_TYPE::imm) | (0x5 << INSTR_FORMAT::I_TYPE::funct3);
+uint32_t CLZ = (((0x30 << 5) | 0x0) << INSTR_FORMAT::I_TYPE::imm) | (0x1 << INSTR_FORMAT::I_TYPE::funct3);
+uint32_t CTZ = (((0x30 << 5) | 0x1) << INSTR_FORMAT::I_TYPE::imm) | (0x1 << INSTR_FORMAT::I_TYPE::funct3);
+uint32_t CPOP = (((0x30 << 5) | 0x2) << INSTR_FORMAT::I_TYPE::imm) | (0x1 << INSTR_FORMAT::I_TYPE::funct3);
+uint32_t SEXT_B = (((0x30 << 5) | 0x4) << INSTR_FORMAT::I_TYPE::imm) | (0x1 << INSTR_FORMAT::I_TYPE::funct3);
+uint32_t SEXT_H = (((0x30 << 5) | 0x5) << INSTR_FORMAT::I_TYPE::imm) | (0x1 << INSTR_FORMAT::I_TYPE::funct3);
+uint32_t REV8 = (0x698 << INSTR_FORMAT::I_TYPE::imm) | (0x5 << INSTR_FORMAT::I_TYPE::funct3);
+uint32_t ORC_B = (0x287 << INSTR_FORMAT::I_TYPE::imm) | (0x5 << INSTR_FORMAT::I_TYPE::funct3);
 
-    uint32_t ZEXT_H = (0x4 << INSTR_FORMAT::R_TYPE::funct7) | (0x0 << INSTR_FORMAT::R_TYPE::rs2) |
-                      (0x4 << INSTR_FORMAT::R_TYPE::funct3);
+uint32_t ZEXT_H =
+    (0x4 << INSTR_FORMAT::R_TYPE::funct7) | (0x0 << INSTR_FORMAT::R_TYPE::rs2) | (0x4 << INSTR_FORMAT::R_TYPE::funct3);
 
-    uint32_t CLMUL = (0x5 << INSTR_FORMAT::R_TYPE::funct7) | (0x1 << INSTR_FORMAT::R_TYPE::funct3);
-    uint32_t CLMULR = (0x5 << INSTR_FORMAT::R_TYPE::funct7) | (0x2 << INSTR_FORMAT::R_TYPE::funct3);
-    uint32_t CLMULH = (0x5 << INSTR_FORMAT::R_TYPE::funct7) | (0x3 << INSTR_FORMAT::R_TYPE::funct3);
-    uint32_t MIN = (0x5 << INSTR_FORMAT::R_TYPE::funct7) | (0x4 << INSTR_FORMAT::R_TYPE::funct3);
-    uint32_t MINU = (0x5 << INSTR_FORMAT::R_TYPE::funct7) | (0x5 << INSTR_FORMAT::R_TYPE::funct3);
-    uint32_t MAX = (0x5 << INSTR_FORMAT::R_TYPE::funct7) | (0x6 << INSTR_FORMAT::R_TYPE::funct3);
-    uint32_t MAXU = (0x5 << INSTR_FORMAT::R_TYPE::funct7) | (0x7 << INSTR_FORMAT::R_TYPE::funct3);
-}
+uint32_t CLMUL = (0x5 << INSTR_FORMAT::R_TYPE::funct7) | (0x1 << INSTR_FORMAT::R_TYPE::funct3);
+uint32_t CLMULR = (0x5 << INSTR_FORMAT::R_TYPE::funct7) | (0x2 << INSTR_FORMAT::R_TYPE::funct3);
+uint32_t CLMULH = (0x5 << INSTR_FORMAT::R_TYPE::funct7) | (0x3 << INSTR_FORMAT::R_TYPE::funct3);
+uint32_t MIN = (0x5 << INSTR_FORMAT::R_TYPE::funct7) | (0x4 << INSTR_FORMAT::R_TYPE::funct3);
+uint32_t MINU = (0x5 << INSTR_FORMAT::R_TYPE::funct7) | (0x5 << INSTR_FORMAT::R_TYPE::funct3);
+uint32_t MAX = (0x5 << INSTR_FORMAT::R_TYPE::funct7) | (0x6 << INSTR_FORMAT::R_TYPE::funct3);
+uint32_t MAXU = (0x5 << INSTR_FORMAT::R_TYPE::funct7) | (0x7 << INSTR_FORMAT::R_TYPE::funct3);
+}  // namespace FUNCT
 
-namespace FUNCT6 {      // without offset
-    // vector extension [ref: riscv-v-spec-1.0 (P.95)]
-    uint32_t VADD = 0b000000;   // V, X, I
-    uint32_t VMUL = 0b100101;   // V, X
-    uint32_t VMACC = 0b101101;
-}
+namespace FUNCT6 {  // without offset
+// vector extension [ref: riscv-v-spec-1.0 (P.95)]
+uint32_t VADD = 0b000000;  // V, X, I
+uint32_t VMUL = 0b100101;  // V, X
+uint32_t VMACC = 0b101101;
+}  // namespace FUNCT6
 
-namespace FUNCT3 {      // withoout offset
-    // vector extension [ref: riscv-v-spec-1.0 (P.42)]
-    uint32_t OPIVV = 0b000;
-    uint32_t OPIVX = 0b100;
-}
+namespace FUNCT3 {  // withoout offset
+// vector extension [ref: riscv-v-spec-1.0 (P.42)]
+uint32_t OPIVV = 0b000;
+uint32_t OPIVX = 0b100;
+}  // namespace FUNCT3
 
 char *concat(const char *s1, const char *s2) {
     const size_t len1 = strlen(s1);
@@ -203,34 +203,31 @@ char *concat(const char *s1, const char *s2) {
     return result;
 }
 
-void copy_path(char* argv1, char** path){
+void copy_path(char *argv1, char **path) {
     char *ptr;
 
-	if(!(*path = (char*)malloc(sizeof(char)*strlen(argv1)))){
-		printf("malloc is failed in 'main', copy the argv[1] to char *path.\n");
-		exit(2);
-	}
-        
-	copy_str(*path,argv1);
+    if (!(*path = (char *)malloc(sizeof(char) * strlen(argv1)))) {
+        printf("malloc is failed in 'main', copy the argv[1] to char *path.\n");
+        exit(2);
+    }
 
-	ptr = *path + strlen(*path);
-    
-	//find the last '/' in argv1
-	while(ptr != *path){
-		if(*ptr == '/'){
-			*ptr = '\0';
-			break;
-		}
-		ptr--;
-	}
+    copy_str(*path, argv1);
 
-    if(ptr == *path)
-		**path = '\0';
-	
-    if(**path)
-		strcat(*path,"/");
+    ptr = *path + strlen(*path);
+
+    //find the last '/' in argv1
+    while (ptr != *path) {
+        if (*ptr == '/') {
+            *ptr = '\0';
+            break;
+        }
+        ptr--;
+    }
+
+    if (ptr == *path) **path = '\0';
+
+    if (**path) strcat(*path, "/");
 }
-
 
 void copy_str(char *tgt, const char *src) {
     char *ptr;
@@ -251,8 +248,8 @@ void translate_to_machine_code(uint8_t *mem, instr *imem, char *argv1) {
     uint32_t inst_cnt = 0;
     bool dexit = false;
 
-    const char* path = "../memory-mapped-hardware/src/main/resource/SystolicArray/";
-	// copy_path(argv1, &path);
+    const char *path = "../memory-mapped-hardware/src/main/resource/SystolicArray/";
+    // copy_path(argv1, &path);
 
     FILE *mch_file = fopen(concat(path, "m_code.hex"), "w");
     FILE *inst_file = fopen(concat(path, "inst.asm"), "w");
@@ -307,8 +304,8 @@ void translate_to_machine_code(uint8_t *mem, instr *imem, char *argv1) {
                 break;
             case OR:
                 // rf[i.a1.reg] = rf[i.a2.reg] | rf[i.a3.reg]; break;
-                binary = (i.a3.reg << INSTR_FORMAT::R_TYPE::rs2) | (i.a2.reg << INSTR_FORMAT::R_TYPE::rs1) |
-                         FUNCT::OR | (i.a1.reg << INSTR_FORMAT::R_TYPE::rd) | OPCODE::OP;
+                binary = (i.a3.reg << INSTR_FORMAT::R_TYPE::rs2) | (i.a2.reg << INSTR_FORMAT::R_TYPE::rs1) | FUNCT::OR |
+                         (i.a1.reg << INSTR_FORMAT::R_TYPE::rd) | OPCODE::OP;
                 break;
             case AND:
                 // rf[i.a1.reg] = rf[i.a2.reg] & rf[i.a3.reg]; break;
@@ -338,8 +335,8 @@ void translate_to_machine_code(uint8_t *mem, instr *imem, char *argv1) {
                 break;
             case ORI:
                 // rf[i.a1.reg] = rf[i.a2.reg] | i.a3.imm; break;
-                binary = (i.a3.imm << INSTR_FORMAT::I_TYPE::imm) | (i.a2.reg << INSTR_FORMAT::I_TYPE::rs1) |
-                         FUNCT::OR | (i.a1.reg << INSTR_FORMAT::I_TYPE::rd) | OPCODE::OP_IMM;
+                binary = (i.a3.imm << INSTR_FORMAT::I_TYPE::imm) | (i.a2.reg << INSTR_FORMAT::I_TYPE::rs1) | FUNCT::OR |
+                         (i.a1.reg << INSTR_FORMAT::I_TYPE::rd) | OPCODE::OP_IMM;
                 break;
             case ANDI:
                 // rf[i.a1.reg] = rf[i.a2.reg] & i.a3.imm; break;
@@ -385,27 +382,18 @@ void translate_to_machine_code(uint8_t *mem, instr *imem, char *argv1) {
 
             case SB:
                 binary = (GET_BITS(i.a3.imm, 11, 5) << INSTR_FORMAT::S_TYPE::imm_11_5) |
-                         (i.a1.reg << INSTR_FORMAT::S_TYPE::rs2) |
-                         (i.a2.reg << INSTR_FORMAT::S_TYPE::rs1) |
-                         FUNCT::BYTE |
-                         (GET_BITS(i.a3.imm, 4, 0) << INSTR_FORMAT::S_TYPE::imm_4_0) |
-                         OPCODE::STORE;
+                         (i.a1.reg << INSTR_FORMAT::S_TYPE::rs2) | (i.a2.reg << INSTR_FORMAT::S_TYPE::rs1) |
+                         FUNCT::BYTE | (GET_BITS(i.a3.imm, 4, 0) << INSTR_FORMAT::S_TYPE::imm_4_0) | OPCODE::STORE;
                 break;
             case SH:
                 binary = (GET_BITS(i.a3.imm, 11, 5) << INSTR_FORMAT::S_TYPE::imm_11_5) |
-                         (i.a1.reg << INSTR_FORMAT::S_TYPE::rs2) |
-                         (i.a2.reg << INSTR_FORMAT::S_TYPE::rs1) |
-                         FUNCT::HALF |
-                         (GET_BITS(i.a3.imm, 4, 0) << INSTR_FORMAT::S_TYPE::imm_4_0) |
-                         OPCODE::STORE;
+                         (i.a1.reg << INSTR_FORMAT::S_TYPE::rs2) | (i.a2.reg << INSTR_FORMAT::S_TYPE::rs1) |
+                         FUNCT::HALF | (GET_BITS(i.a3.imm, 4, 0) << INSTR_FORMAT::S_TYPE::imm_4_0) | OPCODE::STORE;
                 break;
             case SW:
                 binary = (GET_BITS(i.a3.imm, 11, 5) << INSTR_FORMAT::S_TYPE::imm_11_5) |
-                         (i.a1.reg << INSTR_FORMAT::S_TYPE::rs2) |
-                         (i.a2.reg << INSTR_FORMAT::S_TYPE::rs1) |
-                         FUNCT::WORD |
-                         (GET_BITS(i.a3.imm, 4, 0) << INSTR_FORMAT::S_TYPE::imm_4_0) |
-                         OPCODE::STORE;
+                         (i.a1.reg << INSTR_FORMAT::S_TYPE::rs2) | (i.a2.reg << INSTR_FORMAT::S_TYPE::rs1) |
+                         FUNCT::WORD | (GET_BITS(i.a3.imm, 4, 0) << INSTR_FORMAT::S_TYPE::imm_4_0) | OPCODE::STORE;
                 break;
 
             case BEQ:
@@ -413,72 +401,54 @@ void translate_to_machine_code(uint8_t *mem, instr *imem, char *argv1) {
                 offset = i.a3.imm - (inst_cnt << 2);
                 binary = (GET_BITS(offset, 12, 12) << INSTR_FORMAT::B_TYPE::imm_12) |
                          (GET_BITS(offset, 10, 5) << INSTR_FORMAT::B_TYPE::imm_10_5) |
-                         (i.a2.reg << INSTR_FORMAT::B_TYPE::rs2) |
-                         (i.a1.reg << INSTR_FORMAT::B_TYPE::rs1) |
-                         FUNCT::EQ |
+                         (i.a2.reg << INSTR_FORMAT::B_TYPE::rs2) | (i.a1.reg << INSTR_FORMAT::B_TYPE::rs1) | FUNCT::EQ |
                          (GET_BITS(offset, 4, 1) << INSTR_FORMAT::B_TYPE::imm_4_1) |
-                         (GET_BITS(offset, 11, 11) << INSTR_FORMAT::B_TYPE::imm_11) |
-                         OPCODE::BRANCH;
+                         (GET_BITS(offset, 11, 11) << INSTR_FORMAT::B_TYPE::imm_11) | OPCODE::BRANCH;
                 break;
             case BNE:
                 // if ( rf[i.a1.reg] != rf[i.a2.reg] ) pc_next = i.a3.imm; break;
                 offset = i.a3.imm - (inst_cnt << 2);
                 binary = (GET_BITS(offset, 12, 12) << INSTR_FORMAT::B_TYPE::imm_12) |
                          (GET_BITS(offset, 10, 5) << INSTR_FORMAT::B_TYPE::imm_10_5) |
-                         (i.a2.reg << INSTR_FORMAT::B_TYPE::rs2) |
-                         (i.a1.reg << INSTR_FORMAT::B_TYPE::rs1) |
-                         FUNCT::NE |
+                         (i.a2.reg << INSTR_FORMAT::B_TYPE::rs2) | (i.a1.reg << INSTR_FORMAT::B_TYPE::rs1) | FUNCT::NE |
                          (GET_BITS(offset, 4, 1) << INSTR_FORMAT::B_TYPE::imm_4_1) |
-                         (GET_BITS(offset, 11, 11) << INSTR_FORMAT::B_TYPE::imm_11) |
-                         OPCODE::BRANCH;
+                         (GET_BITS(offset, 11, 11) << INSTR_FORMAT::B_TYPE::imm_11) | OPCODE::BRANCH;
                 break;
             case BLT:
                 // if ( *(int32_t*)&rf[i.a1.reg] < *(int32_t*)&rf[i.a2.reg] ) pc_next = i.a3.imm; break;
                 offset = i.a3.imm - (inst_cnt << 2);
                 binary = (GET_BITS(offset, 12, 12) << INSTR_FORMAT::B_TYPE::imm_12) |
                          (GET_BITS(offset, 10, 5) << INSTR_FORMAT::B_TYPE::imm_10_5) |
-                         (i.a2.reg << INSTR_FORMAT::B_TYPE::rs2) |
-                         (i.a1.reg << INSTR_FORMAT::B_TYPE::rs1) |
-                         FUNCT::LT |
+                         (i.a2.reg << INSTR_FORMAT::B_TYPE::rs2) | (i.a1.reg << INSTR_FORMAT::B_TYPE::rs1) | FUNCT::LT |
                          (GET_BITS(offset, 4, 1) << INSTR_FORMAT::B_TYPE::imm_4_1) |
-                         (GET_BITS(offset, 11, 11) << INSTR_FORMAT::B_TYPE::imm_11) |
-                         OPCODE::BRANCH;
+                         (GET_BITS(offset, 11, 11) << INSTR_FORMAT::B_TYPE::imm_11) | OPCODE::BRANCH;
                 break;
             case BGE:
                 // if ( *(int32_t*)&rf[i.a1.reg] >= *(int32_t*)&rf[i.a2.reg] ) pc_next = i.a3.imm; break;
                 offset = i.a3.imm - (inst_cnt << 2);
                 binary = (GET_BITS(offset, 12, 12) << INSTR_FORMAT::B_TYPE::imm_12) |
                          (GET_BITS(offset, 10, 5) << INSTR_FORMAT::B_TYPE::imm_10_5) |
-                         (i.a2.reg << INSTR_FORMAT::B_TYPE::rs2) |
-                         (i.a1.reg << INSTR_FORMAT::B_TYPE::rs1) |
-                         FUNCT::GE |
+                         (i.a2.reg << INSTR_FORMAT::B_TYPE::rs2) | (i.a1.reg << INSTR_FORMAT::B_TYPE::rs1) | FUNCT::GE |
                          (GET_BITS(offset, 4, 1) << INSTR_FORMAT::B_TYPE::imm_4_1) |
-                         (GET_BITS(offset, 11, 11) << INSTR_FORMAT::B_TYPE::imm_11) |
-                         OPCODE::BRANCH;
+                         (GET_BITS(offset, 11, 11) << INSTR_FORMAT::B_TYPE::imm_11) | OPCODE::BRANCH;
                 break;
             case BLTU:
                 // if ( rf[i.a1.reg] < rf[i.a2.reg] ) pc_next = i.a3.imm; break;
                 offset = i.a3.imm - (inst_cnt << 2);
                 binary = (GET_BITS(offset, 12, 12) << INSTR_FORMAT::B_TYPE::imm_12) |
                          (GET_BITS(offset, 10, 5) << INSTR_FORMAT::B_TYPE::imm_10_5) |
-                         (i.a2.reg << INSTR_FORMAT::B_TYPE::rs2) |
-                         (i.a1.reg << INSTR_FORMAT::B_TYPE::rs1) |
-                         FUNCT::LTU |
-                         (GET_BITS(offset, 4, 1) << INSTR_FORMAT::B_TYPE::imm_4_1) |
-                         (GET_BITS(offset, 11, 11) << INSTR_FORMAT::B_TYPE::imm_11) |
-                         OPCODE::BRANCH;
+                         (i.a2.reg << INSTR_FORMAT::B_TYPE::rs2) | (i.a1.reg << INSTR_FORMAT::B_TYPE::rs1) |
+                         FUNCT::LTU | (GET_BITS(offset, 4, 1) << INSTR_FORMAT::B_TYPE::imm_4_1) |
+                         (GET_BITS(offset, 11, 11) << INSTR_FORMAT::B_TYPE::imm_11) | OPCODE::BRANCH;
                 break;
             case BGEU:
                 // if ( rf[i.a1.reg] >= rf[i.a2.reg] ) pc_next = i.a3.imm;
                 offset = i.a3.imm - (inst_cnt << 2);
                 binary = (GET_BITS(offset, 12, 12) << INSTR_FORMAT::B_TYPE::imm_12) |
                          (GET_BITS(offset, 10, 5) << INSTR_FORMAT::B_TYPE::imm_10_5) |
-                         (i.a2.reg << INSTR_FORMAT::B_TYPE::rs2) |
-                         (i.a1.reg << INSTR_FORMAT::B_TYPE::rs1) |
-                         FUNCT::GEU |
-                         (GET_BITS(offset, 4, 1) << INSTR_FORMAT::B_TYPE::imm_4_1) |
-                         (GET_BITS(offset, 11, 11) << INSTR_FORMAT::B_TYPE::imm_11) |
-                         OPCODE::BRANCH;
+                         (i.a2.reg << INSTR_FORMAT::B_TYPE::rs2) | (i.a1.reg << INSTR_FORMAT::B_TYPE::rs1) |
+                         FUNCT::GEU | (GET_BITS(offset, 4, 1) << INSTR_FORMAT::B_TYPE::imm_4_1) |
+                         (GET_BITS(offset, 11, 11) << INSTR_FORMAT::B_TYPE::imm_11) | OPCODE::BRANCH;
                 break;
 
             case JAL:
@@ -487,25 +457,20 @@ void translate_to_machine_code(uint8_t *mem, instr *imem, char *argv1) {
                          (GET_BITS(offset, 10, 1) << INSTR_FORMAT::J_TYPE::imm_10_1) |
                          (GET_BITS(offset, 11, 11) << INSTR_FORMAT::J_TYPE::imm_11) |
                          (GET_BITS(offset, 19, 12) << INSTR_FORMAT::J_TYPE::imm_19_12) |
-                         (i.a1.reg << INSTR_FORMAT::J_TYPE::rd) |
-                         OPCODE::JAL;
+                         (i.a1.reg << INSTR_FORMAT::J_TYPE::rd) | OPCODE::JAL;
                 break;
             case JALR:
-                binary = (i.a3.imm << INSTR_FORMAT::I_TYPE::imm) |
-                         (i.a2.reg << INSTR_FORMAT::I_TYPE::rs1) |
-                         (i.a1.reg << INSTR_FORMAT::I_TYPE::rd) |
-                         OPCODE::JALR;
+                binary = (i.a3.imm << INSTR_FORMAT::I_TYPE::imm) | (i.a2.reg << INSTR_FORMAT::I_TYPE::rs1) |
+                         (i.a1.reg << INSTR_FORMAT::I_TYPE::rd) | OPCODE::JALR;
                 break;
             case AUIPC:
-                binary = (i.a2.imm << INSTR_FORMAT::U_TYPE::imm_31_12) |
-                         (i.a1.reg << INSTR_FORMAT::U_TYPE::rd) |
+                binary = (i.a2.imm << INSTR_FORMAT::U_TYPE::imm_31_12) | (i.a1.reg << INSTR_FORMAT::U_TYPE::rd) |
                          OPCODE::AUIPC;
                 break;
 
             case LUI:
                 // rf[i.a1.reg] = (i.a2.imm<<12);
-                binary = (i.a2.imm << INSTR_FORMAT::U_TYPE::imm_31_12) |
-                         (i.a1.reg << INSTR_FORMAT::U_TYPE::rd) |
+                binary = (i.a2.imm << INSTR_FORMAT::U_TYPE::imm_31_12) | (i.a1.reg << INSTR_FORMAT::U_TYPE::rd) |
                          OPCODE::LUI;
                 break;
 
@@ -590,12 +555,12 @@ void translate_to_machine_code(uint8_t *mem, instr *imem, char *argv1) {
                 break;
 
             case CLZ:
-                binary = (i.a2.reg << INSTR_FORMAT::I_TYPE::rs1) | (i.a1.reg << INSTR_FORMAT::I_TYPE::rd) |
-                         FUNCT::CLZ | OPCODE::OP_IMM;
+                binary = (i.a2.reg << INSTR_FORMAT::I_TYPE::rs1) | (i.a1.reg << INSTR_FORMAT::I_TYPE::rd) | FUNCT::CLZ |
+                         OPCODE::OP_IMM;
                 break;
             case CTZ:
-                binary = (i.a2.reg << INSTR_FORMAT::I_TYPE::rs1) | (i.a1.reg << INSTR_FORMAT::I_TYPE::rd) |
-                         FUNCT::CTZ | OPCODE::OP_IMM;
+                binary = (i.a2.reg << INSTR_FORMAT::I_TYPE::rs1) | (i.a1.reg << INSTR_FORMAT::I_TYPE::rd) | FUNCT::CTZ |
+                         OPCODE::OP_IMM;
                 break;
             case CPOP:
                 binary = (i.a2.reg << INSTR_FORMAT::I_TYPE::rs1) | (i.a1.reg << INSTR_FORMAT::I_TYPE::rd) |
@@ -657,8 +622,7 @@ void translate_to_machine_code(uint8_t *mem, instr *imem, char *argv1) {
                 binary = (0b000 << INSTR_FORMAT::VL_TYPE::nf) | (0b0 << INSTR_FORMAT::VL_TYPE::mew) |
                          (0b00 << INSTR_FORMAT::VL_TYPE::mop) | (0b1 << INSTR_FORMAT::VL_TYPE::vm) |
                          (0b00000 << INSTR_FORMAT::VL_TYPE::lumop) | (i.a2.reg << INSTR_FORMAT::VL_TYPE::rs1) |
-                         (0b000 << INSTR_FORMAT::VL_TYPE::width) | (i.a1.reg << INSTR_FORMAT::VL_TYPE::vd) |
-                         OPCODE::VL;
+                         (0b000 << INSTR_FORMAT::VL_TYPE::width) | (i.a1.reg << INSTR_FORMAT::VL_TYPE::vd) | OPCODE::VL;
                 break;
             case VSE8_V:
                 binary = (0b000 << INSTR_FORMAT::VS_TYPE::nf) | (0b0 << INSTR_FORMAT::VS_TYPE::mew) |
@@ -672,20 +636,20 @@ void translate_to_machine_code(uint8_t *mem, instr *imem, char *argv1) {
             case VADD_VV:
                 binary = (FUNCT6::VADD << INSTR_FORMAT::OPVV_TYPE::funct6) | (0b1 << INSTR_FORMAT::OPVV_TYPE::vm) |
                          (i.a2.reg << INSTR_FORMAT::OPVV_TYPE::vs2) | (i.a3.reg << INSTR_FORMAT::OPVV_TYPE::vs1) |
-                         (FUNCT3::OPIVV << INSTR_FORMAT::OPVV_TYPE::funct3) | (i.a1.reg << INSTR_FORMAT::OPVV_TYPE::vd) |
-                         (OPCODE::OP_V << INSTR_FORMAT::OPVV_TYPE::opcode);
+                         (FUNCT3::OPIVV << INSTR_FORMAT::OPVV_TYPE::funct3) |
+                         (i.a1.reg << INSTR_FORMAT::OPVV_TYPE::vd) | (OPCODE::OP_V << INSTR_FORMAT::OPVV_TYPE::opcode);
                 break;
             case VMUL_VX:
                 binary = (FUNCT6::VMUL << INSTR_FORMAT::OPVX_TYPE::funct6) | (0b1 << INSTR_FORMAT::OPVX_TYPE::vm) |
                          (i.a2.reg << INSTR_FORMAT::OPVX_TYPE::vs2) | (i.a3.reg << INSTR_FORMAT::OPVX_TYPE::rs1) |
-                         (FUNCT3::OPIVX << INSTR_FORMAT::OPVV_TYPE::funct3) | (i.a1.reg << INSTR_FORMAT::OPVX_TYPE::vd) |
-                         (OPCODE::OP_V << INSTR_FORMAT::OPVX_TYPE::opcode);
+                         (FUNCT3::OPIVX << INSTR_FORMAT::OPVV_TYPE::funct3) |
+                         (i.a1.reg << INSTR_FORMAT::OPVX_TYPE::vd) | (OPCODE::OP_V << INSTR_FORMAT::OPVX_TYPE::opcode);
                 break;
             case VMACC_VV:
                 binary = (FUNCT6::VMACC << INSTR_FORMAT::OPVV_TYPE::funct6) | (0b1 << INSTR_FORMAT::OPVV_TYPE::vm) |
                          (i.a2.reg << INSTR_FORMAT::OPVV_TYPE::vs2) | (i.a3.reg << INSTR_FORMAT::OPVV_TYPE::vs1) |
-                         (FUNCT3::OPIVV << INSTR_FORMAT::OPVV_TYPE::funct3) | (i.a1.reg << INSTR_FORMAT::OPVV_TYPE::vd) |
-                         (OPCODE::OP_V << INSTR_FORMAT::OPVV_TYPE::opcode);
+                         (FUNCT3::OPIVV << INSTR_FORMAT::OPVV_TYPE::funct3) |
+                         (i.a1.reg << INSTR_FORMAT::OPVV_TYPE::vd) | (OPCODE::OP_V << INSTR_FORMAT::OPVV_TYPE::opcode);
                 break;
 
             // program terminating

@@ -1253,8 +1253,8 @@ int main(int argc, char** argv) {
     normalize_labels(imem, labels, label_count, &src);
 
     /*
-		* translation must be in front of execution
-		* otherwise, there will be some errors about memory hex file
+	    translation must be in front of execution
+	    otherwise, there will be some errors about dumped memory hex file
 	*/
 
     // do translation

@@ -5,7 +5,6 @@ import chisel3.iotesters.{PeekPokeTester, Driver}
 import scala.language.implicitConversions
 
 class Memory_MappedTest(dut: Memory_Mapped) extends PeekPokeTester(dut) {
-
   // Read the second value (STATUS) of localMem
   poke(dut.io.slave.readAddr.bits.addr, 0x100008)
   poke(dut.io.slave.readAddr.valid, true)
@@ -45,7 +44,6 @@ class Memory_MappedTest(dut: Memory_Mapped) extends PeekPokeTester(dut) {
   step(1)
 
   step(10)
-
 }
 
 object Memory_MappedTest extends App {

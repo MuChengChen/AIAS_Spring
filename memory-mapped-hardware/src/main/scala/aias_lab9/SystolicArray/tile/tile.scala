@@ -4,6 +4,12 @@ import chisel3._
 import chisel3.util._
 import chisel3.stage.ChiselStage
 
+/*
+  in our lab and homework
+  the systolic array consists of single tile
+  a tile consists of a 2D PE array
+ */
+
 class tile(rows: Int, cols: Int, bits: Int) extends Module {
   val io = IO(new Bundle {
     val input  = Input(Vec(rows, Valid(UInt(bits.W))))
@@ -18,7 +24,10 @@ class tile(rows: Int, cols: Int, bits: Int) extends Module {
 
   for (i <- 0 until rows) {
     for (j <- 0 until cols) {
-      // Wiring: input
+      // Wiring: preload (connect io.preload to every PEs in the tile)
+      sa(i)(j).preload := io.preload
+
+      // Wiring: input & PE.io.fwd_input
       if (j == 0) {
         // first column
         sa(i)(j).input <> io.input(i)
@@ -27,10 +36,7 @@ class tile(rows: Int, cols: Int, bits: Int) extends Module {
         sa(i)(j).input <> sa(i)(j - 1).fwd_input
       }
 
-      // Wiring: preload (connect io.preload to every PEs in the tile)
-      sa(i)(j).preload := io.preload
-
-      // Wiring: weight & partial sum
+      // Wiring: weight (PE.io.fwd_weight) & partial sum (PE.io.fwd_ps)
       if (i == 0) {
         // first row
         sa(i)(j).weight <> io.weight(j)

@@ -3,6 +3,11 @@ package aias_lab9.SystolicArray
 import chisel3._
 import chisel3.util._
 
+/*
+  PE module
+  building block of tile
+ */
+
 class PE(val bits: Int = 8) extends Module {
   val io = IO(new Bundle {
     // input propagation (fwd: forwarded)
@@ -20,10 +25,10 @@ class PE(val bits: Int = 8) extends Module {
     val fwd_ps = Output(Valid(UInt((bits * 2).W)))
   })
 
+  val weight_wire = Wire(Valid(UInt(bits.W))) // created for weightREg initialization
+  weight_wire.bits  := 0.U     // initialization
+  weight_wire.valid := false.B // initialization
   // weightReg includes 2 parts: bits and valid
-  val weight_wire = Wire(Valid(UInt(bits.W)))
-  weight_wire.bits  := 0.U     // initialize
-  weight_wire.valid := false.B // initialize
   val weightReg = RegInit(weight_wire)
 
   // internal weight register (bits and valid)

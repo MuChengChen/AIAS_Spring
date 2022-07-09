@@ -6,7 +6,6 @@ import scala.language.implicitConversions
 
 class MMIO_RegfileTest(dut: MMIO_Regfile) extends PeekPokeTester(dut) {
   step(10)
-
 }
 
 object MMIO_RegfileTest extends App {

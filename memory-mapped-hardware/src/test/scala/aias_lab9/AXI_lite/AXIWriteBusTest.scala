@@ -4,9 +4,7 @@ import chisel3._
 import chisel3.iotesters.{Driver, PeekPokeTester}
 
 class AXIWriteBusTest(dut: AXIWriteBus) extends PeekPokeTester(dut) {
-
   for (i <- 0 until 2) {
-
     poke(dut.io.master.writeAddr.valid, false)
     poke(dut.io.master.writeAddr.bits.addr, 0)
     poke(dut.io.master.writeData.valid, false)
