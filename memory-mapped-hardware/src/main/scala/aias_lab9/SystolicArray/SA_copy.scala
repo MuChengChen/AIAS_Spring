@@ -55,13 +55,13 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
   val output_buffer = Module(new buffer(cols, byte))
 
   // state declaration
-  val sIdle :: sReady :: sPreload :: sPropagate :: sCheck :: sFinish :: Nil = Enum(6)
+  val sIdle :: sReady :: sStall_1 :: sPreload :: sStall_2 :: sPropagate :: sCheck :: sFinish :: Nil = Enum(8)
   // state register
   val stateReg = RegInit(sIdle)
 
   // declare counters
-  val weight_cnt = RegInit(0.U(3.W))
-  val input_cnt  = RegInit(0.U(3.W))
+  val weight_cnt = RegInit(1.U(3.W))
+  val input_cnt  = RegInit(1.U(3.W))
   val output_cnt = RegInit(0.U(3.W))
 
   // wiring io.rdata <---> tile.io.weight and tile.io.preload
@@ -124,7 +124,7 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
       }.otherwise {
         stateReg := sReady
         // reset counter
-        weight_cnt := 0.U
+        weight_cnt := 1.U
       }
     }
     is(sPropagate) {
@@ -133,8 +133,8 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
       }.otherwise {
         stateReg := sReady
         // reset counters
-        weight_cnt := 0.U
-        input_cnt  := 0.U
+        weight_cnt := 1.U
+        input_cnt  := 1.U
       }
     }
     is(sCheck) {
@@ -158,8 +158,8 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
     }
     is(sFinish) {
       // reset counters
-      weight_cnt := 0.U
-      input_cnt  := 0.U
+      weight_cnt := 1.U
+      input_cnt  := 1.U
       output_cnt := 0.U
     }
   }

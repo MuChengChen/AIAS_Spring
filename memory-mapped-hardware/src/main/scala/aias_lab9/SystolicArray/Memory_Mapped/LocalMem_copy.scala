@@ -23,7 +23,6 @@ class LocalMem(mem_size: Int, addr_width: Int, data_width: Int) extends Module {
     // for printing need
     val finish = Input(Bool())
   })
-
   val byte = 8
 
   val localMem = SyncReadMem(mem_size, UInt(byte.W))

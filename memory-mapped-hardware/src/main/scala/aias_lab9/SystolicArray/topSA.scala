@@ -18,7 +18,7 @@ class topSA(addr_width: Int, data_width: Int, reg_width: Int) extends Module {
   })
 
   // module declaration
-  val sa = Module(new _SA(4, 4, addr_width, data_width, reg_width))
+  val sa = Module(new SA(4, 4, addr_width, data_width, reg_width))
   val mm = Module(new Memory_Mapped(0x8000, addr_width, data_width, reg_width))
 
   // module wiring
