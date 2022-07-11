@@ -30,9 +30,6 @@ class Memory_Mapped(mem_size: Int, addr_width: Int, data_width: Int, reg_width: 
     val waddr = Input(UInt(addr_width.W))
     val wdata = Input(UInt(data_width.W))
     val wstrb = Input(UInt((data_width >> 3).W))
-
-    // for making localMem print the value
-    val finish = Input(Bool())
   })
 
   // module declaration
@@ -68,12 +65,11 @@ class Memory_Mapped(mem_size: Int, addr_width: Int, data_width: Int, reg_width: 
   rf.io.wen   := false.B
 
   // lm wiring and default value
-  lm.io.raddr  := 0.U
-  lm.io.waddr  := 0.U
-  lm.io.wdata  := 0.U
-  lm.io.wstrb  := 0.U
-  lm.io.wen    := false.B
-  lm.io.finish := io.finish
+  lm.io.raddr := 0.U
+  lm.io.waddr := 0.U
+  lm.io.wdata := 0.U
+  lm.io.wstrb := 0.U
+  lm.io.wen   := false.B
 
   // r/w port default value
   io.rdata := 0.U

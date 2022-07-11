@@ -46,10 +46,23 @@ class topSATest(dut: topSA) extends PeekPokeTester(dut) {
   print("==C_mat \n")
   printmat(c_mat)
 
-  val localMem_writer = new PrintWriter(new File("./src/main/resource/SystolicArray/LocalMem.hex"))
+  val localMem_writer     = new PrintWriter(new File("./src/main/resource/SystolicArray/LocalMem.hex"))
+  val a_mat_flatten       = a_mat.flatten
+  val b_mat_flatten       = b_mat.flatten
+  var temp_string: String = ""
 
-  (a_mat.flatten).foreach { element => localMem_writer.println(element.toHexString) }
-  (b_mat.flatten).foreach { element => localMem_writer.println(element.toHexString) }
+  // use Little-Endian
+  for (i <- 0 until (rows * cols) by 8) {
+    for (j <- i + 7 to i by -1) { temp_string += "%02x".format(a_mat_flatten(j)) }
+    localMem_writer.println(temp_string)
+    temp_string = ""
+  }
+
+  for (i <- 0 until (rows * cols) by 8) {
+    for (j <- i + 7 to i by -1) { temp_string += "%02x".format(b_mat_flatten(j)) }
+    localMem_writer.println(temp_string)
+    temp_string = ""
+  }
 
   localMem_writer.close
 

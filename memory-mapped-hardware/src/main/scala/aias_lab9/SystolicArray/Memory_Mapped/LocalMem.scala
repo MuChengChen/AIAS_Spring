@@ -19,56 +19,44 @@ class LocalMem(mem_size: Int, addr_width: Int, data_width: Int) extends Module {
     val waddr = Input(UInt(addr_width.W))
     val wdata = Input(UInt(data_width.W))
     val wstrb = Input(UInt((data_width >> 3).W))
-
-    // for printing need
-    val finish = Input(Bool())
   })
+  val byte = 8 // constant
 
-  val byte = 8
+  // use SyncReadMem module from chisel.util
+  val localMem = SyncReadMem(mem_size, UInt(data_width.W))
+  // preload data from hex file
+  // loadMemoryFromFile(localMem, "src/main/resource/SystolicArray/LocalMem.hex")
 
-  val localMem = SyncReadMem(mem_size, UInt(byte.W))
-  loadMemoryFromFile(localMem, "src/main/resource/SystolicArray/LocalMem.hex")
+  // wires declaration
+  // address -> truncate lower 3 bits to transfer byte addr to double-word address
+  val raddr_aligned = WireDefault(io.raddr >> 3)
+  val waddr_aligned = WireDefault(io.waddr >> 3)
+  // write data after masked
+  val wdata_mask = Wire(Vec(data_width >> 3, UInt(byte.W)))
 
-  val raddr_aligned = WireDefault(io.raddr & ~(7.U(addr_width.W)))
-  val waddr_aligned = WireDefault(io.waddr & ~(7.U(addr_width.W)))
+  wdata_mask := DontCare // avoid compilation error when signal is not fully initialized
 
-  val rdata = WireDefault(
-    List
-      .range(0, data_width >> 3) // how many bytes of out data
-      .map { x =>
-        // data_width>>3 = 64/8 = 8
-        localMem(raddr_aligned + x.U) << (((data_width >> 3) - 1 - x) * byte)
-      }
-      .reduce(_ + _)
-  )
+  // memory read
+  io.rdata := localMem.read(raddr_aligned)
 
-  io.rdata := rdata
-
+  // memory write
   when(io.wen) {
-    List.range(0, data_width >> 3).map { x =>
-      when(io.wstrb(x) === 1.U) {
-        localMem(waddr_aligned + (x.U)) := io.wdata((x + 1) * byte - 1, x * byte)
-      }
-    }
-  }
-
-  // when io.finish === true.B -> print the values of LocalMem in terminal
-  when(io.finish) {
-    printf("\n\t\tLocal Memory Value: (Unit:Double Word) \n")
-    for (i <- 0 until 6) {
-      var data = Cat(
-        localMem(8 * i + 7),
-        localMem(8 * i + 6),
-        localMem(8 * i + 5),
-        localMem(8 * i + 4),
-        localMem(8 * i + 3),
-        localMem(8 * i + 2),
-        localMem(8 * i + 1),
-        localMem(8 * i)
+    // do byte mask
+    List.range(0, data_width >> 3).map { index =>
+      wdata_mask(index) := Mux(
+        io.wstrb(index) === 1.U,
+        io.wdata(byte * (index + 1) - 1, byte * index),
+        0.U
       )
-      var index = String.format("%" + 2 + "s", i.toString).replace(' ', '0')
-      printf(p"\t\tdata[${index}] = 0x${Hexadecimal(data)}\n")
     }
-    printf("\n")
+    // do write
+    localMem.write(waddr_aligned, wdata_mask.asTypeOf(UInt(data_width.W)))
   }
+}
+
+object LocalMemTop extends App {
+  (new chisel3.stage.ChiselStage).emitVerilog(
+    new LocalMem(0x8000, 32, 64),
+    Array("-td", "generated/LocalMem")
+  )
 }

@@ -7,7 +7,7 @@ import aias_lab9.AXILite._
 
 /*
   topSA module
-  includes Memory_Mapped and SA modules
+  includes Memory_Mapped module and SA module
   pure wiring between these two modules and I/O
  */
 
@@ -32,6 +32,4 @@ class topSA(addr_width: Int, data_width: Int, reg_width: Int) extends Module {
   mm.io.wdata <> sa.io.wdata
   mm.io.wstrb <> sa.io.wstrb
   mm.io.wen <> sa.io.wen
-  mm.io.finish <> sa.io.finish
-  // for internal buffer (local mem) <<<<<
 }
