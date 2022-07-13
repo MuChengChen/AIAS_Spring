@@ -2,30 +2,39 @@ package aias_lab9.SystolicArray
 
 import chisel3._
 import chisel3.util._
-import chisel3.stage.ChiselStage
 
+/** input/output buffer for systolic array
+  * @param size
+  *   the size of rows or cols of systolic array
+  * @param bits
+  *   the width of each element in input/output vector
+  */
 class buffer(size: Int, bits: Int) extends Module {
   val io = IO(new Bundle {
     val input  = Input(Vec(size, Valid(UInt(bits.W))))
     val output = Output(Vec(size, Valid(UInt(bits.W))))
   })
+  io.output(0) <> io.input(0) // first row or col do not need extra buffer reg
+  for (idx <- 1 until size) {
+    // wire for reg initialization
+    val initial_wire = Wire(Valid(UInt(bits.W)))
+    initial_wire.bits  := DontCare
+    initial_wire.valid := DontCare
+    // register array declaration
+    val reg_array = Array.fill(idx)(RegInit(initial_wire))
 
-  val taps = Seq.range(0, size).map { length =>
-    // ++ -> union operation of two sequences
-    val tap_bits = Seq(io.input(length).bits) ++ Seq.fill(length)(RegInit(0.U(bits.W)))
-
-    tap_bits.zip(tap_bits.tail).foreach { case (front, back) =>
-      back := front
+    reg_array.head <> io.input(idx)
+    for (i <- 1 until idx) {
+      reg_array(i).bits  := reg_array(i - 1).bits
+      reg_array(i).valid := reg_array(i - 1).valid
     }
-
-    io.output(length).bits := tap_bits.last
-
-    val tap_valid = Seq(io.input(length).valid) ++ Seq.fill(length)(RegInit(false.B))
-
-    tap_valid.zip(tap_valid.tail).foreach { case (front, back) =>
-      back := front
-    }
-
-    io.output(length).valid := tap_valid.last
+    io.output(idx) <> reg_array.last
   }
+}
+
+object bufferTop extends App {
+  (new chisel3.stage.ChiselStage).emitVerilog(
+    new buffer(4, 8),
+    Array("-td", "./generated/buffer")
+  )
 }
