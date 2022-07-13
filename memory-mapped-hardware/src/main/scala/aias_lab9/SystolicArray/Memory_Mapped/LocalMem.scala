@@ -25,14 +25,15 @@ class LocalMem(mem_size: Int, addr_width: Int, data_width: Int) extends Module {
   // use SyncReadMem module from chisel.util
   val localMem = SyncReadMem(mem_size, UInt(data_width.W))
   // preload data from hex file
-  // loadMemoryFromFile(localMem, "src/main/resource/SystolicArray/LocalMem.hex")
+  loadMemoryFromFile(localMem, "src/main/resource/SystolicArray/LocalMem.hex")
+
+  // * when you execute aias_lab9.topSystolicArray.topTest, please comment line 28, which is about preload LocalMem
 
   // wires declaration
   // address -> truncate lower 3 bits to transfer byte addr to double-word address
   val raddr_aligned = WireDefault(io.raddr >> 3)
   val waddr_aligned = WireDefault(io.waddr >> 3)
-  // write data after masked
-  val wdata_mask = Wire(Vec(data_width >> 3, UInt(byte.W)))
+  val wdata_mask    = Wire(Vec(data_width >> 3, UInt(byte.W))) // write data after masked
 
   wdata_mask := DontCare // avoid compilation error when signal is not fully initialized
 
