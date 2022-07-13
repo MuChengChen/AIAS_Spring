@@ -5,11 +5,13 @@ import chisel3.util._
 
 import aias_lab9.AXILite._
 
-/*
-  MMIO_Regfile module
-  internal registers of systolic array
- */
-
+/** MMIO_regfile module
+  *
+  * has totally 10 registers inside
+  *
+  * @param reg_width
+  *   bit width of data in each registers
+  */
 // declare MMIO interface between MMIO_Regfiel and SA
 class MMIO(val reg_width: Int) extends Bundle {
   val ENABLE_OUT     = Output(Bool())

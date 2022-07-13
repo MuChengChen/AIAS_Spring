@@ -4,12 +4,12 @@ import chisel3._
 import chisel3.util._
 import chisel3.stage.ChiselStage
 
-/*
-  in our lab and homework
-  the systolic array consists of single tile
-  a tile consists of a 2D PE array
- */
-
+/** tile module
+  *
+  * in our lab or homework
+  *
+  * systolic array consists of only 1 tile
+  */
 class tile(rows: Int, cols: Int, bits: Int) extends Module {
   val io = IO(new Bundle {
     val input  = Input(Vec(rows, Valid(UInt(bits.W))))

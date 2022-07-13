@@ -4,11 +4,17 @@ import chisel3._
 import chisel3.util._
 import chisel3.util.experimental.loadMemoryFromFile
 
-/*
-  LocalMem module
-  internal memory of systolic array
- */
-
+/** LocalMem module
+  *
+  * includes internal memory and systolic array, also the control logics
+  *
+  * @param mem_size
+  *   the size of internal mem
+  * @param addr_width
+  *   bit width of address
+  * @param data_width
+  *   bit width of data
+  */
 class LocalMem(mem_size: Int, addr_width: Int, data_width: Int) extends Module {
   val io = IO(new Bundle {
     // from SA(slave) or CPU(master)

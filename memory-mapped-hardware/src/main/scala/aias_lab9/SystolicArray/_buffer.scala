@@ -4,6 +4,12 @@ import chisel3._
 import chisel3.util._
 import chisel3.stage.ChiselStage
 
+/** input/output buffer for systolic array
+  * @param size
+  *   the size of rows or cols of systolic array
+  * @param bits
+  *   the width of each element in input/output vector
+  */
 class _buffer(size: Int, bits: Int) extends Module {
   val io = IO(new Bundle {
     val input  = Input(Vec(size, Valid(UInt(bits.W))))

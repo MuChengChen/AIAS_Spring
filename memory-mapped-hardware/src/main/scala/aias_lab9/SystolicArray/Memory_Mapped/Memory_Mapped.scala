@@ -14,7 +14,6 @@ import aias_lab9.AXILite._
   * @param reg_width
   *   the data size of mmio regs
   */
-
 class Memory_Mapped(mem_size: Int, addr_width: Int, data_width: Int, reg_width: Int) extends Module {
   val io = IO(new Bundle {
     // for CPU to access the Reg and Memory

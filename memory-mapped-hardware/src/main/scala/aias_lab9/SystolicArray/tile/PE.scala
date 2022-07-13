@@ -3,11 +3,13 @@ package aias_lab9.SystolicArray
 import chisel3._
 import chisel3.util._
 
-/*
-  PE module
-  building block of tile
- */
-
+/** PE module
+  *
+  * building block for tile
+  *
+  * @param bits
+  *   data width in PE (default by 1 byte)
+  */
 class PE(val bits: Int = 8) extends Module {
   val io = IO(new Bundle {
     // input propagation (fwd: forwarded)
