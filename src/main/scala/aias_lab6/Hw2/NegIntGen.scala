@@ -5,8 +5,8 @@ import chisel3.util._
 
 class NegIntGen extends Module{
     val io = IO(new Bundle{
-        val key_in = Input(UInt(4.W))
-        val value = Output(Valid(UInt(32.W)))
+        val key_in = Input(UInt(5.W))
+        val value = Output(Valid(UInt(300.W)))
     })
     
     //please implement your code below
@@ -20,7 +20,7 @@ class NegIntGen extends Module{
     equal := io.key_in===15.U
 
     val in_buffer1 = RegNext(io.key_in)
-    val src1 = RegInit(0.U(32.W))
+    val src1 = RegInit(0.U(200.W))
 
     val sIdle::sSrc1::sOp::sEqual::Nil=Enum(4)
     

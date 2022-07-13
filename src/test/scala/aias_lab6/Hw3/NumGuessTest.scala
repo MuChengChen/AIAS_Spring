@@ -37,8 +37,11 @@ class NumGuessTest(dut:NumGuess) extends PeekPokeTester(dut) {
         println("A = "+peek(dut.io.A))
         println("B = "+peek(dut.io.B))
 
+        
+
         step(1)
     }
+    
 }
 
 object NumGuessTest extends App{

@@ -6,8 +6,8 @@ object LfsrTaps {
     def apply(size: Int): Seq[Int] = {
         size match {
             // Seqp[Int] means the taps in LFSR
-            case 4 => Seq(3)          //p(x) = x^4+x^3+1
-            case 8 => Seq(6,5,4)      //p(x) = x^8+x^6+x^5+x^4+1
+            case 4 => Seq(3)         //p(x) = x^4+x^3+1
+            case 8 => Seq(6,5,4)     //p(x) = x^8+x^6+x^5+x^4+1
             case 16 => Seq(14,13,11) //p(x) = x^16+x^14+x^13+x^11+1
             case _ => throw new Exception("No LFSR taps stored for requested size")
         }
