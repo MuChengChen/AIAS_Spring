@@ -20,7 +20,7 @@ class NegIntGen extends Module{
     equal := io.key_in===15.U
 
     val in_buffer1 = RegNext(io.key_in)
-    val src1 = RegInit(0.U(200.W))
+    val src1 = RegInit(0.U(300.W))
 
     val sIdle::sSrc1::sOp::sEqual::Nil=Enum(4)
     

@@ -20,7 +20,7 @@ class Stack(val depth: Int) extends Module {
 
   val stack_mem = Mem(depth, UInt(300.W))
   val sp        = RegInit(0.U(log2Ceil(depth+1).W))
-  val out       = RegInit(0.U(200.W))
+  val out       = RegInit(0.U(300.W))
   //為什麼要多設io.en
   when (io.en) {
     when(io.push && (sp < depth.asUInt)) {
