@@ -5,12 +5,12 @@ import chisel3.stage.ChiselStage
 
 class Vector_RegFile(readPorts: Int) extends Module {
   val io = IO(new Bundle {
-    val vector_wen = Input(Bool())
+    val vector_wen   = Input(Bool())
     val vector_waddr = Input(UInt(5.W))
     val vector_wdata = Input(UInt(64.W))
     val vector_raddr = Input(Vec(readPorts, UInt(5.W)))
     val vector_rdata = Output(Vec(readPorts, UInt(64.W)))
-    val vector_regs = Output(Vec(32, UInt(64.W)))
+    val vector_regs  = Output(Vec(32, UInt(64.W)))
   })
 
   // 32 * 64 RegFile

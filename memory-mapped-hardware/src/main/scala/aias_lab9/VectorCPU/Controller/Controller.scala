@@ -20,27 +20,27 @@ class Controller(memAddrWidth: Int, memDataWidth: Int) extends Module {
     val writeAddr = Decoupled(new AXILiteAddress(memAddrWidth))
     val writeData = Decoupled(new AXILiteWriteData(memDataWidth))
     val writeResp = Flipped(Decoupled(UInt(2.W)))
-    val readAddr = Decoupled(new AXILiteAddress(memAddrWidth))
-    val readData = Flipped(Decoupled(new AXILiteReadData(memDataWidth)))
+    val readAddr  = Decoupled(new AXILiteAddress(memAddrWidth))
+    val readData  = Flipped(Decoupled(new AXILiteReadData(memDataWidth)))
 
-    val PCSel = Output(UInt(2.W))
+    val PCSel  = Output(UInt(2.W))
     val ImmSel = Output(UInt(3.W))
     val RegWEn = Output(Bool())
-    val BrUn = Output(Bool())
-    val ASel = Output(UInt(1.W))
-    val BSel = Output(UInt(2.W))
+    val BrUn   = Output(Bool())
+    val ASel   = Output(UInt(1.W))
+    val BSel   = Output(UInt(2.W))
     val ALUSel = Output(UInt(15.W))
-    val MemRW = Output(Bool())
+    val MemRW  = Output(Bool())
     val MemSel = Output(UInt(1.W))
-    val WBSel = Output(UInt(2.W))
+    val WBSel  = Output(UInt(2.W))
 
     val Lui = Output(Bool())
     val Hcf = Output(Bool())
 
     val vector_ALUSel = Output(UInt(4.W))
-    val vector_ASel = Output(Bool())
-    val vector_BSel = Output(Bool())
-    val vector_WBSel = Output(UInt(2.W))
+    val vector_ASel   = Output(Bool())
+    val vector_BSel   = Output(Bool())
+    val vector_WBSel  = Output(UInt(2.W))
     val vector_RegWEn = Output(Bool())
   })
 
@@ -48,16 +48,16 @@ class Controller(memAddrWidth: Int, memDataWidth: Int) extends Module {
   val funct3 = io.Inst(14, 12)
   val funct6 = io.Inst(31, 26)
   val funct7 = io.Inst(31, 25)
-  val rs2 = io.Inst(24, 20)
+  val rs2    = io.Inst(24, 20)
   val alu_op = Wire(UInt(15.W))
 
   val sNormal :: sAXIReadSend :: sAXIReadWait :: sAXIWriteSend :: sAXIWriteWait :: Nil = Enum(5)
 
   val DataMemAccessState = RegInit(sNormal)
 
-  val isDataLoad = Wire(Bool())
+  val isDataLoad  = Wire(Bool())
   val isDataStore = Wire(Bool())
-  isDataLoad := (opcode === LOAD | opcode === VL)
+  isDataLoad  := (opcode === LOAD | opcode === VL)
   isDataStore := (opcode === STORE | opcode === VS)
 
   // DataMemAccessState - next state decoder
@@ -78,7 +78,7 @@ class Controller(memAddrWidth: Int, memDataWidth: Int) extends Module {
       DataMemAccessState := Mux(io.readData.valid, sNormal, sAXIReadWait)
     }
     is(sAXIWriteSend) {
-        DataMemAccessState := Mux((io.writeAddr.ready & io.writeData.ready), sAXIWriteWait, sAXIWriteSend)
+      DataMemAccessState := Mux((io.writeAddr.ready & io.writeData.ready), sAXIWriteWait, sAXIWriteSend)
     }
     is(sAXIWriteWait) {
       DataMemAccessState := Mux(io.writeResp.valid, sNormal, sAXIWriteWait)
@@ -86,19 +86,19 @@ class Controller(memAddrWidth: Int, memDataWidth: Int) extends Module {
   }
 
   // AXI output gnenrator
-  io.readAddr.valid := false.B
-  io.readAddr.bits.addr := 0.U
-  io.readData.ready := false.B
-  io.writeAddr.valid := false.B
+  io.readAddr.valid      := false.B
+  io.readAddr.bits.addr  := 0.U
+  io.readData.ready      := false.B
+  io.writeAddr.valid     := false.B
   io.writeAddr.bits.addr := 0.U
-  io.writeData.valid := false.B
+  io.writeData.valid     := false.B
   io.writeData.bits.data := 0.U
   io.writeData.bits.strb := 0.U
-  io.writeResp.ready := false.B
+  io.writeResp.ready     := false.B
 
   switch(DataMemAccessState) {
     is(sNormal) {
-      io.readAddr.valid := isDataLoad
+      io.readAddr.valid  := isDataLoad
       io.writeAddr.valid := (isDataStore & io.writeAddr.ready & io.writeData.ready)
       io.writeData.valid := (isDataStore & io.writeAddr.ready & io.writeData.ready)
     }
@@ -159,22 +159,30 @@ class Controller(memAddrWidth: Int, memDataWidth: Int) extends Module {
   // Control signal - PC
   io.PCSel := 0.U
   switch(DataMemAccessState) {
-    is(sNormal){
+    is(sNormal) {
       when(isDataLoad | isDataStore) {
         io.PCSel := 2.U
       }.otherwise {
-        io.PCSel := MuxLookup(opcode, 0.U, Seq(
-          BRANCH -> MuxLookup(funct3, 0.U, Seq(
-            "b000".U(3.W) -> io.BrEq.asUInt,
-            "b001".U(3.W) -> ~io.BrEq.asUInt,
-            "b100".U(3.W) -> io.BrLT.asUInt,
-            "b101".U(3.W) -> ~io.BrLT.asUInt,
-            "b110".U(3.W) -> io.BrLT.asUInt,
-            "b111".U(3.W) -> ~io.BrLT.asUInt
-          )),
-          JALR -> 1.U,
-          JAL -> 1.U
-        ))
+        io.PCSel := MuxLookup(
+          opcode,
+          0.U,
+          Seq(
+            BRANCH -> MuxLookup(
+              funct3,
+              0.U,
+              Seq(
+                "b000".U(3.W) -> io.BrEq.asUInt,
+                "b001".U(3.W) -> ~io.BrEq.asUInt,
+                "b100".U(3.W) -> io.BrLT.asUInt,
+                "b101".U(3.W) -> ~io.BrLT.asUInt,
+                "b110".U(3.W) -> io.BrLT.asUInt,
+                "b111".U(3.W) -> ~io.BrLT.asUInt
+              )
+            ),
+            JALR -> 1.U,
+            JAL  -> 1.U
+          )
+        )
       }
     }
     is(sAXIReadSend) {
@@ -196,52 +204,76 @@ class Controller(memAddrWidth: Int, memDataWidth: Int) extends Module {
 
   // Control signal - Immediate generator
   io.Lui := (opcode === LUI)
-  io.ImmSel := MuxLookup(opcode, 0.U, Seq(
-    OP_IMM -> I_type,
-    LOAD -> I_type,
-    STORE -> S_type,
-    BRANCH -> B_type,
-    JALR -> I_type,
-    JAL -> J_type,
-    LUI -> U_type,
-    AUIPC -> U_type
-  ))
+  io.ImmSel := MuxLookup(
+    opcode,
+    0.U,
+    Seq(
+      OP_IMM -> I_type,
+      LOAD   -> I_type,
+      STORE  -> S_type,
+      BRANCH -> B_type,
+      JALR   -> I_type,
+      JAL    -> J_type,
+      LUI    -> U_type,
+      AUIPC  -> U_type
+    )
+  )
 
   // Control signal - Scalar ALU
-  io.ASel := MuxLookup(opcode, 0.U, Seq(
-    BRANCH -> 1.U,
-    JAL -> 1.U,
-    AUIPC -> 1.U
-  ))
-  io.BSel := MuxLookup(opcode, 1.U, Seq(
-    OP -> 0.U,
-    VS -> 2.U,
-    VL -> 2.U
-  ))
+  io.ASel := MuxLookup(
+    opcode,
+    0.U,
+    Seq(
+      BRANCH -> 1.U,
+      JAL    -> 1.U,
+      AUIPC  -> 1.U
+    )
+  )
+  io.BSel := MuxLookup(
+    opcode,
+    1.U,
+    Seq(
+      OP -> 0.U,
+      VS -> 2.U,
+      VL -> 2.U
+    )
+  )
   io.ALUSel := alu_op
 
   // Control signal - Memory
-  io.MemRW := MuxLookup(opcode, false.B, Seq(
-    STORE -> true.B,
-    VS -> true.B
-  ))
-  io.MemSel := MuxLookup(opcode, 0.U, Seq(
-    STORE -> 0.U,
-    VS -> 1.U
-  ))
+  io.MemRW := MuxLookup(
+    opcode,
+    false.B,
+    Seq(
+      STORE -> true.B,
+      VS    -> true.B
+    )
+  )
+  io.MemSel := MuxLookup(
+    opcode,
+    0.U,
+    Seq(
+      STORE -> 0.U,
+      VS    -> 1.U
+    )
+  )
 
   // Control signal - Scalar Write Back
   io.RegWEn := false.B
   switch(DataMemAccessState) {
     is(sNormal) {
-      io.RegWEn := MuxLookup(opcode, false.B, Seq(
-        JALR -> true.B,
-        JAL -> true.B,
-        OP_IMM -> true.B,
-        OP -> true.B,
-        AUIPC -> true.B,
-        LUI -> true.B
-      ))
+      io.RegWEn := MuxLookup(
+        opcode,
+        false.B,
+        Seq(
+          JALR   -> true.B,
+          JAL    -> true.B,
+          OP_IMM -> true.B,
+          OP     -> true.B,
+          AUIPC  -> true.B,
+          LUI    -> true.B
+        )
+      )
     }
     is(sAXIReadSend) {
       io.RegWEn := false.B
@@ -257,17 +289,25 @@ class Controller(memAddrWidth: Int, memDataWidth: Int) extends Module {
     }
   }
 
-  io.WBSel := MuxLookup(opcode, 1.U, Seq(
-    LOAD -> 0.U,
-    JALR -> 2.U,
-    JAL -> 2.U
-  ))
+  io.WBSel := MuxLookup(
+    opcode,
+    1.U,
+    Seq(
+      LOAD -> 0.U,
+      JALR -> 2.U,
+      JAL  -> 2.U
+    )
+  )
 
   // Control signal - Vector ALU
-  io.vector_ALUSel := MuxLookup(Cat(funct6, funct3), 0.U, Seq(
-    Cat("b000000".U(6.W), "b000".U(3.W)) -> VADD_VV,
-    Cat("b101101".U(6.W), "b000".U(3.W)) -> VMACC_VV
-  ))
+  io.vector_ALUSel := MuxLookup(
+    Cat(funct6, funct3),
+    0.U,
+    Seq(
+      Cat("b000000".U(6.W), "b000".U(3.W)) -> VADD_VV,
+      Cat("b101101".U(6.W), "b000".U(3.W)) -> VMACC_VV
+    )
+  )
   io.vector_ASel := false.B
   io.vector_BSel := false.B
 
@@ -275,9 +315,13 @@ class Controller(memAddrWidth: Int, memDataWidth: Int) extends Module {
   io.vector_RegWEn := false.B
   switch(DataMemAccessState) {
     is(sNormal) {
-      io.vector_RegWEn := MuxLookup(opcode, false.B, Seq(
-        OP_V -> true.B
-      ))
+      io.vector_RegWEn := MuxLookup(
+        opcode,
+        false.B,
+        Seq(
+          OP_V -> true.B
+        )
+      )
     }
     is(sAXIReadSend) {
       io.vector_RegWEn := false.B
@@ -293,10 +337,14 @@ class Controller(memAddrWidth: Int, memDataWidth: Int) extends Module {
     }
   }
 
-  io.vector_WBSel := MuxLookup(opcode, 0.U, Seq(
-    OP_V -> 0.U,
-    VL -> 1.U
-  ))
+  io.vector_WBSel := MuxLookup(
+    opcode,
+    0.U,
+    Seq(
+      OP_V -> 0.U,
+      VL   -> 1.U
+    )
+  )
 
   // Control signal - Others
   io.Hcf := (opcode === HCF)

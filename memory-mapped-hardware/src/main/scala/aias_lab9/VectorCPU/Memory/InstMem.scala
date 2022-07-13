@@ -9,7 +9,7 @@ class InstMem(bits: Int, binaryFile: String) extends Module {
   val io = IO(new Bundle {
     // 32kB -> bits = 15
     val raddr = Input(UInt(bits.W))
-    val inst = Output(UInt(32.W))
+    val inst  = Output(UInt(32.W))
   })
 
   val memory = Mem((1 << bits), UInt(8.W))

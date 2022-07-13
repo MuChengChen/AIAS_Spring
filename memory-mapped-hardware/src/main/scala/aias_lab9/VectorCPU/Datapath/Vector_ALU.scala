@@ -6,11 +6,11 @@ import chisel3.util._
 import aias_lab9.VectorCPU.vector_alu_op_map._
 
 class VECTOR_ALUIO extends Bundle {
-  val vector_src0 = Input(UInt(64.W))
-  val vector_src1 = Input(UInt(64.W))
-  val vector_src2 = Input(UInt(64.W))
+  val vector_src0   = Input(UInt(64.W))
+  val vector_src1   = Input(UInt(64.W))
+  val vector_src2   = Input(UInt(64.W))
   val vector_ALUSel = Input(UInt(4.W))
-  val vector_out = Output(UInt(64.W))
+  val vector_out    = Output(UInt(64.W))
 }
 
 class Vector_ALU extends Module {
@@ -31,7 +31,8 @@ class Vector_ALU extends Module {
     }
     is(VMACC_VV) {
       for (i <- 0 until 8) {
-        wire_set(i) := ((io.vector_src1(8 * (i + 1) - 1, 8 * i) * io.vector_src2(8 * (i + 1) - 1, 8 * i)) + io.vector_src0(8 * (i + 1) - 1, 8 * i))
+        wire_set(i) := ((io.vector_src1(8 * (i + 1) - 1, 8 * i) * io.vector_src2(8 * (i + 1) - 1, 8 * i)) + io
+          .vector_src0(8 * (i + 1) - 1, 8 * i))
       }
     }
   }

@@ -9,7 +9,7 @@ class topTest(dut: top) extends PeekPokeTester(dut) {
   implicit def bigint2boolean(b: BigInt): Boolean = if (b > 0) true else false
 
   val filename = "./src/main/resource/VectorCPU/inst.asm"
-  val lines = Source.fromFile(filename).getLines.toList
+  val lines    = Source.fromFile(filename).getLines.toList
 
   while (!peek(dut.io.Hcf)) {
     var current_pc = peek(dut.io.pc).toInt
@@ -58,13 +58,13 @@ class topTest(dut: top) extends PeekPokeTester(dut) {
 
     println(
       s"reg[${"%02d".format(8 * i + 0)}]：0x${value_0} " +
-      s"reg[${"%02d".format(8 * i + 1)}]：0x${value_1} " +
-      s"reg[${"%02d".format(8 * i + 2)}]：0x${value_2} " +
-      s"reg[${"%02d".format(8 * i + 3)}]：0x${value_3} " +
-      s"reg[${"%02d".format(8 * i + 4)}]：0x${value_4} " +
-      s"reg[${"%02d".format(8 * i + 5)}]：0x${value_5} " +
-      s"reg[${"%02d".format(8 * i + 6)}]：0x${value_6} " +
-      s"reg[${"%02d".format(8 * i + 7)}]：0x${value_7} "
+        s"reg[${"%02d".format(8 * i + 1)}]：0x${value_1} " +
+        s"reg[${"%02d".format(8 * i + 2)}]：0x${value_2} " +
+        s"reg[${"%02d".format(8 * i + 3)}]：0x${value_3} " +
+        s"reg[${"%02d".format(8 * i + 4)}]：0x${value_4} " +
+        s"reg[${"%02d".format(8 * i + 5)}]：0x${value_5} " +
+        s"reg[${"%02d".format(8 * i + 6)}]：0x${value_6} " +
+        s"reg[${"%02d".format(8 * i + 7)}]：0x${value_7} "
     )
   }
 
@@ -86,9 +86,9 @@ class topTest(dut: top) extends PeekPokeTester(dut) {
 
     println(
       s"vector_reg[${"%02d".format(4 * i + 0)}]：0x${value_0} " +
-      s"vector_reg[${"%02d".format(4 * i + 1)}]：0x${value_1} " +
-      s"vector_reg[${"%02d".format(4 * i + 2)}]：0x${value_2} " +
-      s"vector_reg[${"%02d".format(4 * i + 3)}]：0x${value_3} "
+        s"vector_reg[${"%02d".format(4 * i + 1)}]：0x${value_1} " +
+        s"vector_reg[${"%02d".format(4 * i + 2)}]：0x${value_2} " +
+        s"vector_reg[${"%02d".format(4 * i + 3)}]：0x${value_3} "
     )
   }
 }
