@@ -7,11 +7,18 @@ import scala.io.Source
 
 import aias_lab9.AXILite._
 
-/*
-  SA module
-  includes a tile and input/output buffers
-  also the control logic of systolic array
- */
+/** SA module includes a tile, two buffers and control logic
+  * @param rows
+  *   the number of row of SA
+  * @param cols
+  *   the number of col of SA
+  * @param addr_width
+  *   the bit width of address
+  * @param data_width
+  *   the bit width of data
+  * @param reg_width
+  *   the data width of MMIO regs
+  */
 
 class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int) extends Module {
   val io = IO(new Bundle {

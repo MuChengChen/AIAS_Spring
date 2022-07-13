@@ -5,11 +5,15 @@ import chisel3.util._
 
 import aias_lab9.AXILite._
 
-/*
-  Memory_Mapped module
-  includes LocalMem and MMIO_Regfile modules
-  also the control logic of whole Memory_Mapped module
- */
+/** Memory_Mapped module
+  *
+  * includes LocalMem, MMIO_Regfile and control logics of whole Memory_Mapped
+  *
+  * @param mem_size
+  *   the size of LocalMem
+  * @param reg_width
+  *   the data size of mmio regs
+  */
 
 class Memory_Mapped(mem_size: Int, addr_width: Int, data_width: Int, reg_width: Int) extends Module {
   val io = IO(new Bundle {
