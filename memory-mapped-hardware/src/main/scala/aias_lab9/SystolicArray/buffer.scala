@@ -16,12 +16,12 @@ class buffer(size: Int, bits: Int) extends Module {
   })
   io.output(0) <> io.input(0) // first row or col do not need extra buffer reg
   for (idx <- 1 until size) {
-    // wire for reg initialization
-    val initial_wire = Wire(Valid(UInt(bits.W)))
-    initial_wire.bits  := DontCare
-    initial_wire.valid := DontCare
     // register array declaration
-    val reg_array = Array.fill(idx)(RegInit(initial_wire))
+    val reg_array = Array.fill(idx)(RegInit({
+      val init = Wire(Valid(UInt(bits.W)))
+      init := DontCare
+      init
+    }))
 
     reg_array.head <> io.input(idx)
     for (i <- 1 until idx) {

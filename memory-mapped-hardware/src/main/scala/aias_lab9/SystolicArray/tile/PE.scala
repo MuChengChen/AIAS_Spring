@@ -27,11 +27,12 @@ class PE(val bits: Int = 8) extends Module {
     val fwd_ps = Output(Valid(UInt((bits * 2).W)))
   })
 
-  val weight_wire = Wire(Valid(UInt(bits.W))) // created for weightREg initialization
-  weight_wire.bits  := 0.U     // initialization
-  weight_wire.valid := false.B // initialization
   // weightReg includes 2 parts: bits and valid
-  val weightReg = RegInit(weight_wire)
+  val weightReg = RegInit({
+    val init = Wire(Valid(UInt(bits.W)))
+    init := DontCare
+    init // return
+  })
 
   // internal weight register (bits and valid)
   weightReg.bits  := Mux(io.preload, io.weight.bits, weightReg.bits)
@@ -47,7 +48,7 @@ class PE(val bits: Int = 8) extends Module {
   io.fwd_ps.bits  := RegNext(io.ps + weightReg.bits * io.input.bits)
 }
 
-object PE extends App {
+object PETop extends App {
   (new chisel3.stage.ChiselStage).emitVerilog(
     new PE(8),
     Array("-td", "generated/PE")
