@@ -193,9 +193,9 @@ uint32_t mem_read(uint8_t* mem, uint32_t addr, instr_type op) {
 	int bytes = 0;
 
 	switch(op) {
-		case LB: 
+		case LB:  bytes = 1; break;
 		case LBU: bytes = 1; break;
-		case LH:
+		case LH:  bytes = 2; break;
 		case LHU: bytes = 2; break;
 		case LW:  bytes = 4; break;
 	}
@@ -547,6 +547,10 @@ int parse_instr(int line, char* ftok, instr* imem, int memoff, label_loc* labels
 				i->a3.type = OPTYPE_LABEL; strncpy(i->a3.label, o3, MAX_LABEL_LEN);
 				return 1;
 			case LUI: 
+				if ( !o1 || !o2 || o3 || o4 ) print_syntax_error( line, "Invalid format" );
+				i->a1.reg = parse_reg(o1, line);
+				i->a2.imm = (parse_imm(o2, 20, line));
+				return 1;
 			case AUIPC: // how to deal with LSB correctly? FIXME
 				if ( !o1 || !o2 || o3 || o4 ) print_syntax_error( line, "Invalid format" );
 				i->a1.reg = parse_reg(o1, line);
@@ -759,14 +763,14 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 			case SRLI: rf[i.a1.reg] = rf[i.a2.reg] >> i.a3.imm; break;
 			case SRAI: rf[i.a1.reg] = (*(int32_t*)&rf[i.a2.reg]) >> i.a3.imm; break;
 
-			case LB:
-			case LBU: 
-			case LH:
-			case LHU:
+			case LB: rf[i.a1.reg] = mem_read(mem, rf[i.a2.reg]+i.a3.imm, i.op); break;
+			case LBU:rf[i.a1.reg] = mem_read(mem, rf[i.a2.reg]+i.a3.imm, i.op); break; 
+			case LH: rf[i.a1.reg] = mem_read(mem, rf[i.a2.reg]+i.a3.imm, i.op); break;
+			case LHU:rf[i.a1.reg] = mem_read(mem, rf[i.a2.reg]+i.a3.imm, i.op); break;
 			case LW: rf[i.a1.reg] = mem_read(mem, rf[i.a2.reg]+i.a3.imm, i.op); break;
 			
-			case SB: 
-			case SH: 
+			case SB: mem_write(mem, rf[i.a2.reg]+i.a3.imm, rf[i.a1.reg], i.op); break;
+			case SH: mem_write(mem, rf[i.a2.reg]+i.a3.imm, rf[i.a1.reg], i.op); break;
 			case SW: mem_write(mem, rf[i.a2.reg]+i.a3.imm, rf[i.a1.reg], i.op); break;
 			/*
 
@@ -780,8 +784,7 @@ void execute(uint8_t* mem, instr* imem, label_loc* labels, int label_count, bool
 
 			case BEQ: if ( rf[i.a1.reg] == rf[i.a2.reg] ) pc_next = i.a3.imm; break;
 			case BGE: if ( *(int32_t*)&rf[i.a1.reg] >= *(int32_t*)&rf[i.a2.reg] ) pc_next = i.a3.imm; break;
-			case BGEU: if ( rf[i.a1.reg] >= rf[i.a2.reg] ) pc_next = i.a3.imm; 
-				break;
+			case BGEU: if ( rf[i.a1.reg] >= rf[i.a2.reg] ) pc_next = i.a3.imm; break;
 			case BLT: if ( *(int32_t*)&rf[i.a1.reg] < *(int32_t*)&rf[i.a2.reg] ) pc_next = i.a3.imm; break;
 			case BLTU: if ( rf[i.a1.reg] < rf[i.a2.reg] ) pc_next = i.a3.imm; break;
 			case BNE: if ( rf[i.a1.reg] != rf[i.a2.reg] ) pc_next = i.a3.imm; break;

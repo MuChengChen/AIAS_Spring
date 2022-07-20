@@ -30,6 +30,10 @@ object ALU_op{
   val SRA  = 13.U
 }
 
+object ALU_funct7{
+  val SUB_SRA = "b0100000".U
+}
+
 object condition{
   val EQ = "b000".U
   val NE = "b001".U
@@ -39,7 +43,16 @@ object condition{
   val GEU = "b111".U
 }
 
-import opcode_map._,condition._,ALU_op._
+object inst_type{
+    val R = 0.U
+    val I = 1.U
+    val S = 2.U
+    val B = 3.U
+    val J = 4.U
+    val U = 5.U
+}
+
+import opcode_map._,condition._,ALU_op._,inst_type._,ALU_funct7._
 
 class Controller extends Module {
     val io = IO(new Bundle{
@@ -72,15 +85,72 @@ class Controller extends Module {
     funct7 := io.Inst(31,25)
 
     //Control signal
-    io.RegWEn := false.B
-    io.ASel := false.B
-    io.BSel := false.B
-    io.BrUn := false.B
-    io.MemRW := false.B
-    io.ImmSel := 0.U
-    io.ALUSel := 0.U
-    io.PCSel := false.B
-    io.WBSel := 0.U(2.W)
-    io.Lui := false.B
-    io.Hcf := false.B
+    io.RegWEn := Mux(opcode===STORE||opcode===BRANCH||opcode===HCF,false.B,true.B)
+    io.ASel := Mux(opcode===BRANCH||opcode===JAL,true.B,false.B)
+    io.BSel := Mux(opcode===OP,false.B,true.B)
+    io.BrUn := Mux(funct3===LTU||funct3===GEU,true.B,false.B)
+    io.MemRW := Mux(opcode===STORE,true.B,false.B)
+
+    io.ImmSel := MuxLookup(opcode,0.U,Seq(
+                                LOAD->I,
+                                STORE->S,
+                                BRANCH->B,
+                                JAL->J,
+                                JALR->I,
+                                OP->R,
+                                OP_IMM->I,
+                                AUIPC->U,
+                                LUI->U
+    ))
+
+    io.ALUSel := Mux(opcode===OP||opcode===OP_IMM,funct3,ADD)
+    when(funct3===ADD && (opcode===OP||opcode===OP_IMM)){
+      when(funct7===SUB_SRA){
+        io.ALUSel:=SUB
+      }.otherwise{
+        io.ALUSel:=ADD
+      }
+    }.elsewhen(funct3===SRL && (opcode===OP||opcode===OP_IMM)){
+      when(funct7===SUB_SRA){
+        io.ALUSel:=SRA
+      }.otherwise{
+        io.ALUSel:=SRL
+      }
+    }
+
+    io.PCSel := Mux(opcode===JAL||opcode===JALR,true.B,false.B)
+    when(opcode===BRANCH){
+      switch(funct3){
+        is(EQ){
+          io.PCSel:= io.BrEq
+        }
+        is(NE){
+          io.PCSel:= ~io.BrEq
+        }
+        is(LT){
+          io.PCSel:= io.BrLT
+        }
+        is(GE){
+          io.PCSel:= ~io.BrLT
+        }
+        is(LTU){
+          io.PCSel:= io.BrLT
+        }
+        is(GEU){
+          io.PCSel:= ~io.BrLT
+        }
+      }
+    }
+
+    //io.WBSel := 1.U
+    io.Lui := opcode===LUI
+    io.Hcf := opcode===HCF
+
+    when(opcode===LOAD||opcode===STORE){
+        io.WBSel:=0.U
+    }.elsewhen(opcode===JALR||opcode===JAL){
+        io.WBSel:=2.U
+    }.otherwise{
+        io.WBSel:=1.U
+    }
 }
