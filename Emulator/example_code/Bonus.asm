@@ -77,33 +77,34 @@ Fail:
     addi a5,zero,-1
     la  a1, fail_string1
     li  a0, 4
-    ecall
+    #ecall
 
     mv       a1, s2
     li       a0, 1
-    ecall
+    #ecall
 
     la  a1, fail_string2
     li  a0, 4
-    ecall
+    #ecall
     j exit
 Find:
     add a5,a2,zero
     la  a1, success1
     li  a0, 4
-    ecall
+    #ecall
 
     mv       a1, s2
     li       a0, 1
-    ecall
+    #ecall
 
     la  a1, success2
     li  a0, 4
-    ecall
+    #ecall
 
     mv       a1, a5
     li       a0, 1
-    ecall
+    #ecall
     
     j exit
 exit:
+    hcf
