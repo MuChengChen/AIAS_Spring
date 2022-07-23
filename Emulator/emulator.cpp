@@ -468,6 +468,17 @@ int parse_pseudoinstructions(int line, char* ftok, instr* imem, int ioff, label_
 		append_source("blt", o2, o1, o3, src, i);
 		return 1;
 	}
+	if ( streq(ftok, "bltz") ){
+		if ( !o1 || !o2 || o3 ) print_syntax_error(line, "Invalid format");
+		instr* i = &imem[ioff];
+		i->op = BLT;
+		i->a1.type = OPTYPE_REG; i->a1.reg = parse_reg(o1, line);
+		i->a2.type = OPTYPE_REG; i->a2.reg = 0;
+		i->a3.type = OPTYPE_LABEL; strncpy(i->a3.label, o2, MAX_LABEL_LEN);
+		i->orig_line = line;
+		append_source("blt",o1 , "x0", o2, src, i);
+		return 1;
+	}
 	if ( streq(ftok, "ble" )) {
 		if ( !o1 || !o2 || !o3 || o4 ) print_syntax_error(line, "Invalid format");
 		instr* i = &imem[ioff];
