@@ -1,0 +1,347 @@
+[
+    {
+        "label": "chiselModule.test.resources",
+        "millis": 40,
+        "cached": false
+    },
+    {
+        "label": "mill.scalalib.ZincWorkerModule.classpath",
+        "millis": 486,
+        "cached": false
+    },
+    {
+        "label": "mill.scalalib.ZincWorkerModule.worker",
+        "millis": 42,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.upstreamCompileOutput",
+        "millis": 9,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.sources.overriden.mill.scalalib.SbtModule.sources",
+        "millis": 257,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.sources.overriden.mill.scalalib.CrossSbtModule.sources",
+        "millis": 23,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.sources",
+        "millis": 10,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.generatedSources",
+        "millis": 9,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.allSources",
+        "millis": 9,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.allSourceFiles",
+        "millis": 307,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.transitiveLocalClasspath",
+        "millis": 9,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.resources",
+        "millis": 12,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.unmanagedClasspath",
+        "millis": 8,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.scalaVersion",
+        "millis": 8,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.platformSuffix",
+        "millis": 10,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.compileIvyDeps",
+        "millis": 34,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.transitiveCompileIvyDeps",
+        "millis": 12,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.ivyDeps",
+        "millis": 13,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.mandatoryIvyDeps.overriden.mill.scalalib.JavaModule.mandatoryIvyDeps",
+        "millis": 26,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.scalaOrganization",
+        "millis": 10,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.scalaLibraryIvyDeps",
+        "millis": 10,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.mandatoryIvyDeps",
+        "millis": 11,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.transitiveIvyDeps",
+        "millis": 11,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.resolvedIvyDeps",
+        "millis": 127,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.compileClasspath",
+        "millis": 9,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.javacOptions",
+        "millis": 8,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.mandatoryScalacOptions",
+        "millis": 9,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.scalacOptions.overriden.mill.scalalib.ScalaModule.scalacOptions",
+        "millis": 21,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.scalacOptions",
+        "millis": 8,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.allScalacOptions",
+        "millis": 9,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.scalaCompilerClasspath",
+        "millis": 22,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.scalacPluginIvyDeps",
+        "millis": 10,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.scalacPluginClasspath",
+        "millis": 26,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.compile",
+        "millis": 21414,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.upstreamCompileOutput",
+        "millis": 12,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.sources.overriden.mill.scalalib.SbtModule.SbtModuleTests.sources",
+        "millis": 72,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.sources",
+        "millis": 18,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.generatedSources",
+        "millis": 13,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.allSources",
+        "millis": 13,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.allSourceFiles",
+        "millis": 46,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.localClasspath",
+        "millis": 12,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.transitiveLocalClasspath",
+        "millis": 13,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.unmanagedClasspath",
+        "millis": 15,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.scalaVersion",
+        "millis": 12,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.platformSuffix",
+        "millis": 13,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.compileIvyDeps",
+        "millis": 15,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.transitiveCompileIvyDeps",
+        "millis": 11,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.ivyDeps",
+        "millis": 12,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.mandatoryIvyDeps.overriden.mill.scalalib.JavaModule.mandatoryIvyDeps",
+        "millis": 33,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.scalaOrganization",
+        "millis": 12,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.scalaLibraryIvyDeps",
+        "millis": 13,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.mandatoryIvyDeps",
+        "millis": 12,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.transitiveIvyDeps",
+        "millis": 15,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.resolvedIvyDeps",
+        "millis": 107,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.compileClasspath",
+        "millis": 10,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.allScalacOptions",
+        "millis": 10,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.scalaCompilerClasspath",
+        "millis": 21,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.compile",
+        "millis": 1036,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.localClasspath",
+        "millis": 12,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.runIvyDeps",
+        "millis": 13,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.resolvedRunIvyDeps",
+        "millis": 94,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.upstreamAssemblyClasspath",
+        "millis": 11,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.runClasspath",
+        "millis": 10,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.forkArgs",
+        "millis": 11,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.forkEnv.overriden.mill.scalalib.JavaModule.forkEnv",
+        "millis": 30,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.forkEnv",
+        "millis": 12,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.forkWorkingDir",
+        "millis": 11,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.runUseArgsFile",
+        "millis": 12,
+        "cached": false
+    },
+    {
+        "label": "chiselModule.test.runMain",
+        "millis": 11460,
+        "cached": false
+    }
+]
