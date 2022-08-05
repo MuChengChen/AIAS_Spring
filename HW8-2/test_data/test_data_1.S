@@ -147,7 +147,7 @@ jal calculate
 lw ra,0(sp)
 addi sp,sp,4
 addi t4,t4,1
-j Kernel_rows
+j Kernel_columns
 
 calculate:
 ## input_data->(c * INPUT_SIZE * INPUT_SIZE) + (INPUT_SIZE * (i + (m - kernel_center_X) + 1)) + (j + (n - kernel_center_Y) +1)->(t0*s3*s3)+(s3*(t1+(t3-s7)+1))+(t2+(t4-s8)+1)
