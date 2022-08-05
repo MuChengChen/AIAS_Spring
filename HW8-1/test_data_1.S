@@ -45,7 +45,7 @@ main:
 ## Make sure you use only scalar instruction
 ##
 start:
-li sp,0x100000
+li sp,0x10000
 
 ## s0 is base address of input_data
 la s0,input_data
