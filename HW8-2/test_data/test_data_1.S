@@ -166,11 +166,12 @@ add a0,a0,a1
 add a0,a0,s0
 lb a0,0(a0)
 
-## kernel_data->(c * KERNEL_SIZE * KERNEL_SIZE) + (KERNEL_SIZE * m) + n ->(t0*s4*s4)+(s4*t3)
+## kernel_data->(c * KERNEL_SIZE * KERNEL_SIZE) + (KERNEL_SIZE * m) + n ->(t0*s4*s4)+(s4*t3)+t4
 mul a1,t0,s4
 mul a1,a1,s4
 mul a2,s4,t3
 add a1,a1,a2
+add a1,a1,t4
 
 add a1,a1,s1
 lb a1,0(a1)
