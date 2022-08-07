@@ -38,6 +38,10 @@ output_data:
 .byte 0 0 0 0 0 0
 .byte 0 0 0 0 0 0
 
+## buffer 1x1x8
+buffer:
+.byte 0 0 0 0 0 0 0 0
+
 .text
 main:
 ##
@@ -68,12 +72,8 @@ li s5,6
 ## s6 is channel
 li s6,2
 
-## s7 is kernel_center_X
-li t0,2
-div s7,s4,t0
-
-## s8 is kernel_center_Y
-div s8,s4,t0
+## s9 is buffer
+la s9,buffer
 
 ## parameter initialize
 
@@ -86,11 +86,6 @@ li t1,0
 ## t2 is columns
 li t2,0
 
-## t3 is Kernel rows
-li t3,0
-
-## t4 is Kernel columns
-li t4,0
 
 ## for(int c = 0; c < channel; ++c)
 channel:
@@ -118,63 +113,52 @@ bge t2,s5,return
 addi sp,sp,-4
 sw ra,0(sp)
 li t3,0
-jal Kernel_rows
+jal calculate
 lw ra,0(sp)
 addi sp,sp,4
 addi t2,t2,1
 j columns
 
-## for (int m = 0; m < KERNEL_SIZE; ++m) 
-Kernel_rows:
-bge t3,s4,return
-addi sp,sp,-4
-sw ra,0(sp)
-li t4,0
-jal Kernel_columns
-lw ra,0(sp)
-addi sp,sp,4
-addi t3,t3,1
-j Kernel_rows
 
-## for (int n = 0; n < KERNEL_SIZE; ++n)
-Kernel_columns:
-bge t4,s4,return
-addi sp,sp,-4
-sw ra,0(sp)
-jal calculate
-lw ra,0(sp)
-addi sp,sp,4
-addi t4,t4,1
-j Kernel_columns
 
 calculate:
-## input_data->(c * INPUT_SIZE * INPUT_SIZE) + (INPUT_SIZE * (i + (m - kernel_center_X) + 1)) + (j + (n - kernel_center_Y) +1)->(t0*s3*s3)+(s3*(t1+(t3-s7)+1))+(t2+(t4-s8)+1)
+## input_data->(c * INPUT_SIZE * INPUT_SIZE) + (INPUT_SIZE * i ) + j ->(t0*s3*s3)+(s3*t1)+t2
 mul a0,t0,s3
 mul a0,a0,s3
-sub a1,t3,s7
-add a1,a1,t1
-addi a1,a1,1
-mul a1,a1,s3
+mul a1,t1,s3
 add a0,a0,a1
-sub a1,t4,s8
-add a1,a1,t2
-addi a1,a1,1
-add a0,a0,a1
+add a0,a0,t2
 
 add a0,a0,s0
-lb a0,0(a0)
+vle8_v v0,0(a0)
+vle8_v v1,8(a0)
+vle8_v v2,16(a0)
 
-## kernel_data->(c * KERNEL_SIZE * KERNEL_SIZE) + (KERNEL_SIZE * m) + n ->(t0*s4*s4)+(s4*t3)+t4
+## kernel_data->(c * KERNEL_SIZE * KERNEL_SIZE)  ->(t0*s4*s4)
 mul a1,t0,s4
 mul a1,a1,s4
-mul a2,s4,t3
-add a1,a1,a2
-add a1,a1,t4
 
 add a1,a1,s1
-lb a1,0(a1)
+vle8_v v3,0(a1)
+vle8_v v4,3(a1)
+vle8_v v5,6(a1)
 
-mul a0,a0,a1
+## vector arithmetic
+vmul_vv v0,v0,v3
+vmul_vv v1,v1,v4
+vmul_vv v2,v2,v5
+
+vadd_vv v0,v0,v1
+vadd_vv v0,v0,v2
+
+## store in buffer and accumulate
+vse8_v v0,0(s9)
+lb a0,0(s9)
+lb a1,1(s9)
+add a0,a0,a1
+lb a1,2(s9)
+add a0,a0,a1
+
 
 ## output_data->(i * OUTPUT_SIZE) + j ->(t1 * s5) + t2
 mul a2,t1,s5
@@ -191,4 +175,10 @@ return:
 ret
 
 end:
+vle8_v v20 0(s2)
+vle8_v v21 6(s2)
+vle8_v v22 12(s2)
+vle8_v v23 18(s2)
+vle8_v v24 24(s2)
+vle8_v v25 30(s2)
 hcf
