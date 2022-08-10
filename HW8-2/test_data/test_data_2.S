@@ -1,4 +1,8 @@
 .data 
+## buffer 1x1x8
+buffer:
+.byte 0 0 0 0 0 0 0 0
+
 ## input data size = 2x8x8 
 input_data:
 .byte 0 1 2 3 4 5 6 7
@@ -19,7 +23,7 @@ input_data:
 .byte 0 1 2 3 4 5 6 7
 .byte 0 1 2 3 4 5 6 7
 
-## kernel size 2x3x3
+## kernel size 2x3x8
 kernel_data:
 .byte 0 1 2 0 0 0 0 0
 .byte 0 1 2 0 0 0 0 0
@@ -37,10 +41,6 @@ output_data:
 .byte 0 0 0 0 0 0
 .byte 0 0 0 0 0 0
 .byte 0 0 0 0 0 0
-
-## buffer 1x1x8
-buffer:
-.byte 0 0 0 0 0 0 0 0
 
 .text
 main:
@@ -112,7 +112,6 @@ columns:
 bge t2,s5,return
 addi sp,sp,-4
 sw ra,0(sp)
-li t3,0
 jal calculate
 lw ra,0(sp)
 addi sp,sp,4
@@ -132,28 +131,28 @@ add a0,a0,t2
 add a0,a0,s0
 vle8_v v0,0(a0)
 addi a0,a0,8
-vle8_v v1,0(a0)
+vle8_v v3,0(a0)
 addi a0,a0,8
-vle8_v v2,0(a0)
+vle8_v v4,0(a0)
 
-## kernel_data->(c * KERNEL_SIZE * KERNEL_SIZE)  ->(t0*s4*s4)
+## kernel_data->(c * KERNEL_SIZE * KERNEL_SIZE)  ->(t0*s4*s3)
 mul a1,t0,s4
-mul a1,a1,s4
+mul a1,a1,s3
 
 add a1,a1,s1
-vle8_v v3,0(a1)
-addi a1,a1,3
-vle8_v v4,0(a1)
-addi a1,a1,3
 vle8_v v5,0(a1)
+addi a1,a1,8
+vle8_v v6,0(a1)
+addi a1,a1,8
+vle8_v v7,0(a1)
 
 ## vector arithmetic
-vmul_vv v0,v0,v3
-vmul_vv v1,v1,v4
-vmul_vv v2,v2,v5
+vmul_vv v0,v0,v5
+vmul_vv v3,v3,v6
+vmul_vv v4,v4,v7
 
-vadd_vv v0,v0,v1
-vadd_vv v0,v0,v2
+vadd_vv v0,v0,v3
+vadd_vv v0,v0,v4
 
 ## store in buffer and accumulate
 vse8_v v0,0(s9)
