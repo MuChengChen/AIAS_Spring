@@ -31,10 +31,12 @@ typedef enum {
 
 	//instruction added
 	MUL,
+	DIV,
     VLE8_V,
     VSE8_V,
     VADD_VV,
     VMUL_VX,
+	VMUL_VV,
     //*****************
 
 	ADD,

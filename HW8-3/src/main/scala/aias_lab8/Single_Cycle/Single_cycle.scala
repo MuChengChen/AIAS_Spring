@@ -20,9 +20,13 @@ class Single_Cycle extends Module {
         val wdata = Output(UInt(32.W))
         val waddr = Output(UInt(15.W))
 
-        val MemRW  = Output(Bool())
+        val MemRW  = Output(UInt(3.W))
 
         val funct3 = Output(UInt(3.W))
+
+        val vrdata= Input(UInt(64.W))
+        val vwdata= Output(UInt(64.W))
+
 
         //System
         val regs = Output(Vec(32,UInt(32.W)))
@@ -113,7 +117,7 @@ class Single_Cycle extends Module {
     //**************************************************
 
     // Module for Vector Extension
-    val vrf = Module(new Vector_RegFile(2))
+    val vrf = Module(new Vector_RegFile(3))
     val valu = Module(new Vector_ALU())
 
     // wire for Vector Extension
@@ -128,18 +132,24 @@ class Single_Cycle extends Module {
     funct6 := io.rinst(31,26)
 
     // Edit for Vector RegFile
-    vrf.io.vector_raddr(0) := rs1
-    vrf.io.vector_raddr(1) := rs2
+    vrf.io.vector_raddr(0) := vs1
+    vrf.io.vector_raddr(1) := vs2
+    vrf.io.vector_raddr(2) := vd
     vrf.io.vector_waddr := vd
     vrf.io.vector_wen := ct.io.vector_RegWEn
 
+    io.vwdata:= vrf.io.vector_rdata(2)
+
+    vrf.io.vector_wdata := io.vrdata
+
     when(ct.io.vector_WBSel === 0.U){vrf.io.vector_wdata := valu.io.vector_out} 
-    .otherwise{vrf.io.vector_wdata := 0.U} // Default
+    .elsewhen(ct.io.vector_WBSel === 1.U){vrf.io.vector_wdata := io.vrdata} // Default
 
     // VectorALU
-    valu.io.vector_src1 := vrf.io.vector_rdata(0)
-    valu.io.vector_src2 := vrf.io.vector_rdata(1)
+    valu.io.vector_src1 := Mux(ct.io.vector_ASel,vrf.io.vector_rdata(0),rf.io.rdata(0))
+    valu.io.vector_src2 := Mux(ct.io.vector_BSel,vrf.io.vector_rdata(1),rf.io.rdata(1))
     valu.io.vector_ALUSel := ct.io.vector_ALUSel
+
 
     // System for Vector RegFile System
     io.vector_regs := vrf.io.vector_regs

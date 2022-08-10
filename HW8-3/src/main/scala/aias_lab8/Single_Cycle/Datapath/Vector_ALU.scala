@@ -6,6 +6,8 @@ import chisel3.util._
 
 object vector_ALU_op{
     val VADD_VV = 0.U
+    val VMUL_VV = 1.U
+    val VMUL_VX = 4.U
 }
 
 import vector_ALU_op._
@@ -52,6 +54,28 @@ class Vector_ALU extends Module{
         case(wire,(src1,src2))=>
           wire := src1 + src2
       }    
+    }
+    is(VMUL_VV){
+      val src1_unit = io.vector_src1.asTypeOf(Vec(8,UInt(8.W)))
+      val src2_unit = io.vector_src2.asTypeOf(Vec(8,UInt(8.W)))
+      
+      wire_set.zip(src1_unit zip src2_unit).map{
+        case(wire,(src1,src2))=>
+          wire := src1 * src2
+      }
+    }
+    is(VMUL_VX){
+      val src1_unit = VecInit(Seq.fill(8)(0.U(8.W)))
+      val src2_unit = io.vector_src2.asTypeOf(Vec(8,UInt(8.W)))
+
+      for(i<-0 to 7){
+        src1_unit(i) := io.vector_src1(7,0)
+      }
+
+      wire_set.zip(src1_unit zip src2_unit).map{
+        case(wire,(src1,src2))=>
+          wire := src1 * src2
+      }
     }
   }
 

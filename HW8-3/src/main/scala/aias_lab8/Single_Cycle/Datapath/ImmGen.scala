@@ -11,6 +11,7 @@ object inst_type{
     val B = 3.U
     val J = 4.U
     val U = 5.U
+    val V = 6.U
 }
 import inst_type._
 
@@ -55,6 +56,9 @@ class ImmGen extends Module{
                  inst_shift(20),
                  inst_shift(30,21),
                  0.U(1.W)).asSInt,
+
+        //V-type
+        V -> inst_shift(24,20).asSInt,
 
     ))
     

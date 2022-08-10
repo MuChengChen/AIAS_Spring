@@ -24,6 +24,7 @@ class top extends Module {
         //**                                              **
         //**************************************************
         val vector_regs  = Output(Vec(32,UInt(64.W)))
+        val vrdata = Output(UInt(64.W))
     })
 
     val sc = Module(new Single_Cycle())
@@ -33,6 +34,7 @@ class top extends Module {
     //Single_Cycle
     sc.io.rinst := im.io.inst
     sc.io.rdata := dm.io.rdata 
+    sc.io.vrdata := dm.io.vrdata
     
     //Insruction Memory
     im.io.raddr := sc.io.pc
@@ -43,6 +45,7 @@ class top extends Module {
     dm.io.wen := sc.io.MemRW
     dm.io.waddr := sc.io.waddr
     dm.io.wdata := sc.io.wdata
+    dm.io.vwdata := sc.io.vwdata
 
     //System
     io.pc := sc.io.pc
@@ -50,6 +53,7 @@ class top extends Module {
     io.Hcf := sc.io.Hcf
     io.inst := im.io.inst
     io.rdata := dm.io.rdata
+    io.vrdata:= dm.io.vrdata
 
     //**************************************************
     //**                                              **
@@ -59,6 +63,7 @@ class top extends Module {
     //**                                              **
     //**************************************************
     io.vector_regs := sc.io.vector_regs
+    
 }
 
 

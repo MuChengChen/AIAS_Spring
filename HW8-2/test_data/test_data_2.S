@@ -131,8 +131,10 @@ add a0,a0,t2
 
 add a0,a0,s0
 vle8_v v0,0(a0)
-vle8_v v1,8(a0)
-vle8_v v2,16(a0)
+addi a0,a0,8
+vle8_v v1,0(a0)
+addi a0,a0,8
+vle8_v v2,0(a0)
 
 ## kernel_data->(c * KERNEL_SIZE * KERNEL_SIZE)  ->(t0*s4*s4)
 mul a1,t0,s4
@@ -140,8 +142,10 @@ mul a1,a1,s4
 
 add a1,a1,s1
 vle8_v v3,0(a1)
-vle8_v v4,3(a1)
-vle8_v v5,6(a1)
+addi a1,a1,3
+vle8_v v4,0(a1)
+addi a1,a1,3
+vle8_v v5,0(a1)
 
 ## vector arithmetic
 vmul_vv v0,v0,v3
@@ -176,9 +180,14 @@ ret
 
 end:
 vle8_v v20 0(s2)
-vle8_v v21 6(s2)
-vle8_v v22 12(s2)
-vle8_v v23 18(s2)
-vle8_v v24 24(s2)
-vle8_v v25 30(s2)
+addi s2,s2,6
+vle8_v v21 0(s2)
+addi s2,s2,6
+vle8_v v22 0(s2)
+addi s2,s2,6
+vle8_v v23 0(s2)
+addi s2,s2,6
+vle8_v v24 0(s2)
+addi s2,s2,6
+vle8_v v25 0(s2)
 hcf

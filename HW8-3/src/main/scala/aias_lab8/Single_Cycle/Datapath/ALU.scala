@@ -29,6 +29,8 @@ class ALU extends Module{
     is(AND ){io.out := io.src1&io.src2}
     is(SUB ){io.out := io.src1-io.src2}
     is(SRA ){io.out := (io.src1.asSInt >> io.src2(4,0)).asUInt}
+    is(MUL ){io.out := io.src1*io.src2}
+    is(DIV ){io.out := Mux(io.src2===0.U,0.U,io.src1/io.src2) }
   }
 }
 

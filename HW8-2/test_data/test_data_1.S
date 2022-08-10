@@ -193,4 +193,15 @@ return:
 ret
 
 end:
+vle8_v v20 0(s2)
+addi s2,s2,6
+vle8_v v21 0(s2)
+addi s2,s2,6
+vle8_v v22 0(s2)
+addi s2,s2,6
+vle8_v v23 0(s2)
+addi s2,s2,6
+vle8_v v24 0(s2)
+addi s2,s2,6
+vle8_v v25 0(s2)
 hcf

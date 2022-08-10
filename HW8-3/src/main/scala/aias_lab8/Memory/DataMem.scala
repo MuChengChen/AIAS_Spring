@@ -21,9 +21,12 @@ class DataMem(bits:Int) extends Module {
     val raddr = Input(UInt(bits.W))
     val rdata = Output(UInt(32.W))
     
-    val wen   = Input(Bool())
+    val wen   = Input(UInt(3.W))
     val waddr = Input(UInt(bits.W))
     val wdata = Input(UInt(32.W))
+
+    val vrdata=Output(UInt(64.W))
+    val vwdata=Input(UInt(64.W))
   })
   val DATA_OFFSET = 1<<bits
   
@@ -33,6 +36,7 @@ class DataMem(bits:Int) extends Module {
   val srdata = Wire(SInt(32.W))
 
   io.rdata := srdata.asUInt
+  io.vrdata:= 0.U
 
   val wa = WireDefault(0.U(bits.W))
   val wd = WireDefault(0.U(32.W))
@@ -51,8 +55,8 @@ class DataMem(bits:Int) extends Module {
 
   srdata := 0.S
 
-  when(io.wen){
-    when(io.funct3===Byte){
+  when(io.wen === 0.U){
+    when(io.funct3===Byte){//store
       memory(wa) := wd(7,0)
     }.elsewhen(io.funct3===Half){
       memory(wa) := wd(7,0)
@@ -63,7 +67,7 @@ class DataMem(bits:Int) extends Module {
       memory(wa+2.U(bits.W)) := wd(23,16)
       memory(wa+3.U(bits.W)) := wd(31,24)
     }
-  }.otherwise{
+  }.elsewhen(io.wen === 1.U){//load
     srdata := MuxLookup(io.funct3,0.S,Seq(
       Byte -> memory(io.raddr).asSInt,
       Half -> Cat(memory((io.raddr & (~(1.U(bits.W)))) +1.U),
@@ -77,5 +81,17 @@ class DataMem(bits:Int) extends Module {
                   memory((io.raddr & ~(1.U(bits.W))) +1.U),
                   memory(io.raddr & ~(1.U(bits.W)))).asSInt
     ))
+  }.elsewhen(io.wen === 2.U){ //vstore
+    for (i<-0 to 7){
+      memory(wa+i.asUInt) := io.vwdata((i+1)*8-1,i*8).asUInt
+    }
+  }.elsewhen(io.wen === 3.U){ //vload
+    val vrdata_temp = VecInit(Seq.fill(8)(0.U(8.W)))
+    for (i<-0 to 7){
+      vrdata_temp(i) := memory(io.raddr + i.asUInt)
+    }
+    io.vrdata := vrdata_temp.asUInt
   }
+
+
 }

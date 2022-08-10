@@ -15,10 +15,10 @@ class Vector_RegFile(readPorts:Int) extends Module {
  })
 
   // 32 * 64 RegFile
-  // val init_value = Seq.fill(32)(0.U(64.W))
+  val init_value = Seq.fill(32)(0.U(64.W))
 
   //for Lab8 vadd_vv demonstration
-  val init_value = Seq(0.U(64.W)) ++ Seq("h0001020304050607".U(64.W),"h0001020304050607".U(64.W)) ++ Seq.fill(29)(0.U(64.W))
+  //val init_value = Seq(0.U(64.W)) ++ Seq("h0001020304050607".U(64.W),"h0001020304050607".U(64.W)) ++ Seq.fill(29)(0.U(64.W))
 
 
   val vector_regs = RegInit(VecInit(init_value))
@@ -30,7 +30,7 @@ class Vector_RegFile(readPorts:Int) extends Module {
   //Write
   when(io.vector_wen) {vector_regs(io.vector_waddr) := io.vector_wdata}
 
-  vector_regs(0) := 0.U(64.W)
+  //vector_regs(0) := 0.U(64.W)
 
   io.vector_regs := vector_regs
 }
