@@ -4,15 +4,15 @@
 #include "sudoku_2x2_c.h"
 #define SIZE 16
 
-char test_c_data[16] = { 0, 0, 2, 0, 
-                         0, 0, 0, 4,
-                         2, 3, 0, 0, 
-                         0, 4, 0, 0 };
+char test_c_data[16] = { 1, 3, 0, 0, 
+                         0, 0, 0, 1,
+                         2, 0, 0, 0, 
+                         0, 1, 0, 0 };
                       
-char test_asm_data[16] = { 0, 0, 2, 0, 
-                           0, 0, 0, 4,
-                           2, 3, 0, 0, 
-                           0, 4, 0, 0 };
+char test_asm_data[16] = { 1, 3, 0, 0, 
+                           0, 0, 0, 1,
+                           2, 0, 0, 0, 
+                           0, 1, 0, 0 };
 
 void print_sudoku_result() {
     int i;
