@@ -26,13 +26,29 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
     val mmio = Flipped(new MMIO(reg_width))
 
     // for access localmem when SA still be a slave
-    val raddr = Output(UInt(addr_width.W))
-    val rdata = Input(UInt(data_width.W))
-    val wen   = Output(Bool())
-    val waddr = Output(UInt(addr_width.W))
-    val wdata = Output(UInt(data_width.W))
-    val wstrb = Output(UInt((data_width >> 3).W))
+    //val raddr = Output(UInt(addr_width.W))
+    //val rdata = Input(UInt(data_width.W))
+    //val wen   = Output(Bool())
+    //val waddr = Output(UInt(addr_width.W))
+    //val wdata = Output(UInt(data_width.W))
+    //val wstrb = Output(UInt((data_width >> 3).W))
+
+    val bus_master = new AXILiteMasterIF(addr_width, data_width)
+    val r_req = Input(Bool())
+    val w_req = Input(Bool())
   })
+
+  io.bus_master.writeAddr.bits.addr := 0.U
+  io.bus_master.writeAddr.valid     := false.B
+  io.bus_master.readAddr.bits.addr  := 0.U
+  io.bus_master.readAddr.valid      := false.B
+  io.bus_master.writeData.valid     := false.B
+  io.bus_master.writeData.bits.data := 0.U
+  io.bus_master.writeData.bits.strb := 0.U
+  io.bus_master.readData.ready      := false.B
+  io.bus_master.writeResp.ready     := false.B
+  
+  
 
   // constant declaration
   val byte    = 8
@@ -60,9 +76,15 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
 
   // state declaration
   // sStall_1 & sStall_2 is due to the timing of SyncReadMem
-  val sIdle :: sReady :: sStall_1 :: sPreload :: sStall_2 :: sPropagate :: sCheck :: sFinish :: Nil = Enum(8)
+  //val sIdle :: sReady :: sStall_1 :: sPreload :: sStall_2 :: sPropagate :: sCheck :: sFinish :: Nil = Enum(8)
+  val sReadNormal :: sAXIReadSend :: sAXIReadWait :: sAXIReadDone :: Nil = Enum(4)
+  val sWriteNormal :: sAXIWriteSend :: sAXIWriteWait :: sAXIWriteDone :: Nil = Enum(4)
+
+  
   // state register
-  val stateReg = RegInit(sIdle)
+  //val stateReg = RegInit(sIdle)
+  val SAMasterReadState = RegInit(sReadNormal)
+  val SAMasterWriteState = RegInit(sWriteNormal)
 
   // declare counters
   val weight_cnt = RegInit(rows.U(3.W))
@@ -71,13 +93,13 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
 
   // use for select partial read data
   val half_rdata   = Wire(UInt((data_width >> 1).W))
-  val rdata_select = RegNext(io.raddr)
+  val rdata_select = RegNext(io.bus_master.readAddr.bits.addr)
 
   // select higher half or lower half of io.data
   half_rdata := Mux(
     rdata_select(2) === 0.U,
-    io.rdata((data_width >> 1) - 1, 0),       // lower half
-    io.rdata(data_width - 1, data_width >> 1) // higher half
+    io.master_bus.readData.bits.data((data_width >> 1) - 1, 0),       // lower half
+    io.master_bus.readData.bits.data(data_width - 1, data_width >> 1) // higher half
   )
 
   // wiring io.rdata <---> tile.io.weight and tile.io.preload
@@ -102,24 +124,24 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
   }
 
   // assign io.raddr and io.waddr
-  io.raddr := Mux(
+  io.bus_master.readAddr.bits.addr := Mux(
     stateReg === sStall_1 || stateReg === sPreload, // sPreload or sPropagate
     b_base_addr + ((weight_cnt - 1.U) << 2),
     a_base_addr + (input_cnt << 2)
   )
-  io.waddr := c_base_addr + (output_cnt << 2)
+  io.bus_master.writeAddr.bits.addr := c_base_addr + (output_cnt << 2)
 
   // assign word_writeData and io.wdata, io.wstrb and io.wen
   word_writeData := List
     .range(0, cols)
     .map { index => output_buffer.io.output(index).bits << byte * (cols - 1 - index) }
     .reduce(_ + _)
-  io.wdata := Mux(
+  io.bus_master.writeData.bits.data := Mux(
     output_cnt(0) === 0.U,
     0.U((data_width >> 1).W) ## word_writeData,
     word_writeData ## 0.U((data_width >> 1).W)
   )
-  io.wstrb := Mux(output_cnt(0) === 0.U, "b00001111".U, "b11110000".U)
+  io.bus_master.writeData.bits.strb := Mux(output_cnt(0) === 0.U, "b00001111".U, "b11110000".U)
   io.wen   := output_buffer.io.output(0).valid
 
   // assign io.mmio output signals
@@ -127,8 +149,42 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
   io.mmio.STATUS_IN := stateReg === sFinish    // pull up STATUS when operation is done
   io.mmio.WEN       := stateReg === sFinish    // write MMIO regs when operation is done
 
+  val r_stall = WireDefault(false.B)
+  switch(SAMasterReadState) {
+        is(sReadNormal){
+            r_stall := io.r_req
+        }
+        is(sAXIReadSend) {
+            r_stall := true.B
+        }
+        is(sAXIReadWait) {
+            r_stall := Mux(io.master.readData.valid, false.B, true.B)
+        }
+        is(sAXIReadDone) {
+            r_stall := false.B
+        }
+    }  
+
+  val w_stall = WireDefault(false.B)
+  switch(SAMasterWriteState) {
+        is(sWriteNormal){
+            w_stall := io.w_req
+        }
+        is(sAXIWriteSend) {
+            w_stall := true.B
+        }
+        is(sAXIWriteWait) {
+            w_stall := Mux(io.master.writeResp.valid, false.B, true.B)
+        }
+        is(sAXIWriteDone) {
+            w_stall := false.B
+        }
+    }
+    
+  io.stall := r_stall | w_stall
+
   // * next state logic
-  switch(stateReg) {
+  /*switch(stateReg) {
     is(sIdle) {
       stateReg := sReady
     }
@@ -163,7 +219,55 @@ class SA(rows: Int, cols: Int, addr_width: Int, data_width: Int, reg_width: Int)
     is(sFinish) {
       stateReg := sReady
     }
-  }
+  }*/
+
+  // read
+  switch(SAMasterReadState) {
+        is(sReadNormal) {
+            when(io.r_req) {
+                SAMasterReadState := Mux(io.master.readAddr.ready, sAXIReadWait, sAXIReadSend)
+            }
+        }
+        is(sAXIReadSend) {
+            SAMasterReadState := Mux(io.master.readAddr.ready, sAXIReadWait, sAXIReadSend)
+        }
+        is(sAXIReadWait) { 
+            when(io.r_req & io.w_req & io.stall) {
+                SAMasterReadState := Mux(io.master.readData.valid, sAXIReadDone, sAXIReadWait)
+            }.otherwise {
+                SAMasterReadState := Mux(io.master.readData.valid, sReadNormal, sAXIReadWait)
+            }
+        }
+        is(sAXIReadDone) {
+            when(!io.stall) {
+                SAMasterReadState := sReadNormal
+            }
+        }
+    }
+    
+  // write
+  switch(SAMasterWriteState) {
+        is(sWriteNormal) {
+            when(io.w_req) {
+                SAMasterWriteState := Mux((io.master.writeAddr.ready & io.master.writeData.ready), sAXIWriteWait, sAXIWriteSend)
+            }
+        }
+        is(sAXIWriteSend) {
+            SAMasterWriteState := Mux((io.master.writeAddr.ready & io.master.writeData.ready), sAXIWriteWait, sAXIWriteSend)
+        }
+        is(sAXIWriteWait) {
+            when(io.r_req & io.w_req & io.stall) {
+                SAMasterWriteState := Mux(io.master.writeResp.valid, sAXIWriteDone, sAXIWriteWait)
+            }.otherwise {
+                SAMasterWriteState := Mux(io.master.writeResp.valid, sWriteNormal, sAXIWriteWait)
+            }
+        }
+        is(sAXIWriteDone) {
+            when(!io.stall) {
+                SAMasterWriteState := sWriteNormal
+            }
+        }
+    }
 
   // * FSM output decoder
   when(stateReg === sStall_1 || stateReg === sPreload) {

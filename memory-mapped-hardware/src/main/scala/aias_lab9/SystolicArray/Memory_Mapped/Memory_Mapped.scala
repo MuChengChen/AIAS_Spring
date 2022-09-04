@@ -26,13 +26,13 @@ class Memory_Mapped(mem_size: Int, addr_width: Int, data_width: Int, reg_width: 
     val mmio = new MMIO(reg_width)
 
     // for SA to read/write LocalMem when it still a slave
-    val raddr = Input(UInt(addr_width.W))
-    val rdata = Output(UInt(data_width.W))
+    //val raddr = Input(UInt(addr_width.W))
+    //val rdata = Output(UInt(data_width.W))
 
-    val wen   = Input(Bool())
-    val waddr = Input(UInt(addr_width.W))
-    val wdata = Input(UInt(data_width.W))
-    val wstrb = Input(UInt((data_width >> 3).W))
+    //val wen   = Input(Bool())
+    //val waddr = Input(UInt(addr_width.W))
+    //val wdata = Input(UInt(data_width.W))
+    //val wstrb = Input(UInt((data_width >> 3).W))
   })
 
   // module declaration
